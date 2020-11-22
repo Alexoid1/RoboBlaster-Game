@@ -1,7 +1,16 @@
 import Phaser from 'phaser';
-import logo from '../assets/shooter13.png';
+import moon from '../assets/moon.png';
+import clouds from '../assets/clouds.png';
+import forest1 from '../assets/forest1.png';
+import forest2 from '../assets/forest2.png';
+import forest3 from '../assets/forest3.png'
+import hills from '../assets/hills.png';
+import ground from '../assets/ground.png';
+import shooter from '../assets/shooter2.png';
 import button from '../assets/button.png';
 import button2 from '../assets/button2.png';
+import star from '../assets/star.png';
+import bomb from '../assets/bomb.png';
 
 
 
@@ -23,10 +32,33 @@ export default class PreloaderScene extends Phaser.Scene {
         const width = this.scale.width * 0.5;
         const height = this.scale.height * 0.5;
         this.add.image(width, height, 'logo').setScale(1.3, 1.4);
-
+        
         this.load.image('button',button);
         this.load.image('button2',button2);
-        
+        this.load.image('moon',moon);
+        this.load.image('clouds',clouds);
+        this.load.image('forest1',forest1);
+        this.load.image('forest2',forest2);
+        this.load.image('forest3',forest3);
+        this.load.image('hills',hills);
+        this.load.image('ground',ground);
+        this.load.image('star',star);
+        this.load.image('bomb',bomb);
+        this.load.spritesheet('walk', 
+        shooter,
+        { frameWidth:51.4 , frameHeight: 80,margin:1.6,
+            spacing:9.7}
+        );
+        this.load.spritesheet('dudejump', 
+            shooter,
+            { frameWidth:43.4, frameHeight: 80,margin:2,
+                spacing:15.2}
+        );
+        this.load.spritesheet('dudestand', 
+            shooter,
+            { frameWidth:64.4, frameHeight: 80,margin:11,
+                spacing:12.2}
+        );
 
        
         

@@ -9,6 +9,7 @@ var config = {
             gravity: { y: 520 },
             
         },
+        debug:true
     },
    
 };
