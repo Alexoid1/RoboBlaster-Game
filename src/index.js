@@ -1,30 +1,47 @@
 import Phaser from 'phaser';
-import sky from './assets/sky.png';
+import config from './Config/config';
+import BootScene from './Scenes/BootScene';
+import PreloaderScene from './Scenes/PreloaderScene';
+import MenuScene from './Scenes/MenuScene';
+import GameScene from './Scenes/GameScene';
+
 import platform from './assets/platform.png';
 import dude from './assets/dude.png';
 import shooter from './assets/shooter2.png';
+import shooter2 from './assets/shooter-removebg.png';
 import star from './assets/star.png';
 import bomb from './assets/bomb.png'
 
-var config = {
-    type: Phaser.AUTO,
-    width: 800,
-    height: 600,
-    physics: {
-        default: 'arcade',
-        arcade: {
-            gravity: { y: 520 }
-            
-        }
-    },
-    scene: {
-        preload: preload,
-        create: create,
-        update: update
+class Game extends Phaser.Game {
+    constructor() {
+      super(config);
+      this.scene.add('Boot', BootScene);
+      this.scene.add('Preloader', PreloaderScene);
+      this.scene.add('Menu', MenuScene);
+      this.scene.add('Game', GameScene);
+      this.scene.start('Boot');
     }
-};
+    
 
-var game = new Phaser.Game(config);
+    
+}
+window.game = new Game();
+
+/*
+
+
+
+// function init() {
+//     this.score = 0;
+//     this.playerSpeed = 290;
+//     this.jumpSpeed = -600;
+//     this.height = this.scale.height;
+//     this.width = this.scale.width;
+//     this.isGameOver = false;
+// }
+// 
+
+function backgroundLoop(){}
 
 function preload ()
 {
@@ -35,13 +52,24 @@ function preload ()
     this.load.image('bomb', bomb);
     this.load.spritesheet('dude', 
         shooter,
-        { frameWidth:51.8 , frameHeight: 80,margin:1.6,
+        { frameWidth:51.4 , frameHeight: 80,margin:1.6,
             spacing:9.7}
+    );
+    this.load.spritesheet('dudejump', 
+        shooter,
+        { frameWidth:43.4, frameHeight: 80,margin:2,
+            spacing:15.2}
+    );
+    this.load.spritesheet('dudestand', 
+        shooter,
+        { frameWidth:64.4, frameHeight: 80,margin:11,
+            spacing:12.2}
     );
 }
 
 var platforms;
 var player;
+var player2;
 var cursors;
 var stars;
 var score = 0;
@@ -54,15 +82,19 @@ function create ()
     
     platforms = this.physics.add.staticGroup();
 
-    platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+    platforms.create(100, 568, 'ground').setScale(2).refreshBody();
 
     platforms.create(600, 400, 'ground');
     platforms.create(50, 250, 'ground');
     platforms.create(750, 220, 'ground');
-    player = this.physics.add.sprite(150, 400, 'dude');
+    player = this.physics.add.sprite(150, 300, 'dude');
+    // player2 = this.physics.add.sprite(150, 300,'dudeattack');
+    
+    
 
     
     player.setCollideWorldBounds(true);
+    // player2.setCollideWorldBounds(true);
 
     this.anims.create({
         key: 'left',
@@ -73,8 +105,8 @@ function create ()
 
     this.anims.create({
         key: 'turn',
-        frames: [ { key: 'dude', frame: 20 } ],
-        frameRate: 20
+        frames: [ { key: 'dudestand', frame: 0 } ],
+        frameRate: 1
     });
 
     this.anims.create({
@@ -83,6 +115,27 @@ function create ()
         frameRate: 10,
         repeat: -1
     });
+
+    this.anims.create({
+        key: 'jump',
+        frames: this.anims.generateFrameNumbers('dudejump', { start: 21, end: 26 }),
+        frameRate: 5,
+       
+    })
+
+    this.anims.create({
+        key: 'jumpsame',
+        frames: [ { key: 'dudejump', frame: 22 } ],
+        frameRate: 1
+    });
+
+    this.anims.create({
+        key: 'down',
+        frames: [ { key: 'dudestand', frame: 6 } ],
+        frameRate: 1
+    });
+    
+
     this.physics.add.collider(player, platforms);
     cursors = this.input.keyboard.createCursorKeys();
 
@@ -143,32 +196,62 @@ function create ()
 }
 
 function update (){
-    if (cursors.left.isDown)
+    
+    const onGround = player.body.touching.down;
+    if (cursors.left.isDown&& onGround)
     {
-        player.setVelocityX(-160);
+        player.setVelocityX(-460);
         
         player.flipX = true;
         player.anims.play('right', true);
     }
-    else if (cursors.right.isDown)
+    else if (cursors.right.isDown && onGround)
     {
-        player.setVelocityX(160);
+        player.setVelocityX(460);
         player.flipX = false;
         player.anims.play('right', true);
     }
-    else
+    else if (cursors.right.isDown){
+        player.setVelocityX(360);
+        player.flipX = false;
+        player.anims.play('jump', true);
+    }
+    else if (cursors.left.isDown){
+        player.setVelocityX(-360);
+        player.flipX = true;
+        player.anims.play('jump', true);
+    }
+    else if (cursors.down.isDown&&onGround){
+        player.setVelocityX(0);
+        player.anims.play('down', true);
+    }
+
+    else if (cursors.space.isDown){
+        
+        player.anims.play('attack',true);
+    }
+    else if(onGround)
     {
         player.setVelocityX(0);
 
-        player.anims.play('turn');
+        player.anims.play('turn', true);
+    }
+    else if(!onGround)
+    {
+        player.setVelocityX(0);
+
+        player.anims.play('jumpsame', true);
     }
 
-    if (cursors.up.isDown && player.body.touching.down)
+    if (cursors.up.isDown&&onGround)
     {
-        player.setVelocityY(-420);
+        
+        player.setVelocityY(-470);
+       
     }
     
 }
 
 
 
+*/
