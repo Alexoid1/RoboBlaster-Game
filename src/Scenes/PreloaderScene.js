@@ -6,7 +6,13 @@ import forest2 from '../assets/forest2.png';
 import forest3 from '../assets/forest3.png'
 import hills from '../assets/hills.png';
 import ground from '../assets/ground.png';
+import ground2 from '../assets/ground2.png';
 import shooter from '../assets/shooter2.png';
+import shooterRun from '../assets/Robokid_Run_Blue.png';
+import shooterJump from '../assets/Robokid_Jump_Blue.png';
+import shooterStand from '../assets/Robokid_Idle_Blue.png';
+import shooterSlash from '../assets/Robokid_Slash_Blue.png';
+import shooterDash from '../assets/Robokid_Dash_Blue.png';
 import button from '../assets/button.png';
 import button2 from '../assets/button2.png';
 import star from '../assets/star.png';
@@ -45,20 +51,32 @@ export default class PreloaderScene extends Phaser.Scene {
         this.load.image('star',star);
         this.load.image('bomb',bomb);
         this.load.spritesheet('walk', 
-        shooter,
-        { frameWidth:51.4 , frameHeight: 80,margin:1.6,
-            spacing:9.7}
+        shooterRun,
+        { frameWidth:165.5, frameHeight: 208,spacing:17,
+           margin:0}
         );
-        this.load.spritesheet('dudejump', 
-            shooter,
-            { frameWidth:43.4, frameHeight: 80,margin:2,
-                spacing:15.2}
-        );
-        this.load.spritesheet('dudestand', 
-            shooter,
-            { frameWidth:64.4, frameHeight: 80,margin:11,
+        this.load.spritesheet('jump', 
+            shooterJump,
+            { frameWidth:139.4, frameHeight: 208,margin:2,
                 spacing:12.2}
         );
+        this.load.spritesheet('stand', 
+            shooterStand,
+            { frameWidth:130.4, frameHeight: 208,margin:0,
+                spacing:15.2}
+        );
+        this.load.spritesheet('dash', 
+            shooterDash,
+            { frameWidth:310.4, frameHeight: 208,margin:7,
+                spacing:8.2}
+        );
+        this.load.spritesheet('slash', 
+            shooterSlash,
+            { frameWidth:296, frameHeight: 208,margin:99,
+                spacing:13.2}
+        );
+        
+
 
        
         

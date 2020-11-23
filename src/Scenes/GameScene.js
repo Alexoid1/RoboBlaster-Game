@@ -3,12 +3,14 @@ import Phaser from 'phaser';
 import platform from '../assets/platform.png';
 import dude from '../assets/dude.png';
 
-import shooter2 from '../assets/shooter-removebg.png';
+
 
 
 let player;
 let cursors;
-let speedX =360;
+let speedX =385;
+let keyQ;
+
 
 const backgroundCreatorForest1=(scene,count,texture,scrollFactor) => {
     let x=0
@@ -19,9 +21,6 @@ const backgroundCreatorForest1=(scene,count,texture,scrollFactor) => {
     }
 }   
     
-
-
-
 
 export default class GameScene extends Phaser.Scene {
     constructor() {
@@ -43,7 +42,7 @@ export default class GameScene extends Phaser.Scene {
             
             for(let j=0;j<count;j++){
                const g= platforms.create(y, scene.scale.height,texture).setOrigin(0,1).setScrollFactor(scrollFactor);
-               y+=g.width*0.75
+               y+=g.width
                const body = g.body
                 body.updateFromGameObject()
             }
@@ -57,80 +56,81 @@ export default class GameScene extends Phaser.Scene {
         backgroundCreatorForest1(this,10,'forest1',0.25);
         backgroundCreatorForest1(this,10,'forest2',0.25);
         backgroundCreatorForest1(this,10,'forest3',0.50);
-        backgroundCreatorGround(this,10,'ground',1.5);
+        backgroundCreatorGround(this,3,'ground',1.5);
         this.cameras.main.setBounds(0,0,60000,height);
         
 
-        player = this.physics.add.sprite(150, 300, 'dudestand');
+        player = this.physics.add.sprite(150, 300, 'stand').setScale(0.5)
         player.setBounce(0,0,60000,height);
         // this.physics.add.sprite(240, 320, 'star');
         this.cameras.main.startFollow(player);
 
         this.physics.add.collider(platforms, player);
         this.anims.create({
-            key: 'jumpsame',
-            frames: [ { key: 'dudejump', frame: 22 } ],
-            frameRate: 1
+            key: 'dash',
+            frames: this.anims.generateFrameNumbers('dash', { start: 0, end: 3 }),
+            frameRate: 20
         });
         this.anims.create({
             key: 'turn',
-            frames: [ { key: 'dudestand', frame: 0 } ],
-            frameRate: 1
+            frames: this.anims.generateFrameNumbers('stand', { start: 0, end: 4 }),
+            frameRate: 10
+        });
+        this.anims.create({
+            key: 'slash',
+            frames: this.anims.generateFrameNames('slash', {frames:[1,2,3,4,5,6,7,8]}),
+            frameRate: 10
         });
     
         this.anims.create({
             key: 'right',
-            frames: this.anims.generateFrameNumbers('walk', { start: 11, end: 19 }),
+            frames: this.anims.generateFrameNames('walk', {frames:[3,4,5,6,7,8]}),
             frameRate: 10,
+            yoyo:true,
             repeat: -1
         });
     
         this.anims.create({
             key: 'jump',
-            frames: this.anims.generateFrameNumbers('dudejump', { start: 21, end: 26 }),
+            frames: this.anims.generateFrameNames('jump', {frames:[0,1,2,3,4]}),
             frameRate: 5,
            
-        })
-    
-        
-    
-        this.anims.create({
-            key: 'down',
-            frames: [ { key: 'dudestand', frame: 6 } ],
-            frameRate: 1
-        });
-        
-    
-        
+        })          
     }
     
     update(){
         
-        const speed=10
-        const onGround = player.body.touching.down;
-        cursors = this.input.keyboard.createCursorKeys();
-        
-        // const cam=this.cameras.main
+    
+    const onGround = player.body.touching.down;
+    cursors = this.input.keyboard.createCursorKeys();
+    this.keyQ=this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+    this.keyW=this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+    
+    
     if (cursors.left.isDown&& onGround)
     {
         player.setVelocityX(-460);
-        
+      
         player.flipX = true;
         player.anims.play('right', true);
+
     }
     else if (cursors.right.isDown && onGround)
     {
         player.setVelocityX(460);
+       
         player.flipX = false;
         player.anims.play('right', true);
     }
     else if (cursors.right.isDown){
         player.setVelocityX(speedX);
+        
         player.flipX = false;
         player.anims.play('jump', true);
     }
     else if (cursors.left.isDown){
         player.setVelocityX(-speedX);
+        
         player.flipX = true;
         player.anims.play('jump', true);
     }
@@ -139,10 +139,25 @@ export default class GameScene extends Phaser.Scene {
         player.anims.play('down', true);
     }
 
-    else if (cursors.space.isDown){
+    else if (this.keyQ.isDown &&player.flipX===false){
         
-        player.anims.play('attack',true);
+        player.anims.play('dash',true);
+        player.setVelocityX(460*3);
+        
     }
+    else if (this.keyQ.isDown &&player.flipX===true){
+        
+        player.anims.play('dash',true);
+        player.setVelocityX(-460*3);
+        
+    }
+    else if (this.keyW.isDown ){
+        
+        player.anims.play('slash',true);
+        
+        
+    }
+
     else if(onGround)
     {
         player.setVelocityX(0);
@@ -153,7 +168,7 @@ export default class GameScene extends Phaser.Scene {
     {
         player.setVelocityX(0);
 
-        player.anims.play('jumpsame', true);
+        player.anims.play('jump', true);
     }
 
     if (cursors.up.isDown&&onGround)
