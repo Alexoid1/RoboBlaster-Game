@@ -4,9 +4,10 @@ import clouds from '../assets/clouds.png';
 import forest1 from '../assets/forest1.png';
 import forest2 from '../assets/forest2.png';
 import forest3 from '../assets/forest3.png'
-import hills from '../assets/hills.png';
+import dude from '../assets/dude.png';
 import ground from '../assets/ground.png';
 import ground2 from '../assets/ground2.png';
+import platform from '../assets/platform.png';
 import shooter from '../assets/shooter2.png';
 import shooterRun from '../assets/Robokid_Run_Blue.png';
 import shooterJump from '../assets/Robokid_Jump_Blue.png';
@@ -17,6 +18,7 @@ import button from '../assets/button.png';
 import button2 from '../assets/button2.png';
 import star from '../assets/star.png';
 import bomb from '../assets/bomb.png';
+
 
 
 
@@ -46,10 +48,11 @@ export default class PreloaderScene extends Phaser.Scene {
         this.load.image('forest1',forest1);
         this.load.image('forest2',forest2);
         this.load.image('forest3',forest3);
-        this.load.image('hills',hills);
+        
         this.load.image('ground',ground);
         this.load.image('star',star);
         this.load.image('bomb',bomb);
+        this.load.spritesheet('dude', dude, { frameWidth: 32, frameHeight: 48 });
         this.load.spritesheet('walk', 
         shooterRun,
         { frameWidth:165.5, frameHeight: 208,spacing:17,
