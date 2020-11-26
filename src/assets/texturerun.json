@@ -1,0 +1,63 @@
+{
+  "frames": {
+    "Robokid_Run_Blue.png": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 1843,
+        "h": 210
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 1843,
+        "h": 210
+      },
+      "sourceSize": {
+        "w": 1843,
+        "h": 210
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "shooter-6.png": {
+      "frame": {
+        "x": 0,
+        "y": 210,
+        "w": 604,
+        "h": 550
+      },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 16,
+        "y": 0,
+        "w": 604,
+        "h": 550
+      },
+      "sourceSize": {
+        "w": 620,
+        "h": 679
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  },
+  "meta": {
+    "app": "http://free-tex-packer.com",
+    "version": "0.6.6",
+    "image": "texturerun.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 1843,
+      "h": 814
+    },
+    "scale": 1
+  }
+}

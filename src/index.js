@@ -5,12 +5,7 @@ import PreloaderScene from './Scenes/PreloaderScene';
 import MenuScene from './Scenes/MenuScene';
 import GameScene from './Scenes/GameScene';
 import GameOverScene from './Scenes/GameOverScene';
-import platform from './assets/platform.png';
-import dude from './assets/dude.png';
-import shooter from './assets/shooter2.png';
-import shooter2 from './assets/shooter-removebg.png';
-import star from './assets/star.png';
-import bomb from './assets/bomb.png'
+
 
 class Game extends Phaser.Game {
     constructor() {

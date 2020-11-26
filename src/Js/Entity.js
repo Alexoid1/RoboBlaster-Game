@@ -2,7 +2,7 @@ import {GameObjects} from 'phaser';
 
 const {Sprite} = GameObjects;
 
-class Enemy extends Sprite {
+export default class Entity extends Phaser.Physics.Arcade.Sprite{
   constructor(config) {
     super(config.scene, config.x, config.y, config.key);
 
@@ -12,10 +12,17 @@ class Enemy extends Sprite {
     
 
     this.setTexture(config.texture);
+    // this.setData("type", type);
+    // this.setData("isDead", false);
     
     // this.maxHP = config.maxHP;
     // this.hp = this.maxHP;
   }
+ 
+
+ 
+  // this.x < this.scene.cameras.main.scrollX + this.scene.sys.game.canvas.width + 32
+
 
   // damageOrKill(damage) {
   //   this.hp -= damage;
@@ -38,4 +45,3 @@ class Enemy extends Sprite {
   // }
 }
 
-export default Enemy;

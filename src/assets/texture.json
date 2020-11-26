@@ -1,0 +1,135 @@
+{
+  "frames": {
+    "Robokid_Final_Blue.png": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 2043,
+        "h": 253
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 2043,
+        "h": 253
+      },
+      "sourceSize": {
+        "w": 2043,
+        "h": 253
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Robokid_Run_Blue.png": {
+      "frame": {
+        "x": 0,
+        "y": 253,
+        "w": 1843,
+        "h": 210
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 1843,
+        "h": 210
+      },
+      "sourceSize": {
+        "w": 1843,
+        "h": 210
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Robokid_Dash_Blue.png": {
+      "frame": {
+        "x": 0,
+        "y": 463,
+        "w": 1410,
+        "h": 227
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 1410,
+        "h": 227
+      },
+      "sourceSize": {
+        "w": 1410,
+        "h": 227
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Robokid_Jump_Blue.png": {
+      "frame": {
+        "x": 0,
+        "y": 690,
+        "w": 1102,
+        "h": 254
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 1102,
+        "h": 254
+      },
+      "sourceSize": {
+        "w": 1102,
+        "h": 254
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Robokid_Idle_Blue.png": {
+      "frame": {
+        "x": 1102,
+        "y": 690,
+        "w": 719,
+        "h": 212
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 719,
+        "h": 212
+      },
+      "sourceSize": {
+        "w": 719,
+        "h": 212
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  },
+  "meta": {
+    "app": "http://free-tex-packer.com",
+    "version": "0.6.6",
+    "image": "texture.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 2043,
+      "h": 944
+    },
+    "scale": 1
+  }
+}

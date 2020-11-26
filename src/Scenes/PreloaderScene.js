@@ -8,12 +8,10 @@ import dude from '../assets/dude.png';
 import ground from '../assets/ground.png';
 import ground2 from '../assets/ground2.png';
 import platform from '../assets/platform.png';
-import shooter from '../assets/shooter2.png';
-import shooterRun from '../assets/Robokid_Run_Blue.png';
-import shooterJump from '../assets/Robokid_Jump_Blue.png';
-import shooterStand from '../assets/Robokid_Idle_Blue.png';
 import shooterSlash from '../assets/Robokid_Slash_Blue.png';
-import shooterDash from '../assets/Robokid_Dash_Blue.png';
+import textureR from '../assets/texture.png';
+import texture2 from '../assets/texturerun.png';
+import shooterBlast from '../assets/Final_Blast.png';
 import button from '../assets/button.png';
 import button2 from '../assets/button2.png';
 import star from '../assets/star.png';
@@ -54,30 +52,38 @@ export default class PreloaderScene extends Phaser.Scene {
         this.load.image('bomb',bomb);
         this.load.spritesheet('dude', dude, { frameWidth: 32, frameHeight: 48 });
         this.load.spritesheet('walk', 
-        shooterRun,
-        { frameWidth:165.5, frameHeight: 208,spacing:17,
-           margin:0}
+        texture2,
+        { frameWidth:184, frameHeight: 231}
+        );
+        this.load.spritesheet('blast', 
+            shooterBlast,
+            { frameWidth:424, frameHeight: 343,margin:0,
+                spacing:7}
         );
         this.load.spritesheet('jump', 
-            shooterJump,
-            { frameWidth:139.4, frameHeight: 208,margin:2,
-                spacing:12.2}
+            textureR,
+            { frameWidth:149, frameHeight: 231}
         );
         this.load.spritesheet('stand', 
-            shooterStand,
-            { frameWidth:130.4, frameHeight: 208,margin:0,
-                spacing:15.2}
+            textureR,
+            { frameWidth:154, frameHeight: 231,margin:-5}
         );
         this.load.spritesheet('dash', 
-            shooterDash,
-            { frameWidth:310.4, frameHeight: 208,margin:7,
-                spacing:8.2}
+            textureR,
+            { frameWidth:430, frameHeight: 231}
+        );
+        this.load.spritesheet('attackD', 
+            textureR,
+            { frameWidth:241, frameHeight: 231,margin:18,
+                spacing:0}
         );
         this.load.spritesheet('slash', 
             shooterSlash,
-            { frameWidth:296, frameHeight: 208,margin:99,
-                spacing:13.2}
+            { frameWidth:296, frameHeight: 231,margin:74,
+                spacing:18.2}
         );
+        
+        
         
 
 
