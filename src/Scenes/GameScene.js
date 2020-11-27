@@ -1,9 +1,8 @@
 import Phaser from 'phaser';
 import JumperDude from '../Js/JumperDude';
-import PlayerLaser from '../Js/PlayerLaser';
 import Player from '../Js/Player';
 import LaserGroup from '../Js/LaserGroup'
-// import Enemy from '../Js/Enemy';
+import GameUI from '../Js/playerStatus'
 
 
 // let player;
@@ -16,9 +15,7 @@ let speedX =385;
 let gameOver = false;
 let score=0;
 let blast;
-
-
-
+let timer = true;
 
 const backgroundCreatorForest1=(scene,count,texture,scrollFactor,coordY) => {
     let x=0
@@ -29,51 +26,41 @@ const backgroundCreatorForest1=(scene,count,texture,scrollFactor,coordY) => {
     }
 }   
 
-const damage = (player, monster) =>{
+const damage = (player, mon) =>{
     player.setTint(0xff0000);
-    player.body.setVelocity(0, 0);
-    monster.body.setVelocity(0, 0);
-  
-    gameOver = true;
+    player.flashToggle = false;
+    player.preUpdate()
+    // player.body.setVelocity(0, 0);
+    // monster.body.setVelocity(0, 0);
+    
+    
 }
-
-
-
 
 const enemyMoves=(mon,count)=>{
     for(let i=0;i<count;i++){
         mon.setVelocity(Phaser.Math.Between(-50, -200), 20);
     }
     count++
-    
-    
-
 }
 
-// const backgroundCreatorGround2=(scene,count,texture,scrollFactor,coordY) => {
-//     let x=0
-    
-//     for(let i=0;i<count;i++){
-//        const m= scene.add.image(x, scene.scale.height * 0.97,texture).setScale(1.6).setScrollFactor(scrollFactor);
-//        x+=m.width*0.80
-//     }
-// }
-    
 
 export default class GameScene extends Phaser.Scene {
     constructor() {
       super('Game');
       this.laserGroup
+      this.monsters
+      this.monster
+      this.heathText
+      this.scoreText     
     }
     
-
     preload(){
-        
-        
-
     }
      
     create(){
+        // 
+      
+        this.score=0;
         let groundX=0
         let groundY=589
         let platforms = this.physics.add.staticGroup();
@@ -98,76 +85,92 @@ export default class GameScene extends Phaser.Scene {
         backgroundCreatorForest1(this,10,'forest1',0.25);
         backgroundCreatorForest1(this,10,'forest2',0.35);
         backgroundCreatorForest1(this,10,'forest3',0.50);
-       
         backgroundCreatorGround(this,4,'ground');
+        this.scoreText=this.add.text(26, 16, 'Score: 0', { fontSize: '32px', fill: '#fff' }).setScrollFactor(0);
+        this.healthText=this.add.text(26, 56, 'Health: 500', { fontSize: '32px', fill: '#fff' }).setScrollFactor(0);
+        this.monsters=[]
+        const monster_creator=(num)=>{
+            for(let i=0;i<num;i++){
+                this.monster=new JumperDude({
+                    scene: this,
+                    x: 3900+i*15,
+                    y: 16,
+                    key: `dude${i}`,
+                })
+                this.physics.add.collider(this.monster,platforms)
+                this.monsters.push(this.monster)
+                this.monster.setBounce(2400,0,4900,height);
+            }
+        }
+
+        monster_creator(1)
         this.cameras.main.setBounds(0,0,60000,height);
-        
-       
         
         this.player = new Player({scene:this,
             x: 400,
             y: 100, 
-            key:'stand'
+            key:'player'
         });
        
         this.laserGroup=new LaserGroup(this);
         
-        // blast = new PlayerLaser(this);
-        // blast=new PlayerLaser({scene:this,
-        //     x:player.x+20,
-        //     y:player.y+20,
-        //     key:'blast',
-        // })
-        
-        //  blast.setSize(260,337)
-        // attackInterval=() =>{
-        //     this.timer = false;
-        //     this.time.addEvent({
-        //       delay: 10,
-        //       repeat: 0,
-        //       callbackScope: this,
-        //       callback() {
-        //         // eslint-disable-next-line no-undef
-        //         Phaser.Actions.Call(PlayerLaser => {
-        //           child.active = false;
-        //           this.time.addEvent({
-        //             delay: 500,
-        //             repeat: 0,
-        //             callbackScope: this,
-        //             callback() {
-        //               this.timer = true;
-        //               child.disableBody(true, true);
-        //             },
-        //           });
-        //         });
-        //       },
-        //     });
-        //   }
+        this.attackInterval=()=> {
+            timer = false;
+            this.time.addEvent({
+              delay: 20,
+              repeat: 0,
+              callbackScope: this,
+              callback() {
+                Phaser.Actions.Call(this.laserGroup.getChildren(), child => {
+                  child.active = false;
+                  
+                  this.time.addEvent({
+                    delay: 800,
+                    repeat: 0,
+                    callbackScope: this,
+                    callback() {
+                      timer = true;
+                      child.disableBody(true, true);
+                    },
+                  });
+                });
+              },
+            });
+        }
        
-       
-        // player.body.checkCollision.up = false
         this.physics.add.collider(platforms, this.player);
         
-        const monsters = this.physics.add.group();
-        this.physics.add.collider(monsters, platforms);
+       
+
+        
+       
+        this.physics.add.overlap(this.monsters, this.player,null,(mon2,player)=>{
+            player.setTint(0xff0000);
+           
+            this.healthText.setText(`Health: ${player.hp}`);
+            player.damg();
+            player.body.setVelocity(0, 0);
+            // monster.body.setVelocity(0, 0);
+            if(player.hp<=0){
+                gameOver=true;
+            }
+            
+            },this);
+       
         
         
-        // this.JumperDude=this.add.group();
-        // mon2 =this.JumperDude.get()
-        mon2=new JumperDude({
-            scene: this,
-            x: 3900,
-            y: 16,
-            key: 'dude',
-        })
-        
-        this.physics.add.collider(mon2, this.player,damage,null,this);
-        this.physics.add.collider(platforms,mon2);
-        
-        mon2.setBounce(2400,0,5900,height);
 
       
         this.physics.add.collider(platforms,blast);
+        this.physics.add.overlap(this.laserGroup,this.monsters,null,(mon,laser)=>{
+            mon.setTint(0xff0000);
+            mon.damg()
+            this.score += 50;
+            this.scoreText.setText(`Score: ${this.score}`);
+            laser.setVisible(false);
+            laser.setActive(false);
+            laser.body.enable=false;
+        },null, this)
        
         this.enemies = this.add.group();
         // this.playerLasers = this.add.group();
@@ -191,7 +194,7 @@ export default class GameScene extends Phaser.Scene {
         }); 
         this.anims.create({
             key: 'attackD',
-            frames: this.anims.generateFrameNumbers('attackD', { start: 0, end: 6 }),
+            frames: this.anims.generateFrameNumbers('attackD', { start: 1, end: 6 }),
             frameRate: 10,
             repeat: -1
         });
@@ -250,9 +253,12 @@ export default class GameScene extends Phaser.Scene {
     
     update(){
         
-    const onGround = this.player.body.touching.down;
+    const onGround = this.player.body.touching.down||this.player.body.blocked.down;
     this.player.update();
-    mon2.update()
+    
+    this.monsters.forEach(monster=>{
+        monster.update()
+    })
     
     
     if (gameOver) {
@@ -268,13 +274,15 @@ export default class GameScene extends Phaser.Scene {
         this.player.setVelocityX(-460);
       
         this.player.flipX = true;
+        this.player.setTint(0xFFFFFF);
+        
         this.player.anims.play('right', true);
 
     }
     else if (cursors.right.isDown && onGround)
     {
         this.player.setVelocityX(460);
-       
+        this.player.setTint(0xFFFFFF);
         this.player.flipX = false;
         this.player.anims.play('right', true);
     }
@@ -306,16 +314,29 @@ export default class GameScene extends Phaser.Scene {
         
         
     }
-    else if (this.keyE.isDown){
-        // this.player.anims.stop('right');
-        // 
-        this.laserGroup.fireLaser(this.player.x,this.player.y-25)
-        this.player.anims.play('attackD');
-        // blast(this,this.player.x,this.player.y,'blast')
-        // blast.anims.play('blast')
-        // blast.setVelocityX(550);
-
-           
+    else if (this.keyE.isDown&&this.player.flipX === true){
+          if (timer){
+            this.laserGroup.fireLaser(this.player.x,this.player.y-40)
+            this.laserGroup.setVelocityX(-900)
+            this.player.anims.play('attackD');
+            
+            this.attackInterval();
+            
+          }
+       
+            
+    }
+    else if (this.keyE.isDown&&this.player.flipX !== true){
+        if(timer){
+            this.player.anims.play('attackD');
+            this.laserGroup.fireLaser(this.player.x,this.player.y-70)
+             
+            this.attackInterval();
+            
+            
+              
+        }
+        
     }
  
 
@@ -349,7 +370,6 @@ export default class GameScene extends Phaser.Scene {
         this.player.anims.stop('right')
         this.player.anims.play('dash',true);
         this.player.setVelocityX(670*3);
-        
     }
    
     if(this.player.y>this.scale.height){

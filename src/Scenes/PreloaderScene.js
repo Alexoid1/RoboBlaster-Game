@@ -12,6 +12,7 @@ import shooterSlash from '../assets/Robokid_Slash_Blue.png';
 import textureR from '../assets/texture.png';
 import texture2 from '../assets/texturerun.png';
 import shooterBlast from '../assets/Final_Blast.png';
+import playerIcon from '../assets/playerIcon.png'
 import button from '../assets/button.png';
 import button2 from '../assets/button2.png';
 import star from '../assets/star.png';
@@ -46,7 +47,7 @@ export default class PreloaderScene extends Phaser.Scene {
         this.load.image('forest1',forest1);
         this.load.image('forest2',forest2);
         this.load.image('forest3',forest3);
-        
+        this.load.image('playerIcon',playerIcon);
         this.load.image('ground',ground);
         this.load.image('star',star);
         this.load.image('bomb',bomb);

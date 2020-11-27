@@ -10,28 +10,17 @@ export default class Entity extends Phaser.Physics.Arcade.Sprite{
     config.scene.physics.world.enable(this);
     config.scene.add.existing(this);
     
-
     this.setTexture(config.texture);
-    // this.setData("type", type);
-    // this.setData("isDead", false);
-    
     // this.maxHP = config.maxHP;
     // this.hp = this.maxHP;
   }
  
-
- 
-  // this.x < this.scene.cameras.main.scrollX + this.scene.sys.game.canvas.width + 32
-
-
   // damageOrKill(damage) {
   //   this.hp -= damage;
-
-  //   if (this.isDead()) {
+  //   if (this.hp <= 0) {
   //     this.die();
   //     return true;
   //   }
-
   //   return false;
   // }
 
@@ -40,8 +29,5 @@ export default class Entity extends Phaser.Physics.Arcade.Sprite{
   //   this.setVisible(false);
   // }
 
-  // isDead() {
-  //   return (this.hp <= 0);
-  // }
 }
 
