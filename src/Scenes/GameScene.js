@@ -2,7 +2,8 @@ import Phaser from 'phaser';
 import JumperDude from '../Js/JumperDude';
 import Player from '../Js/Player';
 import LaserGroup from '../Js/LaserGroup'
-import GameUI from '../Js/playerStatus'
+import LocalStorage from '../Tools/localStorage';
+
 
 
 // let player;
@@ -51,7 +52,8 @@ export default class GameScene extends Phaser.Scene {
       this.monsters
       this.monster
       this.heathText
-      this.scoreText     
+      this.scoreText
+      this.score    
     }
     
     preload(){
@@ -59,8 +61,8 @@ export default class GameScene extends Phaser.Scene {
      
     create(){
         // 
-      
-        this.score=0;
+        this.score=0
+        
         let groundX=0
         let groundY=589
         let platforms = this.physics.add.staticGroup();
@@ -263,6 +265,7 @@ export default class GameScene extends Phaser.Scene {
     
     if (gameOver) {
         this.physics.pause();
+        LocalStorage.saveScore(this.score);
         this.scene.stop('Game');
         this.scene.start('GameOver');
         
@@ -375,6 +378,7 @@ export default class GameScene extends Phaser.Scene {
     if(this.player.y>this.scale.height){
         this.physics.pause();
         this.player.setTint(0xff0000);
+        LocalStorage.saveScore(this.score);
         this.scene.stop('Game');
         this.scene.start('GameOver');
     }

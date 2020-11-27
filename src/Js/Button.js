@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import Dom from '../Tools/dom';
+
 
 export default class Button extends Phaser.GameObjects.Container {
     constructor(scene, x, y, key1, key2, text, targetScene) {
@@ -22,8 +24,11 @@ export default class Button extends Phaser.GameObjects.Container {
         const form = document.querySelectorAll('.form');
         if (form) {
           form.forEach(child => { child.style.display = 'none'; });
+          
         }
+        
         this.scene.scene.start(targetScene);
+        Dom.removeDomElements();
       });
   
       this.button.on('pointerover', () => {

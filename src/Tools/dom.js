@@ -26,7 +26,7 @@ const Dom = (() => {
     setTimeout(() => {
       button.onclick = () => {
         if (input.value !== '') {
-          form.innerHTML = '<h3 id="submitting">Posting... </h3>';
+          form.innerHTML = '<h3 id="submitting">Waiting... </h3>';
           scoreAPI.submit(input.value, score).then((response) => {
             form.innerHTML = `<h3 id="response">${response.result} </h3>`;
           });
