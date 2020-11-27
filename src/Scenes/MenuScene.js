@@ -53,7 +53,7 @@ export default class MenuScene extends Phaser.Scene {
       'button',
       'button2',
       'Scores',
-      'LeaderBoardScene',
+      'LeaderBoard',
     );
 
 //     this.model = this.sys.game.globals.model;
