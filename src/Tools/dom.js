@@ -38,8 +38,8 @@ const Dom = (() => {
   };
 
   const removeDomElements = () => {
-    const form = document.querySelector('#form');
-    form.parentNode.removeChild(form);
+    document.querySelector('#form').remove();
+    
   };
 
   return {

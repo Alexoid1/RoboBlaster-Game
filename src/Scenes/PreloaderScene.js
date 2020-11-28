@@ -23,6 +23,7 @@ import bomb from '../assets/bomb.png';
 
 
 
+
 export default class PreloaderScene extends Phaser.Scene {
     constructor() {
       super('Preloader')
@@ -51,6 +52,7 @@ export default class PreloaderScene extends Phaser.Scene {
         this.load.image('ground',ground);
         this.load.image('star',star);
         this.load.image('bomb',bomb);
+        
         this.load.spritesheet('dude', dude, { frameWidth: 32, frameHeight: 48 });
         this.load.spritesheet('walk', 
         texture2,

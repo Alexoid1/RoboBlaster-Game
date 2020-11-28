@@ -3,7 +3,7 @@ import JumperDude from '../Js/JumperDude';
 import Player from '../Js/Player';
 import LaserGroup from '../Js/LaserGroup'
 import LocalStorage from '../Tools/localStorage';
-
+import BgTrack from '../Sounds/trackFondo.mp3'
 
 
 // let player;
@@ -53,14 +53,28 @@ export default class GameScene extends Phaser.Scene {
       this.monster
       this.heathText
       this.scoreText
-      this.score    
+      this.score 
+      this.model 
+      this.platformNumber  
     }
     
     preload(){
+        this.load.audio('bgTrack', BgTrack);
+      
+        
     }
      
     create(){
+        this.platformNumber =10;
+        // this.model = this.sys.game.globals.model;
+            // if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {
+            
+            // this.sys.game.globals.bgMusic = this.bgMusic;
+            // }
+        
         // 
+        this.bgMusic = this.sound.add('bgTrack', { volume: 0.2, loop: true });
+        this.bgMusic.play();
         this.score=0
         
         let groundX=0
@@ -87,32 +101,43 @@ export default class GameScene extends Phaser.Scene {
         backgroundCreatorForest1(this,10,'forest1',0.25);
         backgroundCreatorForest1(this,10,'forest2',0.35);
         backgroundCreatorForest1(this,10,'forest3',0.50);
-        backgroundCreatorGround(this,4,'ground');
+        backgroundCreatorGround(this,this.platformNumber,'ground');
         this.scoreText=this.add.text(26, 16, 'Score: 0', { fontSize: '32px', fill: '#fff' }).setScrollFactor(0);
         this.healthText=this.add.text(26, 56, 'Health: 500', { fontSize: '32px', fill: '#fff' }).setScrollFactor(0);
         this.monsters=[]
-        const monster_creator=(num)=>{
-            for(let i=0;i<num;i++){
-                this.monster=new JumperDude({
-                    scene: this,
-                    x: 3900+i*15,
-                    y: 16,
-                    key: `dude${i}`,
-                })
-                this.physics.add.collider(this.monster,platforms)
-                this.monsters.push(this.monster)
-                this.monster.setBounce(2400,0,4900,height);
-            }
-        }
+        const monster_creator=(num,hord)=>{
+            let corx=3900
+            for (let j=1;j<hord;j++){
+                for(let i=0;i<num;i++){
+                    this.monster=new JumperDude({
+                        scene: this,
+                        x: corx+i*15,
+                        y: 16,
+                        key: `dude${i}${j}`,
+                    })
+                    this.physics.add.collider(this.monster,platforms)
+                    this.monsters.push(this.monster)
+                    this.monster.setBounce(2400,0,4900,height);
+                }
 
-        monster_creator(1)
-        this.cameras.main.setBounds(0,0,60000,height);
+                corx+=4240
+            }
+           
+        }
         
+
+        monster_creator(3,this.platformNumber)
+        // creatorMp(this.platformNumber)
+
+
         this.player = new Player({scene:this,
             x: 400,
             y: 100, 
             key:'player'
         });
+        this.cameras.main.setBounds(0,0,60000,height);
+        
+        
        
         this.laserGroup=new LaserGroup(this);
         
@@ -249,7 +274,9 @@ export default class GameScene extends Phaser.Scene {
         //     repeat: -1,
         // });
         // this.laserGroup.anims.play('blast')
-        
+       
+        // this.sys.game.globals.bgMusic = this.bgMusic;
+        // this.model.bgMusicPlaying = true;
              
     }
     
@@ -267,6 +294,8 @@ export default class GameScene extends Phaser.Scene {
         this.physics.pause();
         LocalStorage.saveScore(this.score);
         this.scene.stop('Game');
+        
+        this.bgMusic.stop();
         this.scene.start('GameOver');
         
         gameOver = false;
@@ -379,6 +408,7 @@ export default class GameScene extends Phaser.Scene {
         this.physics.pause();
         this.player.setTint(0xff0000);
         LocalStorage.saveScore(this.score);
+        this.bgMusic.stop();
         this.scene.stop('Game');
         this.scene.start('GameOver');
     }
