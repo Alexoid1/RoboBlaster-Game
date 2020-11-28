@@ -39,7 +39,6 @@ const Dom = (() => {
 
   const removeDomElements = () => {
     document.querySelector('#form').remove();
-    
   };
 
   return {

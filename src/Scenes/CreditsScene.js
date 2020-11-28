@@ -1,4 +1,5 @@
-import 'phaser';
+/* eslint-disable no-undef */
+import Phaser from 'phaser';
 import Button from '../Js/Button';
 // import creditBackground from '../assets/images/options.png';
 
@@ -7,13 +8,13 @@ export default class CreditsScene extends Phaser.Scene {
     super('Credits');
   }
 
-  preload() {
-    // this.load.image('creditBackground', creditBackground);
-  }
+  //   preload() {
+  //     // this.load.image('creditBackground', creditBackground);
+  //   }
 
   create() {
-    const height = this.scale.height * 0.5
-    const width = this.scale.width * 0.5
+    const height = this.scale.height * 0.5;
+    const width = this.scale.width * 0.5;
     // this.add.image(width, height, 'creditBackground').setScale(0.35, 0.277)
     this.creditsText = this.add.text(0, 0, 'Credits', {
       fontSize: '32px',
@@ -62,7 +63,7 @@ export default class CreditsScene extends Phaser.Scene {
       ease: 'Power1',
       duration: 8000,
       delay: 1000,
-       
+
     });
 
     this.madeByTween = this.tweens.add({
@@ -71,11 +72,11 @@ export default class CreditsScene extends Phaser.Scene {
       ease: 'Power1',
       duration: 8000,
       delay: 1000,
-      onComplete:function () {
+      onComplete: function () {
         this.madeByTween.destroy;
         this.scene.start('Menu');
       }.bind(this),
-    
+
     });
   }
 }

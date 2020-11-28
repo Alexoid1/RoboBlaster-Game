@@ -5,12 +5,12 @@ import Button from '../Js/Button';
 /* eslint-disable no-undef */
 export default class LeaderBoardScene extends Phaser.Scene {
   constructor() {
-    super('LeaderBoardScene');
+    super('LeaderBoard');
   }
 
-  preload() {
-    // this.load.image('leaderBoardBackGround', score);
-  }
+  //   preload() {
+  //     // this.load.image('leaderBoardBackGround', score);
+  //   }
 
   async create() {
     const height = this.scale.height * 0.5;
