@@ -16,6 +16,7 @@ import button from '../assets/button.png';
 import button2 from '../assets/button2.png';
 import star from '../assets/star.png';
 import bomb from '../assets/bomb.png';
+import titleBg from '../assets/robotfon.png';
 
 export default class PreloaderScene extends Phaser.Scene {
   constructor() {
@@ -30,7 +31,7 @@ export default class PreloaderScene extends Phaser.Scene {
     const width = this.scale.width * 0.5;
     const height = this.scale.height * 0.5;
     this.add.image(width, height, 'logo').setScale(1.3, 1.4);
-
+    this.load.image('bg', titleBg);
     this.load.image('button', button);
     this.load.image('button2', button2);
     this.load.image('moon', moon);

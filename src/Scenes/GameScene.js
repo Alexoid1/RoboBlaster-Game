@@ -41,7 +41,7 @@ export default class GameScene extends Phaser.Scene {
   }
 
   create() {
-    this.platformNumber = 10;
+    this.platformNumber = 20;
     this.bgMusic = this.sound.add('bgTrack', { volume: 0.2, loop: true });
     this.bgMusic.play();
     this.score = 0;

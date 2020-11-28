@@ -5,13 +5,14 @@ const Dom = (() => {
     const form = document.createElement('div');
     const p = document.createElement('p');
     form.setAttribute('id', 'form');
-    form.className = 'form-group text-center';
+    form.className = 'form';
     form.style.position = 'absolute';
-    form.style.top = '280px';
-    form.style.left = '280px';
+    form.style.top = '240px';
+    form.style.left = '500px';
+    form.style.width = '300px'
     form.innerHTML = `
-      <input class="form-control" type="search" id="input" placeholder="Enter your name" aria-label="Search" required/></br>
-      <button class="form-control btn btn-secondary btn-block" type="submit" id="submit"> Submit Score</button>
+      <input class="formInput" type="search" id="input" placeholder="Enter your name" aria-label="Search" required/></br>
+      <button class="formButton" type="submit" id="submit"> Submit Score</button>
     `;
     form.appendChild(p);
     const body = document.body.appendChild(form);
@@ -38,7 +39,10 @@ const Dom = (() => {
   };
 
   const removeDomElements = () => {
-    document.querySelector('#form').remove();
+    const form=document.querySelector('#form');
+    if(form){
+      form.remove()
+    }
   };
 
   return {

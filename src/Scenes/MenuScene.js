@@ -1,14 +1,10 @@
 import Phaser from 'phaser';
 import Button from '../Js/Button';
-import titleBg from '../assets/robotfon.png';
+
 /* eslint-disable no-undef */
 export default class MenuScene extends Phaser.Scene {
   constructor() {
     super('Menu');
-  }
-
-  preload() {
-    this.load.image('bg', titleBg);
   }
 
   create() {

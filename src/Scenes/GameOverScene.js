@@ -15,7 +15,7 @@ export default class GameOverScene extends Phaser.Scene {
     this.PlayAgainButton = new Button(
       this,
       width,
-      height + 50,
+      height + 75,
       'button',
       'button2',
       'Play Again',
@@ -25,26 +25,27 @@ export default class GameOverScene extends Phaser.Scene {
     this.ExitButton = new Button(
       this,
       width,
-      height + 140,
+      height + 170,
       'button',
       'button2',
       'Exit',
       'Menu',
     );
     this.title = this.add.text(width, 128, 'GAME OVER', {
-      fontSize: 47,
-      fontStyle: 'bold',
+      fontSize: 50,
+      fontStyle: 'bolder',
       color: 'white',
       align: 'center',
+      family: 'arial'
     });
 
     const score = LocalStorage.getScore();
     LocalStorage.clearStorage();
 
-    this.score = this.add.text(400, 200, `Your score is: ${score}`, {
+    this.score = this.add.text(width, 200, `Your score is: ${score}`, {
       font: '35px monospace',
-      fill: '#888',
       align: 'center',
+      color: 'white'
 
     });
     this.score.setOrigin(0.5);
