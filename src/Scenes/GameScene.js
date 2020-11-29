@@ -34,23 +34,21 @@ export default class GameScene extends Phaser.Scene {
     this.score;
     this.model;
     this.platformNumber;
-    this.model
+    this.model;
   }
 
   preload() {
     this.load.audio('bgMusic', BgTrack);
-    
-    
   }
 
   create() {
     this.model = this.sys.game.globals.model;
-        if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {
-          this.bgMusic = this.sound.add('bgMusic', { volume: 0.3, loop: true });
-          this.bgMusic.play();
-          this.model.bgMusicPlaying = true;
-          this.sys.game.globals.bgMusic = this.bgMusic;
-        }
+    if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {
+      this.bgMusic = this.sound.add('bgMusic', { volume: 0.3, loop: true });
+      this.bgMusic.play();
+      this.model.bgMusicPlaying = true;
+      this.sys.game.globals.bgMusic = this.bgMusic;
+    }
     this.platformNumber = 20;
     this.score = 0;
 
