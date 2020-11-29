@@ -7,10 +7,13 @@ import LeaderBoardScene from './Scenes/LeaderBoardScene';
 import CreditsScene from './Scenes/CreditsScene';
 import GameScene from './Scenes/GameScene';
 import GameOverScene from './Scenes/GameOverScene';
+import Sound from './Js/Sound';
 
 class Game extends Phaser.Game {
   constructor() {
     super(config);
+    const model = new Sound();
+    this.globals = { model, bgMusic: null };
     this.scene.add('Boot', BootScene);
     this.scene.add('Preloader', PreloaderScene);
     this.scene.add('Menu', MenuScene);

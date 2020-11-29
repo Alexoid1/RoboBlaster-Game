@@ -34,16 +34,24 @@ export default class GameScene extends Phaser.Scene {
     this.score;
     this.model;
     this.platformNumber;
+    this.model
   }
 
   preload() {
-    this.load.audio('bgTrack', BgTrack);
+    this.load.audio('bgMusic', BgTrack);
+    
+    
   }
 
   create() {
+    this.model = this.sys.game.globals.model;
+        if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {
+          this.bgMusic = this.sound.add('bgMusic', { volume: 0.3, loop: true });
+          this.bgMusic.play();
+          this.model.bgMusicPlaying = true;
+          this.sys.game.globals.bgMusic = this.bgMusic;
+        }
     this.platformNumber = 20;
-    this.bgMusic = this.sound.add('bgTrack', { volume: 0.2, loop: true });
-    this.bgMusic.play();
     this.score = 0;
 
     let groundX = 0;
@@ -227,7 +235,7 @@ export default class GameScene extends Phaser.Scene {
       LocalStorage.saveScore(this.score);
       this.scene.stop('Game');
 
-      this.bgMusic.stop();
+      // this.bgMusic.stop();
       this.scene.start('GameOver');
 
       gameOver = false;
@@ -304,7 +312,7 @@ export default class GameScene extends Phaser.Scene {
       this.physics.pause();
       this.player.setTint(0xff0000);
       LocalStorage.saveScore(this.score);
-      this.bgMusic.stop();
+      // this.bgMusic.stop();
       this.scene.stop('Game');
       this.scene.start('GameOver');
     }
