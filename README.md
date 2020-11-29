@@ -3,7 +3,7 @@
 This is a game that a build inspired by megaman series you only need a keyboard and a browser to play it, build in phaser 3, the objective of this game is get the highest score beating enemies and care that your Health point dont reach to zero.
 
 ## Built With
-<hr>
+
  - Phaser 3
  - JavaScript
  - Webpack
@@ -11,7 +11,7 @@ This is a game that a build inspired by megaman series you only need a keyboard 
  - Css
 
 ## Requirements
-<hr>
+
  - [Node.js](https://nodejs.org) is required to install dependencies and run scripts via `npm`.
  - Browser 
  - Internet
@@ -22,14 +22,14 @@ This is a game that a build inspired by megaman series you only need a keyboard 
 
 
 ## How to Play
-<hr>
-- ⬅️ - Press the left arrow key to move left.
-- ➡️ - Press the right arrow key to move right
-- ⬆️ - Press the up arrow key or the space bar to jump.
-- ⬇️ - Land fast.
-- Q  - Press the 'Q' key for dash ability.
-- W  - Press the 'W' key for Blade ability.
-- E  - Press the 'E' key for Shoot energy blast.
+
+- ⬅️  Press the left arrow key to move left.
+- ➡️  Press the right arrow key to move right
+- ⬆️  Press the up arrow key or the space bar to jump.
+- ⬇️  Land fast.
+- Q   Press the 'Q' key for dash ability.
+- W   Press the 'W' key for Blade ability.
+- E   Press the 'E' key for Shoot energy blast.
 
 ![gif](./images/robogif.gif)
 <hr>
