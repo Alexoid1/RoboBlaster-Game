@@ -1,6 +1,6 @@
 # Shooter Game
 <hr>
-This is a game that a build inspired by megaman series you only need a keyboard and a browser to play it, build in phaser 3, the objective of this game is get the highest score beating enemies and care that your Health point dont reach to zero.
+This is a game that a build inspired by megaman series you only need a keyboard and a browser to play it, build in phaser 3, the objective of this game is get the highest score beating enemies and care that your Health points dont reach to zero.
 
 ## Built With
 
