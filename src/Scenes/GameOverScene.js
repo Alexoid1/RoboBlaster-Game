@@ -36,7 +36,7 @@ export default class GameOverScene extends Phaser.Scene {
       fontStyle: 'bolder',
       color: 'white',
       align: 'center',
-      family: 'arial'
+      family: 'arial',
     });
 
     const score = LocalStorage.getScore();
@@ -45,7 +45,7 @@ export default class GameOverScene extends Phaser.Scene {
     this.score = this.add.text(width, 200, `Your score is: ${score}`, {
       font: '35px monospace',
       align: 'center',
-      color: 'white'
+      color: 'white',
 
     });
     this.score.setOrigin(0.5);

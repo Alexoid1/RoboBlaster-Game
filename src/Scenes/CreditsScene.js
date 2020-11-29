@@ -51,7 +51,7 @@ export default class CreditsScene extends Phaser.Scene {
       y: -100,
       ease: 'Power1',
       duration: 3000,
-      delay: 1000
+      delay: 1000,
 
     });
 
@@ -60,7 +60,7 @@ export default class CreditsScene extends Phaser.Scene {
       y: -300,
       ease: 'Power1',
       duration: 8000,
-      delay: 1000
+      delay: 1000,
 
     });
 
