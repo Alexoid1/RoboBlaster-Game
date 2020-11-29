@@ -34,10 +34,10 @@ This is a game that a build inspired by megaman series you only need a keyboard 
 ![gif](./images/robogif.gif)
 <hr>
 
-![screenshot](./images/img.png)
+![screenshot](./images/img1.png)
 <hr>
 
-![screenshot](./images/img.png)
+![screenshot](./images/img2.png)
 
 
 ## Authors
