@@ -1,4 +1,4 @@
-# Shooter Game
+# RoboBlaster Game
 <hr>
 This is a game that a build inspired by megaman series you only need a keyboard and a browser to play it, build in phaser 3, the objective of this game is get the highest score beating enemies and care that your Health points dont reach to zero.
 
@@ -18,7 +18,7 @@ This is a game that a build inspired by megaman series you only need a keyboard 
 
 
 ## Live Version
-[Click here to play](https://trusting-swanson-f1ffbe.netlify.app/)
+[Click here to play](https://silly-carson-f8fb31.netlify.app/)
 
 
 ## How to Play
