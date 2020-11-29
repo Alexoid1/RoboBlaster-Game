@@ -1,0 +1,29 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 100%;
+  background-image: url(aracade.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  text-align: center;
+}
+
+canvas {
+  margin: auto;
+}
+
+.formButton:hover {
+  background: rgb(9, 25, 246);
+}
+
+#submitting {
+  color: white;
+}
+
+#response {
+  color: white;
+  font-size: 24px;
+}

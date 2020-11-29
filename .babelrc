@@ -7,8 +7,11 @@
           "not ie 11",
           "not op_mini all"
         ]
-      },
-      "modules": false
+      }
+      // "modules": false
     }]
   ],
+  "plugins": [
+    "@babel/plugin-transform-runtime"
+  ]
 }

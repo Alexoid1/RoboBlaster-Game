@@ -1,37 +1,27 @@
 import Phaser from 'phaser';
-import sky from './assets/sky.png'
+import config from './Config/config';
+import BootScene from './Scenes/BootScene';
+import PreloaderScene from './Scenes/PreloaderScene';
+import MenuScene from './Scenes/MenuScene';
+import LeaderBoardScene from './Scenes/LeaderBoardScene';
+import CreditsScene from './Scenes/CreditsScene';
+import GameScene from './Scenes/GameScene';
+import GameOverScene from './Scenes/GameOverScene';
+import Sound from './Js/Sound';
 
-var config = {
-    type: Phaser.AUTO,
-    width: 800,
-    height: 600,
-    scene: {
-        preload: preload,
-        create: create,
-        update: update
-    }
-};
-
-var game = new Phaser.Game(config);
-
-function preload ()
-{
-
-	this.load.image('sky', sky);
-    this.load.image('ground', 'assets/platform.png');
-    this.load.image('star', 'assets/star.png');
-    this.load.image('bomb', 'assets/bomb.png');
-    this.load.spritesheet('dude', 
-        'assets/dude.png',
-        { frameWidth: 32, frameHeight: 48 }
-    );
+class Game extends Phaser.Game {
+  constructor() {
+    super(config);
+    const model = new Sound();
+    this.globals = { model, bgMusic: null };
+    this.scene.add('Boot', BootScene);
+    this.scene.add('Preloader', PreloaderScene);
+    this.scene.add('Menu', MenuScene);
+    this.scene.add('LeaderBoard', LeaderBoardScene);
+    this.scene.add('Credits', CreditsScene);
+    this.scene.add('Game', GameScene);
+    this.scene.add('GameOver', GameOverScene);
+    this.scene.start('Boot');
+  }
 }
-
-function create ()
-{
-    this.add.image(400, 300, 'sky');
-}
-
-function update ()
-{
-}
+window.game = new Game();

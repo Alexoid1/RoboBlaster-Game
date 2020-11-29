@@ -1,0 +1,188 @@
+{
+	"textures": [
+		{
+			"image": "texture_robo.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 2045,
+				"h": 1503
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "Robokid_Final_Blue.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2043,
+						"h": 253
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2043,
+						"h": 253
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 2043,
+						"h": 253
+					}
+				},
+				{
+					"filename": "Robokid_Roll_Slash_Mid_Air_Blue.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 1920,
+						"h": 437
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 1920,
+						"h": 437
+					},
+					"frame": {
+						"x": 1,
+						"y": 256,
+						"w": 1920,
+						"h": 437
+					}
+				},
+				{
+					"filename": "Robokid_Run_Blue.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 1843,
+						"h": 210
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 1843,
+						"h": 210
+					},
+					"frame": {
+						"x": 1,
+						"y": 695,
+						"w": 1843,
+						"h": 210
+					}
+				},
+				{
+					"filename": "Robokid_Dash_Blue.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 1410,
+						"h": 227
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 1410,
+						"h": 227
+					},
+					"frame": {
+						"x": 1,
+						"y": 907,
+						"w": 1410,
+						"h": 227
+					}
+				},
+				{
+					"filename": "Robokid_Crouch_Blue.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 627,
+						"h": 166
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 627,
+						"h": 166
+					},
+					"frame": {
+						"x": 1413,
+						"y": 907,
+						"w": 627,
+						"h": 166
+					}
+				},
+				{
+					"filename": "Robokid_Hurt_Blue.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 520,
+						"h": 213
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 520,
+						"h": 213
+					},
+					"frame": {
+						"x": 1413,
+						"y": 1075,
+						"w": 520,
+						"h": 213
+					}
+				},
+				{
+					"filename": "Robokid_Jump_Blue.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 1102,
+						"h": 254
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 1102,
+						"h": 254
+					},
+					"frame": {
+						"x": 1,
+						"y": 1136,
+						"w": 1102,
+						"h": 254
+					}
+				},
+				{
+					"filename": "Robokid_Idle_Blue.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 719,
+						"h": 212
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 719,
+						"h": 212
+					},
+					"frame": {
+						"x": 1105,
+						"y": 1290,
+						"w": 719,
+						"h": 212
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:e428a22fdaa9323302ff944aba1aad5e:686601a6ec35d80125742e34ceb25258:23f4acc723ba7c2a3d28350e60c3f0c3$"
+	}
+}
