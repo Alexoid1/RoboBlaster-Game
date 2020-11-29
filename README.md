@@ -4,17 +4,17 @@ This is a game that a build inspired by megaman series you only need a keyboard 
 
 ## Built With
 <hr>
-- Phaser 3
-- JavaScript
-- Webpack
-- Jest
-- Css
+ - Phaser 3
+ - JavaScript
+ - Webpack
+ - Jest
+ - Css
 
 ## Requirements
 <hr>
-- [Node.js](https://nodejs.org) is required to install dependencies and run scripts via `npm`.
-- Browser 
-- Internet
+ - [Node.js](https://nodejs.org) is required to install dependencies and run scripts via `npm`.
+ - Browser 
+ - Internet
 
 
 ## Live Version
@@ -38,6 +38,7 @@ This is a game that a build inspired by megaman series you only need a keyboard 
 <hr>
 
 ![screenshot](./images/img2.png)
+
 
 
 ## Authors
