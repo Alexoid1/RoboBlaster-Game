@@ -19,7 +19,7 @@ canvas {
   width: 200px;
   margin: auto;
   height: 50px;
-  border:3px solid silver;
+  border: 3px solid silver;
   border-radius: 10px;
 }
 
@@ -27,7 +27,7 @@ canvas {
   width: 170px;
   color: white;
   margin: auto;
-  margin-top:14px;
+  margin-top: 14px;
   height: 35px;
   border-radius: 10px;
   background:rgb(23, 131, 255);
@@ -37,7 +37,7 @@ canvas {
 }
 
 .formButton:hover {
-  background:rgb(9, 25, 246);
+  background: rgb(9, 25, 246);
 }
 
 #submitting {
