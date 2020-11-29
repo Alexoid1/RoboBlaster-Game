@@ -5,7 +5,6 @@ export default class Laser extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, key) {
     super(scene, x, y, key);
 
-    // Add self to scene's physics
     scene.physics.world.enable(this);
     scene.add.existing(this);
 

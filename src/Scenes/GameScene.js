@@ -96,7 +96,6 @@ export default class GameScene extends Phaser.Scene {
     };
 
     monsterCreator(3, this.platformNumber);
-    // creatorMp(this.platformNumber)
 
     this.player = new Player({
       scene: this,
@@ -140,7 +139,6 @@ export default class GameScene extends Phaser.Scene {
       this.healthText.setText(`Health: ${player.hp}`);
       player.damg();
       player.body.setVelocity(0, 0);
-      // monster.body.setVelocity(0, 0);
       if (player.hp <= 0) {
         gameOver = true;
       }
@@ -233,7 +231,6 @@ export default class GameScene extends Phaser.Scene {
       LocalStorage.saveScore(this.score);
       this.scene.stop('Game');
 
-      // this.bgMusic.stop();
       this.scene.start('GameOver');
 
       gameOver = false;
@@ -310,7 +307,6 @@ export default class GameScene extends Phaser.Scene {
       this.physics.pause();
       this.player.setTint(0xff0000);
       LocalStorage.saveScore(this.score);
-      // this.bgMusic.stop();
       this.scene.stop('Game');
       this.scene.start('GameOver');
     }

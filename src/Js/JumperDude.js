@@ -8,11 +8,8 @@ class JumperDude extends Entity {
 
     });
 
-    // Config
-    // this.maxSpeed = 100;
     this.jumpHeight = 600;
 
-    // Setup physics properties
     this.body.setSize(28, 47);
     this.setGravityY(800);
     this.setScale(3);
@@ -20,8 +17,6 @@ class JumperDude extends Entity {
     this.touch = false;
     this.alive = true;
     this.damage = 50;
-
-    // this.setScale(0.35);
   }
 
   jump(coinToss) {

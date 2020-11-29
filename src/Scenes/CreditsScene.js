@@ -1,21 +1,15 @@
 /* eslint-disable no-undef, no-unused-expressions */
 import Phaser from 'phaser';
 import Button from '../Js/Button';
-// import creditBackground from '../assets/images/options.png';
 
 export default class CreditsScene extends Phaser.Scene {
   constructor() {
     super('Credits');
   }
 
-  //   preload() {
-  //     // this.load.image('creditBackground', creditBackground);
-  //   }
-
   create() {
     const height = this.scale.height * 0.5;
     const width = this.scale.width * 0.5;
-    // this.add.image(width, height, 'creditBackground').setScale(0.35, 0.277)
     this.creditsText = this.add.text(0, 0, 'Credits', {
       fontSize: '32px',
       fill: '#fff',

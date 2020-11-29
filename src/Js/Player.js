@@ -24,7 +24,6 @@ class Player extends Entity {
     this.touch = true;
     if (this.touch === true) {
       this.hp -= damage;
-      // this.alpha=true;
       if (this.hp <= 0) {
         this.die();
         return true;

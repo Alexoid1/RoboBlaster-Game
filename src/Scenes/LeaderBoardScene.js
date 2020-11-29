@@ -1,21 +1,17 @@
 import 'phaser';
 import API from '../Tools/api';
 import Button from '../Js/Button';
-// import score from '../../assets/images/score.png';
+
 /* eslint-disable no-undef */
 export default class LeaderBoardScene extends Phaser.Scene {
   constructor() {
     super('LeaderBoard');
   }
 
-  //   preload() {
-  //     // this.load.image('leaderBoardBackGround', score);
-  //   }
-
   async create() {
     const height = this.scale.height * 0.5;
     const width = this.scale.width * 0.5;
-    // this.add.image(width, height, 'leaderBoardBackGround').setScale(1, 0.9);
+    this.add.image(width, height, 'bg').setScale(1.4, 1.4);
     API.ScoreList().then((response) => {
       const sortedResponse = response.result.sort((a, b) => b.score - a.score);
       let namesToDisplay = '';
@@ -31,11 +27,11 @@ export default class LeaderBoardScene extends Phaser.Scene {
 
       this.creditsText = this.add.text(0, 0, 'Top Scores', {
         fontSize: '36px',
-        fill: 'white',
+        fill: ' black',
       });
       this.madeByText = this.add.text(0, 0, namesToDisplay, {
         fontSize: '26px',
-        fill: 'white',
+        fill: 'black',
       });
       this.zone = this.add.zone(
         width,

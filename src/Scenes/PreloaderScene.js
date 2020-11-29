@@ -6,7 +6,6 @@ import forest2 from '../assets/forest2.png';
 import forest3 from '../assets/forest3.png';
 import dude from '../assets/dude.png';
 import ground from '../assets/ground.png';
-// import platform from '../assets/platform.png';
 import shooterSlash from '../assets/Robokid_Slash_Blue.png';
 import textureR from '../assets/texture.png';
 import texture2 from '../assets/texturerun.png';
