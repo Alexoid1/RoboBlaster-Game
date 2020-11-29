@@ -39,7 +39,11 @@ This is a game that a build inspired by megaman series you only need a keyboard 
 
 ![screenshot](./images/img2.png)
 
-
+## Instruction
+ - Stay away of the enemies
+ - Use Dash Ability to avoid them
+ - Try to make the highest score
+ - Stay tune for next to come
 
 ## Authors
 
