@@ -9,7 +9,7 @@ const Dom = (() => {
     form.style.position = 'absolute';
     form.style.top = '240px';
     form.style.left = '500px';
-    form.style.width = '300px'
+    form.style.width = '300px';
     form.innerHTML = `
       <input class="formInput" type="search" id="input" placeholder="Enter your name" aria-label="Search" required/></br>
       <button class="formButton" type="submit" id="submit"> Submit Score</button>
@@ -39,9 +39,9 @@ const Dom = (() => {
   };
 
   const removeDomElements = () => {
-    const form=document.querySelector('#form');
-    if(form){
-      form.remove()
+    const form = document.querySelector('#form');
+    if (form) {
+      form.remove();
     }
   };
 

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import CreditsScene from '../src/Scenes/CreditsScene';
 
 describe('It test the existing subclass', () => {

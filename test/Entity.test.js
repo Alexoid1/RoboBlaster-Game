@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import 'phaser';
 import Entity from '../src/Js/Entity';
 

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import 'phaser';
 import Laser from '../src/Js/Laser';
 

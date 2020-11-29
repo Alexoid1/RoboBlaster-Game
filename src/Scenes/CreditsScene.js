@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+/* eslint-disable no-undef, no-unused-expressions */
 import Phaser from 'phaser';
 import Button from '../Js/Button';
 // import creditBackground from '../assets/images/options.png';
@@ -52,9 +52,7 @@ export default class CreditsScene extends Phaser.Scene {
       ease: 'Power1',
       duration: 3000,
       delay: 1000,
-      onComplete() {
-        this.destroy;
-      },
+
     });
 
     this.madeByTween = this.tweens.add({
