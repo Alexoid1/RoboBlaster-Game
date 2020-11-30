@@ -10,6 +10,7 @@ import shooterSlash from '../assets/Robokid_Slash_Blue.png';
 import textureR from '../assets/texture.png';
 import texture2 from '../assets/texturerun.png';
 import shooterBlast from '../assets/Final_Blast.png';
+import groupS from '../assets/groupSlash.png';
 import playerIcon from '../assets/playerIcon.png';
 import button from '../assets/button.png';
 import button2 from '../assets/button2.png';
@@ -79,6 +80,12 @@ export default class PreloaderScene extends Phaser.Scene {
         frameHeight: 231,
         margin: 74,
         spacing: 18.2,
+      });
+    this.load.spritesheet('groupS',
+      groupS,
+      {
+        frameWidth: 400,
+        frameHeight: 349,
       });
 
     const progressBar = this.add.graphics();

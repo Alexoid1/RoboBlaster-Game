@@ -45,8 +45,8 @@ class JumperDude extends Entity {
     }
   }
 
-  damg() {
-    this.damageOrKill(this.damage);
+  damg(damage) {
+    this.damageOrKill(damage);
   }
 
   damageOrKill(damage) {

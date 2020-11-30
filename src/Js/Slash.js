@@ -1,7 +1,6 @@
-/* eslint-disable no-undef */
 import Phaser from 'phaser';
 
-export default class Laser extends Phaser.Physics.Arcade.Sprite {
+export default class Slash extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, key) {
     super(scene, x, y, key);
 
@@ -11,15 +10,15 @@ export default class Laser extends Phaser.Physics.Arcade.Sprite {
     this.setTexture(key);
   }
 
-  fire(x, y) {
-    this.body.reset(x, y-30);
+  blade(x, y) {
+    this.body.reset(x, y);
 
-    this.body.setSize(170, 77);
+    // this.body.setSize(170, 77);
 
     this.body.enable = true;
     this.setActive(true);
-    this.setVisible(true);
+    this.setVisible(false);
 
-    this.setVelocityX(900);
+    
   }
 }

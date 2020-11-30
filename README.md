@@ -42,6 +42,7 @@ This is a game that a build inspired by megaman series you only need a keyboard 
 ## Instruction
  - Stay away of the enemies
  - Use Dash Ability to avoid them
+ - Use Blade ability to attack (high damage)
  - Use Blast ability to attack
  - Try to make the highest score
  - Stay tune for next to come

@@ -3,6 +3,7 @@ import Phaser from 'phaser';
 import JumperDude from '../Js/JumperDude';
 import Player from '../Js/Player';
 import LaserGroup from '../Js/LaserGroup';
+import SlashGroup from '../Js/SlashGroup';
 import LocalStorage from '../Tools/localStorage';
 import BgTrack from '../Sounds/trackFondo.mp3';
 
@@ -11,6 +12,7 @@ const speedX = 385;
 let gameOver = false;
 let blast;
 let timer = true;
+let timerSlash = true
 
 const backgroundCreatorForest1 = (scene, count, texture, scrollFactor) => {
   let x = 0;
@@ -34,7 +36,7 @@ export default class GameScene extends Phaser.Scene {
     this.score;
     this.model;
     this.platformNumber;
-    this.model;
+    
   }
 
   preload() {
@@ -49,7 +51,7 @@ export default class GameScene extends Phaser.Scene {
       this.model.bgMusicPlaying = true;
       this.sys.game.globals.bgMusic = this.bgMusic;
     }
-    this.platformNumber = 20;
+    this.platformNumber = 60;
     this.score = 0;
 
     let groundX = 0;
@@ -103,9 +105,10 @@ export default class GameScene extends Phaser.Scene {
       y: 100,
       key: 'player',
     });
-    this.cameras.main.setBounds(0, 0, 60000, height);
+    this.cameras.main.setBounds(0, 0, 200000, height);
 
     this.laserGroup = new LaserGroup(this);
+    this.slashGroup = new SlashGroup(this);
 
     this.attackInterval = () => {
       timer = false;
@@ -130,7 +133,31 @@ export default class GameScene extends Phaser.Scene {
         },
       });
     };
+    this.slashInterval = () => {
+      timerSlash = false;
+      this.time.addEvent({
+        delay: 100,
+        repeat: 0,
+        callbackScope: this,
+        callback() {
+          Phaser.Actions.Call(this.slashGroup.getChildren(), child => {
+            child.active = false;
 
+            this.time.addEvent({
+              delay: 800,
+              repeat: 0,
+              callbackScope: this,
+              callback() {
+                timerSlash = true;
+                child.disableBody(true, true);
+              },
+            });
+          });
+         
+        },
+      });
+    };
+  
     this.physics.add.collider(platforms, this.player);
 
     this.physics.add.overlap(this.monsters, this.player, null, (mon2, player) => {
@@ -147,12 +174,21 @@ export default class GameScene extends Phaser.Scene {
     this.physics.add.collider(platforms, blast);
     this.physics.add.overlap(this.laserGroup, this.monsters, null, (mon, laser) => {
       mon.setTint(0xff0000);
-      mon.damg();
+      mon.damg(50);
       this.score += 50;
       this.scoreText.setText(`Score: ${this.score}`);
       laser.setVisible(false);
       laser.setActive(false);
       laser.body.enable = false;
+    }, null, this);
+    this.physics.add.overlap(this.slashGroup, this.monsters, null, (mon, slash) => {
+      mon.setTint(0xff0000);
+      mon.damg(200);
+      this.score += 200;
+      this.scoreText.setText(`Score: ${this.score}`);
+      
+      slash.setActive(false);
+      slash.body.enable = false;
     }, null, this);
 
     this.enemies = this.add.group();
@@ -163,12 +199,20 @@ export default class GameScene extends Phaser.Scene {
     this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
     this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
 
+
+    this.anims.create({
+      key: 'groupS',
+      frames: [{key: 'groupS', frame: 0 }],
+      frameRate: 2,
+      repeat: -1,
+    });
     this.anims.create({
       key: 'blast',
       frames: this.anims.generateFrameNumbers('blast', { start: 3, end: 5 }),
       frameRate: 7,
       repeat: -1,
     });
+    
     this.anims.create({
       key: 'attackD',
       frames: this.anims.generateFrameNumbers('attackD', { start: 1, end: 6 }),
@@ -216,6 +260,8 @@ export default class GameScene extends Phaser.Scene {
       frameRate: 10,
       repeat: -1,
     });
+
+    
   }
 
   update() {
@@ -262,10 +308,18 @@ export default class GameScene extends Phaser.Scene {
     } else if (cursors.down.isDown && onGround) {
       this.player.anims.play('down', true);
     } else if (this.keyW.isDown) {
-      this.player.anims.play('slash', true);
+      if(timerSlash){
+        this.slashGroup.bladeSlash(this.player.x, this.player.y);
+     
+        this.player.anims.play('slash', true);
+
+        this.slashInterval();
+      }
+      
+      
     } else if (this.keyE.isDown && this.player.flipX === true) {
       if (timer) {
-        this.laserGroup.fireLaser(this.player.x, this.player.y - 40);
+        this.laserGroup.fireLaser(this.player.x, this.player.y);
         this.laserGroup.setVelocityX(-900);
         this.player.anims.play('attackD');
 
@@ -274,7 +328,7 @@ export default class GameScene extends Phaser.Scene {
     } else if (this.keyE.isDown && this.player.flipX !== true) {
       if (timer) {
         this.player.anims.play('attackD');
-        this.laserGroup.fireLaser(this.player.x, this.player.y - 70);
+        this.laserGroup.fireLaser(this.player.x, this.player.y);
 
         this.attackInterval();
       }

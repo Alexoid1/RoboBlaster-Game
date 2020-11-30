@@ -19,8 +19,8 @@ export default class LaserGroup extends Phaser.Physics.Arcade.Group {
     const laser = this.getFirstDead(false);
     if (laser) {
       laser.fire(x, y);
-      laser.setScale(0.8);
-      laser.body.setSize(170, 237);
+      laser.setScale(0.6);
+      
       laser.anims.play('blast');
     }
   }
