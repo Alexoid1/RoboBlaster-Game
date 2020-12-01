@@ -78,7 +78,7 @@ export default class GameScene extends Phaser.Scene {
     backgroundCreatorForest1(this, 10, 'forest3', 0.50);
     backgroundCreatorGround(this.platformNumber, 'ground');
     this.scoreText = this.add.text(26, 16, 'Score: 0', { fontSize: '32px', fill: '#fff' }).setScrollFactor(0);
-    this.healthText = this.add.text(26, 56, 'Health: 500', { fontSize: '32px', fill: '#fff' }).setScrollFactor(0);
+    this.healthText = this.add.text(26, 56, 'Health: 1000', { fontSize: '32px', fill: '#fff' }).setScrollFactor(0);
     this.monsters = [];
     const monsterCreator = (num, hord) => {
       let corx = 3900;
