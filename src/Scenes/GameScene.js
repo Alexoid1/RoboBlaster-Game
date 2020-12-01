@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-expressions */
 import Phaser from 'phaser';
 import JumperDude from '../Js/JumperDude';
+import ChaserDude from '../Js/ChaserDude';
 import Player from '../Js/Player';
 import LaserGroup from '../Js/LaserGroup';
 import SlashGroup from '../Js/SlashGroup';
@@ -31,6 +32,7 @@ export default class GameScene extends Phaser.Scene {
     this.laserGroup;
     this.monsters;
     this.monster;
+    this.chaser
     this.heathText;
     this.scoreText;
     this.score;
@@ -82,15 +84,44 @@ export default class GameScene extends Phaser.Scene {
       let corx = 3900;
       for (let j = 1; j < hord; j += 1) {
         for (let i = 0; i < num; i += 1) {
-          this.monster = new JumperDude({
+          if(j%7===0||j%5===0){
+            if(i%2===0){
+                this.monster = new ChaserDude({
+                scene: this,
+                x: corx + i * 15,
+                y: 16,
+                key: `chaser${i}${j}`,
+                });
+                this.physics.add.collider(this.monster, platforms);
+                this.monsters.push(this.monster);
+                this.monster.setBounce(2400, 0, 4900, height);
+            }else{
+              this.monster = new JumperDude({
+                scene: this,
+                x: corx + i * 15,
+                y: 16,
+                key: `dude${i}${j}`,
+                });
+                this.physics.add.collider(this.monster, platforms);
+                this.monsters.push(this.monster);
+                this.monster.setBounce(2400, 0, 4900, height);
+    
+
+            }
+
+          }else{
+            this.monster = new JumperDude({
             scene: this,
             x: corx + i * 15,
             y: 16,
             key: `dude${i}${j}`,
-          });
-          this.physics.add.collider(this.monster, platforms);
-          this.monsters.push(this.monster);
-          this.monster.setBounce(2400, 0, 4900, height);
+            });
+            this.physics.add.collider(this.monster, platforms);
+            this.monsters.push(this.monster);
+            this.monster.setBounce(2400, 0, 4900, height);
+
+          }
+          
         }
 
         corx += 4240;
@@ -105,7 +136,15 @@ export default class GameScene extends Phaser.Scene {
       y: 100,
       key: 'player',
     });
-    this.cameras.main.setBounds(0, 0, 200000, height);
+    // this.chaser = new ChaserDude({
+    //   scene: this,
+    //   x: 3900,
+    //   y: 100,
+    //   key: 'chaser1',
+    
+    // })
+    
+    this.cameras.main.setBounds(0, 0, 300000, height);
 
     this.laserGroup = new LaserGroup(this);
     this.slashGroup = new SlashGroup(this);
@@ -121,7 +160,7 @@ export default class GameScene extends Phaser.Scene {
             child.active = false;
 
             this.time.addEvent({
-              delay: 800,
+              delay: 700,
               repeat: 0,
               callbackScope: this,
               callback() {
@@ -136,7 +175,7 @@ export default class GameScene extends Phaser.Scene {
     this.slashInterval = () => {
       timerSlash = false;
       this.time.addEvent({
-        delay: 100,
+        delay: 50,
         repeat: 0,
         callbackScope: this,
         callback() {
@@ -144,7 +183,7 @@ export default class GameScene extends Phaser.Scene {
             child.active = false;
 
             this.time.addEvent({
-              delay: 800,
+              delay: 700,
               repeat: 0,
               callbackScope: this,
               callback() {
@@ -157,7 +196,8 @@ export default class GameScene extends Phaser.Scene {
         },
       });
     };
-  
+    // this.physics.add.collider(platforms,this.chaser)
+
     this.physics.add.collider(platforms, this.player);
 
     this.physics.add.overlap(this.monsters, this.player, null, (mon2, player) => {
@@ -183,8 +223,8 @@ export default class GameScene extends Phaser.Scene {
     }, null, this);
     this.physics.add.overlap(this.slashGroup, this.monsters, null, (mon, slash) => {
       mon.setTint(0xff0000);
-      mon.damg(200);
-      this.score += 200;
+      mon.damg(250);
+      this.score += 250;
       this.scoreText.setText(`Score: ${this.score}`);
       
       slash.setActive(false);
@@ -267,6 +307,7 @@ export default class GameScene extends Phaser.Scene {
   update() {
     const onGround = this.player.body.touching.down || this.player.body.blocked.down;
     this.player.update();
+    // this.chaser.update();
 
     this.monsters.forEach(monster => {
       monster.update();
@@ -307,16 +348,29 @@ export default class GameScene extends Phaser.Scene {
       this.player.setVelocityY(550);
     } else if (cursors.down.isDown && onGround) {
       this.player.anims.play('down', true);
-    } else if (this.keyW.isDown) {
+    } else if (this.keyW.isDown && this.player.flipX === true) {
       if(timerSlash){
+        
+        this.slashGroup.bladeSlash(this.player.x-70, this.player.y);
+        this.player.flipX = true;
+        this.player.setVelocityX(0);
+        this.player.anims.play('slash', true);
+
+        this.slashInterval();
+      }
+      
+    } else if (this.keyW.isDown && this.player.flipX === !true) {
+      if(timerSlash){
+        // this.player.anims.stop('right');
         this.slashGroup.bladeSlash(this.player.x, this.player.y);
-     
+        this.player.setVelocityX(0);
         this.player.anims.play('slash', true);
 
         this.slashInterval();
       }
       
       
+    
     } else if (this.keyE.isDown && this.player.flipX === true) {
       if (timer) {
         this.laserGroup.fireLaser(this.player.x, this.player.y);

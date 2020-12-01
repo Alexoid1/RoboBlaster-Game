@@ -20,7 +20,7 @@ export default class SlashGroup extends Phaser.Physics.Arcade.Group {
       if (slash) {
         slash.blade(x, y-50);
         slash.setScale(1); 
-        slash.setSize(170, 157);
+        slash.setSize(195, 157);
         slash.anims.play('slash');
       }
     }

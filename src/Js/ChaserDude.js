@@ -1,6 +1,6 @@
 import Entity from './Entity';
 
-class JumperDude extends Entity {
+class ChaserDude extends Entity {
   constructor(config) {
     super({
       ...config,
@@ -13,35 +13,43 @@ class JumperDude extends Entity {
     this.body.setSize(28, 47);
     this.setGravityY(800);
     this.setScale(3);
-    this.hp = 500;
+    this.hp = 1000;
     this.touch = false;
     this.alive = true;
     this.damage = 50;
   }
 
-  jump(coinToss) {
-    const randomVelocity = (Math.random() * 200);
-    this.body.setVelocityY(-this.jumpHeight);
-    this.setTint(0xFFFFFF);
-    if (coinToss) {
-      this.body.setVelocityX(randomVelocity);
-      this.setFlipX(true);
-    } else {
-      this.body.setVelocityX(-randomVelocity);
-      this.setFlipX(false);
-    }
+
+
+  huntPlayer() {
+        
+      if(this.x < this.scene.player.x){
+        // this.play('dudeleft')
+        this.body.setVelocityX(160);
+        
+        this.setFlipX(true);
+      }else{
+        // this.play('dudeleft')
+        this.body.setVelocityX(-160);
+       
+        this.setFlipX(false);
+        
+      }
+    // const headsOrTails = (Math.random() > 0.7);
+    // this.jump(headsOrTails);
   }
 
-  jumpRandom() {
-    const headsOrTails = (Math.random() > 0.7);
-    this.jump(headsOrTails);
-  }
-  //this.x < this.scene.cameras.main.scrollX + this.scene.sys.game.canvas.width - 50
   update() {
+        // this.play('dudeleft')
+
     if (Phaser.Math.Distance.Between(this.x, this.y, this.scene.player.x, this.scene.player.y) < 580) {
-      if (this.body.blocked.down) {
-        this.jumpRandom();
-      }
+        
+        this.huntPlayer();
+      
+    }else{
+        this.play('dudeleft')
+        // this.body.setVelocityX(0)
+        // this.play('turn')
     }
   }
 
@@ -78,4 +86,4 @@ class JumperDude extends Entity {
   }
 }
 
-export default JumperDude;
+export default ChaserDude;
