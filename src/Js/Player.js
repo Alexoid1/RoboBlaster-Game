@@ -10,7 +10,7 @@ class Player extends Entity {
     this.body.setSize(160, 200);
     this.setScale(0.5);
     this.setGravityY(520);
-    this.hp = 500;
+    this.hp = 1000;
     this.touch = false;
     this.alive = true;
     this.damage = 10;
