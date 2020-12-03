@@ -6,7 +6,7 @@ import Player from '../Js/Player';
 import LaserGroup from '../Js/LaserGroup';
 import SlashGroup from '../Js/SlashGroup';
 import LocalStorage from '../Tools/localStorage';
-import BgTrack from '../Sounds/trackFondo.mp3';
+
 
 let cursors;
 const speedX = 385;
@@ -41,9 +41,7 @@ export default class GameScene extends Phaser.Scene {
     
   }
 
-  preload() {
-    this.load.audio('bgMusic', BgTrack);
-  }
+
 
   create() {
     this.model = this.sys.game.globals.model;

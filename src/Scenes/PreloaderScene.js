@@ -17,6 +17,8 @@ import button2 from '../assets/button2.png';
 import star from '../assets/star.png';
 import bomb from '../assets/bomb.png';
 import titleBg from '../assets/robotfon.png';
+import box from '../assets/grey_box.png';
+import checkedBox from '../assets/blue_boxCheck.png';
 
 export default class PreloaderScene extends Phaser.Scene {
   constructor() {
@@ -43,6 +45,8 @@ export default class PreloaderScene extends Phaser.Scene {
     this.load.image('ground', ground);
     this.load.image('star', star);
     this.load.image('bomb', bomb);
+    this.load.image('box', box);
+    this.load.image('checkedBox', checkedBox);
 
     this.load.spritesheet('dude', dude, { frameWidth: 32, frameHeight: 48 });
     this.load.spritesheet('walk',

@@ -1,10 +1,14 @@
 import Phaser from 'phaser';
 import Button from '../Js/Button';
+import BgTrack from '../Sounds/trackFondo.mp3';
 
 /* eslint-disable no-undef */
 export default class MenuScene extends Phaser.Scene {
   constructor() {
     super('Menu');
+  }
+  preload(){
+    this.load.audio('bgMusic', BgTrack);
   }
 
   create() {
