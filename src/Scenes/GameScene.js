@@ -71,8 +71,8 @@ export default class GameScene extends Phaser.Scene {
 
     this.add.image(width * 0.5, height * 0.5, 'moon').setScale(0.6, 0.6).setScrollFactor(0);
     this.add.image(0, height, 'clouds').setScale(0.5, 0.5).setOrigin(0, 1.2).setScrollFactor(0);
-    backgroundCreatorForest1(this, 10, 'forest1', 0.25);
-    backgroundCreatorForest1(this, 10, 'forest2', 0.35);
+    backgroundCreatorForest1(this, 20, 'forest1', 0.25);
+    backgroundCreatorForest1(this, 15, 'forest2', 0.35);
     backgroundCreatorForest1(this, 10, 'forest3', 0.50);
     backgroundCreatorGround(this.platformNumber, 'ground');
     this.scoreText = this.add.text(26, 16, 'Score: 0', { fontSize: '32px', fill: '#fff' }).setScrollFactor(0);
