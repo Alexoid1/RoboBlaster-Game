@@ -18,7 +18,7 @@ This is a game that a build inspired by megaman series you only need a keyboard 
 
 
 ## Live Version
-[Click here to play](https://silly-carson-f8fb31.netlify.app/)
+[Click here to play](https://robo-blaster-game.netlify.app/)
 
 
 ## How to Play
@@ -52,7 +52,7 @@ This is a game that a build inspired by megaman series you only need a keyboard 
 👤 **Pablo Alexis Zambrano Coral**
 - Github: [@Alexoid1](https://github.com/Alexoid1)
 - Twitter: [@Alexis Zambrano_acz](https://twitter.com/pablo_acz)
-- Linkedin: [linkedin](https://www.linkedin.com/in/pablo-alexis-zambrano-coral-7a614a189/)
+- Linkedin: [linkedin](https://www.linkedin.com/in/alexzambranocoral/)
 
 
 ## Available Commands
