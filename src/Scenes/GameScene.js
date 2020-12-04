@@ -38,6 +38,9 @@ export default class GameScene extends Phaser.Scene {
     this.score;
     this.model;
     this.platformNumber;
+    this.particles;
+    this.emitter;
+    
     
   }
 
@@ -53,8 +56,22 @@ export default class GameScene extends Phaser.Scene {
     }
     this.platformNumber = 60;
     this.score = 0;
-
+    
     let groundX = 0;
+    this.createParticles=()=>{
+      this.particles= this.add.particles('redlight');
+      this.emitter=this.particles.createEmitter({
+      
+        x: 100,
+        y: 150,
+        speed: 200,
+        lifespan: 500,
+        blendMode: 'ADD',
+        scale: { start:1, end:0 },
+        on : false
+      });
+    }
+    
     const groundY = 589;
     const platforms = this.physics.add.staticGroup();
 
@@ -71,13 +88,14 @@ export default class GameScene extends Phaser.Scene {
 
     this.add.image(width * 0.5, height * 0.5, 'moon').setScale(0.6, 0.6).setScrollFactor(0);
     this.add.image(0, height, 'clouds').setScale(0.5, 0.5).setOrigin(0, 1.2).setScrollFactor(0);
-    backgroundCreatorForest1(this, 10, 'forest1', 0.25);
-    backgroundCreatorForest1(this, 10, 'forest2', 0.35);
+    backgroundCreatorForest1(this, 20, 'forest1', 0.25);
+    backgroundCreatorForest1(this, 15, 'forest2', 0.35);
     backgroundCreatorForest1(this, 10, 'forest3', 0.50);
     backgroundCreatorGround(this.platformNumber, 'ground');
     this.scoreText = this.add.text(26, 16, 'Score: 0', { fontSize: '32px', fill: '#fff' }).setScrollFactor(0);
     this.healthText = this.add.text(26, 56, 'Health: 1000', { fontSize: '32px', fill: '#fff' }).setScrollFactor(0);
     this.monsters = [];
+    this.createParticles()
     const monsterCreator = (num, hord) => {
       let corx = 3900;
       for (let j = 1; j < hord; j += 1) {
@@ -215,6 +233,7 @@ export default class GameScene extends Phaser.Scene {
       mon.damg(50);
       this.score += 50;
       this.scoreText.setText(`Score: ${this.score}`);
+      this.particles.emitParticleAt(laser.x,laser.y,50);
       laser.setVisible(false);
       laser.setActive(false);
       laser.body.enable = false;
