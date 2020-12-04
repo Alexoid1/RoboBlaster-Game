@@ -19,6 +19,7 @@ import bomb from '../assets/bomb.png';
 import titleBg from '../assets/robotfon.png';
 import box from '../assets/grey_box.png';
 import checkedBox from '../assets/blue_boxCheck.png';
+import redlight from '../assets/redlight.png';
 
 export default class PreloaderScene extends Phaser.Scene {
   constructor() {
@@ -44,6 +45,7 @@ export default class PreloaderScene extends Phaser.Scene {
     this.load.image('playerIcon', playerIcon);
     this.load.image('ground', ground);
     this.load.image('star', star);
+    this.load.image('redlight', redlight);
     this.load.image('bomb', bomb);
     this.load.image('box', box);
     this.load.image('checkedBox', checkedBox);
