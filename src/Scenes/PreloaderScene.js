@@ -19,7 +19,7 @@ import bomb from '../assets/bomb.png';
 import titleBg from '../assets/robotfon.png';
 import box from '../assets/grey_box.png';
 import checkedBox from '../assets/blue_boxCheck.png';
-import redlight from '../assets/redlight.png';
+import redlight from '../assets/splat.png';
 
 export default class PreloaderScene extends Phaser.Scene {
   constructor() {

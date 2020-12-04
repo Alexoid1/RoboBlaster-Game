@@ -59,11 +59,11 @@ export default class GameScene extends Phaser.Scene {
     
     let groundX = 0;
     this.createParticles=()=>{
-      this.particles= this.add.particles('star');
+      this.particles= this.add.particles('redlight');
       this.emitter=this.particles.createEmitter({
       
-        x: 400,
-        y: 350,
+        x: 100,
+        y: 150,
         speed: 200,
         lifespan: 500,
         blendMode: 'ADD',
