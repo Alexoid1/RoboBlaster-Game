@@ -317,8 +317,6 @@ export default class GameScene extends Phaser.Scene {
   update() {
     const onGround = this.player.body.touching.down || this.player.body.blocked.down;
     this.player.update();
-    // this.chaser.update();
-
     this.monsters.forEach(monster => {
       monster.update();
     });
