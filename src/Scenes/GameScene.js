@@ -369,7 +369,6 @@ export default class GameScene extends Phaser.Scene {
       
     } else if (this.keyW.isDown && this.player.flipX === !true) {
       if(timerSlash){
-        // this.player.anims.stop('right');
         this.slashGroup.bladeSlash(this.player.x, this.player.y);
         this.player.setVelocityX(0);
         this.player.anims.play('slash', true);
