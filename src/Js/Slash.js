@@ -12,9 +12,6 @@ export default class Slash extends Phaser.Physics.Arcade.Sprite {
 
   blade(x, y) {
     this.body.reset(x, y);
-
-    // this.body.setSize(170, 77);
-
     this.body.enable = true;
     this.setActive(true);
     this.setVisible(false);
