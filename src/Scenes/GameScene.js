@@ -206,8 +206,7 @@ export default class GameScene extends Phaser.Scene {
         },
       });
     };
-    // this.physics.add.collider(platforms,this.chaser)
-
+  
     this.physics.add.collider(platforms, this.player);
 
     this.physics.add.overlap(this.monsters, this.player, null, (mon2, player) => {
