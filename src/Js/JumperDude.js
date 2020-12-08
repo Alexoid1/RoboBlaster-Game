@@ -36,7 +36,8 @@ class JumperDude extends Entity {
     const headsOrTails = (Math.random() > 0.7);
     this.jump(headsOrTails);
   }
-  //this.x < this.scene.cameras.main.scrollX + this.scene.sys.game.canvas.width - 50
+
+  // this.x < this.scene.cameras.main.scrollX + this.scene.sys.game.canvas.width - 50
   update() {
     if (Phaser.Math.Distance.Between(this.x, this.y, this.scene.player.x, this.scene.player.y) < 580) {
       if (this.body.blocked.down) {

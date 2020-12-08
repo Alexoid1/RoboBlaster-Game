@@ -7,7 +7,8 @@ export default class MenuScene extends Phaser.Scene {
   constructor() {
     super('Menu');
   }
-  preload(){
+
+  preload() {
     this.load.audio('bgMusic', BgTrack);
   }
 

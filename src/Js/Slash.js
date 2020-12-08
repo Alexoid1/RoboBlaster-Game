@@ -18,7 +18,5 @@ export default class Slash extends Phaser.Physics.Arcade.Sprite {
     this.body.enable = true;
     this.setActive(true);
     this.setVisible(false);
-
-    
   }
 }

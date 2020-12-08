@@ -20,7 +20,7 @@ export default class LaserGroup extends Phaser.Physics.Arcade.Group {
     if (laser) {
       laser.fire(x, y);
       laser.setScale(0.6);
-      
+
       laser.anims.play('blast');
     }
   }

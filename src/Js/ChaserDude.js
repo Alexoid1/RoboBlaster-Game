@@ -19,37 +19,31 @@ class ChaserDude extends Entity {
     this.damage = 50;
   }
 
-
-
   huntPlayer() {
-        
-      if(this.x < this.scene.player.x){
-        // this.play('dudeleft')
-        this.body.setVelocityX(160);
-        
-        this.setFlipX(true);
-      }else{
-        // this.play('dudeleft')
-        this.body.setVelocityX(-160);
-       
-        this.setFlipX(false);
-        
-      }
+    if (this.x < this.scene.player.x) {
+      // this.play('dudeleft')
+      this.body.setVelocityX(160);
+
+      this.setFlipX(true);
+    } else {
+      // this.play('dudeleft')
+      this.body.setVelocityX(-160);
+
+      this.setFlipX(false);
+    }
     // const headsOrTails = (Math.random() > 0.7);
     // this.jump(headsOrTails);
   }
 
   update() {
-        // this.play('dudeleft')
+    // this.play('dudeleft')
 
     if (Phaser.Math.Distance.Between(this.x, this.y, this.scene.player.x, this.scene.player.y) < 580) {
-        
-        this.huntPlayer();
-      
-    }else{
-        this.play('dudeleft')
-        // this.body.setVelocityX(0)
-        // this.play('turn')
+      this.huntPlayer();
+    } else {
+      this.play('dudeleft');
+      // this.body.setVelocityX(0)
+      // this.play('turn')
     }
   }
 

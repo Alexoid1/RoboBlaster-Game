@@ -12,7 +12,7 @@ export default class Laser extends Phaser.Physics.Arcade.Sprite {
   }
 
   fire(x, y) {
-    this.body.reset(x, y-30);
+    this.body.reset(x, y - 30);
 
     this.body.setSize(170, 77);
 
