@@ -152,13 +152,7 @@ export default class GameScene extends Phaser.Scene {
       y: 100,
       key: 'player',
     });
-    // this.chaser = new ChaserDude({
-    //   scene: this,
-    //   x: 3900,
-    //   y: 100,
-    //   key: 'chaser1',
     
-    // })
     
     this.cameras.main.setBounds(0, 0, 300000, height);
 
