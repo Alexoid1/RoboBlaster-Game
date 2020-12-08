@@ -14,8 +14,6 @@ import groupS from '../assets/groupSlash.png';
 import playerIcon from '../assets/playerIcon.png';
 import button from '../assets/button.png';
 import button2 from '../assets/button2.png';
-import star from '../assets/star.png';
-import bomb from '../assets/bomb.png';
 import titleBg from '../assets/robotfon.png';
 import box from '../assets/grey_box.png';
 import checkedBox from '../assets/blue_boxCheck.png';
@@ -44,9 +42,7 @@ export default class PreloaderScene extends Phaser.Scene {
     this.load.image('forest3', forest3);
     this.load.image('playerIcon', playerIcon);
     this.load.image('ground', ground);
-    this.load.image('star', star);
     this.load.image('redlight', redlight);
-    this.load.image('bomb', bomb);
     this.load.image('box', box);
     this.load.image('checkedBox', checkedBox);
 
