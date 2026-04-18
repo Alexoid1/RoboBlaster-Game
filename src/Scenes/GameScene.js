@@ -7,13 +7,21 @@ import LaserGroup from '../Js/LaserGroup';
 import SlashGroup from '../Js/SlashGroup';
 import LocalStorage from '../Tools/localStorage';
 
+// Variables globales para controles y estado del juego
 let cursors;
-const speedX = 385;
-let gameOver = false;
-let blast;
-let timer = true;
-let timerSlash = true;
+const speedX = 385;          // Velocidad horizontal del jugador
+let gameOver = false;        // Estado de fin de juego
+let blast;                   // Referencia al efecto de blast
+let timer = true;            // Temporizador para habilidades
+let timerSlash = true;       // Temporizador para ataque slash
 
+/**
+ * Crea un fondo repetitivo de bosque
+ * @param {Phaser.Scene} scene - Escena donde se creará el fondo
+ * @param {number} count - Número de repeticiones
+ * @param {string} texture - Textura a usar
+ * @param {number} scrollFactor - Factor de desplazamiento (parallax)
+ */
 const backgroundCreatorForest1 = (scene, count, texture, scrollFactor) => {
   let x = 0;
 
@@ -25,23 +33,33 @@ const backgroundCreatorForest1 = (scene, count, texture, scrollFactor) => {
   }
 };
 
+/**
+ * Escena principal del juego donde ocurre toda la acción
+ * Maneja al jugador, enemigos, física, puntuación y colisiones
+ */
 export default class GameScene extends Phaser.Scene {
   constructor() {
     super('Game');
-    this.laserGroup;
-    this.monsters;
-    this.monster;
-    this.chaser;
-    this.heathText;
-    this.scoreText;
-    this.score;
-    this.model;
-    this.platformNumber;
-    this.particles;
-    this.emitter;
+    // Variables de instancia
+    this.laserGroup;        // Grupo de láseres/proyectiles
+    this.monsters;          // Array de enemigos
+    this.monster;           // Referencia temporal a enemigo
+    this.chaser;            // Referencia a enemigo perseguidor
+    this.heathText;         // Texto de salud en UI
+    this.scoreText;         // Texto de puntuación en UI
+    this.score;             // Puntuación actual
+    this.model;             // Modelo de sonido/configuración
+    this.platformNumber;    // Número de plataformas
+    this.particles;         // Sistema de partículas
+    this.emitter;           // Emisor de partículas
   }
 
+  /**
+   * Método create de Phaser - Se ejecuta una vez al iniciar la escena
+   * Configura el mundo del juego, jugador, enemigos, física y UI
+   */
   create() {
+    // Configuración de sonido
     this.model = this.sys.game.globals.model;
     if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {
       this.bgMusic = this.sound.add('bgMusic', { volume: 0.3, loop: true });
@@ -49,8 +67,10 @@ export default class GameScene extends Phaser.Scene {
       this.model.bgMusicPlaying = true;
       this.sys.game.globals.bgMusic = this.bgMusic;
     }
-    this.platformNumber = 60;
-    this.score = 0;
+    
+    // Inicialización de variables
+    this.platformNumber = 3;  // Número de plataformas en el nivel
+    this.score = 0;            // Puntuación inicial
 
     let groundX = 0;
     this.createParticles = () => {
@@ -87,8 +107,51 @@ export default class GameScene extends Phaser.Scene {
     backgroundCreatorForest1(this, 15, 'forest2', 0.35);
     backgroundCreatorForest1(this, 10, 'forest3', 0.50);
     backgroundCreatorGround(this.platformNumber, 'ground');
+    
+    // Crear plataformas flotantes adicionales para saltos usando textura 'platform'
+    this.createFloatingPlatforms = () => {
+      // Crear un grupo separado para plataformas flotantes
+      this.floatingPlatforms = this.physics.add.staticGroup();
+      
+      // Plataforma 1: Cerca del inicio, altura media (400px ancho × escala 1.2 = 480px)
+      const platform1 = this.floatingPlatforms.create(10500, groundY - 200, 'platform').setScale(1).refreshBody();
+      platform1.body.updateFromGameObject();
+      
+      // Plataforma 2: Un poco más adelante, más alta (escala 1.5 = 600px ancho)
+      const platform2 = this.floatingPlatforms.create(11000, groundY - 300, 'platform').setScale(1).refreshBody();
+      platform2.body.updateFromGameObject();
+      
+      // Plataforma 3: Después de la segunda, altura media-baja (escala 1.8 = 720px ancho)
+      const platform3 = this.floatingPlatforms.create(11700, groundY - 150, 'platform').setScale(1).refreshBody();
+      platform3.body.updateFromGameObject();
+
+      const platform4 = this.floatingPlatforms.create(12500, groundY - 250, 'platform').setScale(1).refreshBody();
+      platform4.body.updateFromGameObject();
+
+      const platform5 = this.floatingPlatforms.create(13000, groundY - 450, 'platform').setScale(1).refreshBody();
+      platform5.body.updateFromGameObject();
+
+      const platform6 = this.floatingPlatforms.create(13800, -10, 'platform').setScale(1).refreshBody();
+      platform6.body.updateFromGameObject();
+
+      const platform7 = this.floatingPlatforms.create(13500, -180, 'platform').setScale(0.7).refreshBody();
+      platform7.body.updateFromGameObject();
+
+      const platform8 = this.floatingPlatforms.create(13800, -320, 'platform').setScale(0.7).refreshBody();
+      platform8.body.updateFromGameObject();
+
+      const platform9 = this.floatingPlatforms.create(14300, -320, 'platform').setScale(1).refreshBody();
+      platform9.body.updateFromGameObject();
+
+
+    };
+    
+    this.createFloatingPlatforms();
+    
     this.scoreText = this.add.text(26, 16, 'Score: 0', { fontSize: '32px', fill: '#fff' }).setScrollFactor(0);
     this.healthText = this.add.text(26, 56, 'Health: 1000', { fontSize: '32px', fill: '#fff' }).setScrollFactor(0);
+    this.positionXText = this.add.text(26, 96, 'X: 0', { fontSize: '32px', fill: '#fff' }).setScrollFactor(0);
+    this.positionYText = this.add.text(26, 136, 'Y: 0', { fontSize: '32px', fill: '#fff' }).setScrollFactor(0);
     this.monsters = [];
     this.createParticles();
     const monsterCreator = (num, hord) => {
@@ -135,6 +198,13 @@ export default class GameScene extends Phaser.Scene {
     };
 
     monsterCreator(3, this.platformNumber);
+    
+    // Añadir colisión de enemigos con plataformas flotantes
+    if (this.floatingPlatforms && this.monsters.length > 0) {
+      this.monsters.forEach(monster => {
+        this.physics.add.collider(monster, this.floatingPlatforms);
+      });
+    }
 
     this.player = new Player({
       scene: this,
@@ -143,7 +213,18 @@ export default class GameScene extends Phaser.Scene {
       key: 'player',
     });
 
-    this.cameras.main.setBounds(0, 0, 300000, height);
+    // Configurar límites del mundo físico para evitar que el jugador se salga
+    // Límite superior: -3000 (permite subir 3000px más arriba del borde de pantalla)
+    // Límite inferior: 800 (suficiente para plataformas flotantes + margen)
+    const worldBoundsTop = -3000;
+    const worldBoundsHeight = 3800; // 3000 + 800
+    this.physics.world.setBounds(0, worldBoundsTop, 300000, worldBoundsHeight);
+    
+    // Ajustar límites de cámara para permitir movimiento vertical
+    // Altura máxima: desde -3000 hasta 800px (permite ver mucho más arriba)
+    const cameraBoundsTop = -3000;
+    const cameraMaxHeight = 3800; // 3000 + 800
+    this.cameras.main.setBounds(0, cameraBoundsTop, 300000, cameraMaxHeight);
 
     this.laserGroup = new LaserGroup(this);
     this.slashGroup = new SlashGroup(this);
@@ -196,6 +277,11 @@ export default class GameScene extends Phaser.Scene {
     };
 
     this.physics.add.collider(platforms, this.player);
+    
+    // Añadir colisión del jugador con plataformas flotantes
+    if (this.floatingPlatforms) {
+      this.physics.add.collider(this.floatingPlatforms, this.player);
+    }
 
     this.physics.add.overlap(this.monsters, this.player, null, (mon2, player) => {
       player.setTint(0xff0000);
@@ -230,7 +316,14 @@ export default class GameScene extends Phaser.Scene {
     }, null, this);
 
     this.enemies = this.add.group();
-    this.cameras.main.startFollow(this.player);
+    
+    // Configurar cámara para seguir al jugador en ambos ejes desde el inicio
+    // Offset Y de 100px para que la cámara esté más abajo que el centro exacto
+    this.cameras.main.startFollow(this.player, false, 0.1, 0.1, 0, 100);
+    
+    // Configurar zona muerta para mejor control de cámara vertical
+    // La cámara solo se mueve cuando el jugador está a 100px del centro
+    this.cameras.main.setDeadzone(0, 100);
 
     cursors = this.input.keyboard.createCursorKeys();
     this.keyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
@@ -300,6 +393,14 @@ export default class GameScene extends Phaser.Scene {
   }
 
   update() {
+    // Actualizar coordenadas X e Y del jugador en la UI
+    if (this.player && this.positionXText && this.positionYText) {
+      const playerX = Math.round(this.player.x);
+      const playerY = Math.round(this.player.y);
+      this.positionXText.setText(`X: ${playerX}`);
+      this.positionYText.setText(`Y: ${playerY}`);
+    }
+    
     const onGround = this.player.body.touching.down || this.player.body.blocked.down;
     this.player.update();
     this.monsters.forEach(monster => {

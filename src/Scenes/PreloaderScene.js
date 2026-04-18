@@ -6,6 +6,7 @@ import forest2 from '../assets/forest2.png';
 import forest3 from '../assets/forest3.png';
 import dude from '../assets/dude.png';
 import ground from '../assets/ground.png';
+import platform from '../assets/platform.png';
 import shooterSlash from '../assets/Robokid_Slash_Blue.png';
 import textureR from '../assets/texture.png';
 import texture2 from '../assets/texturerun.png';
@@ -19,15 +20,26 @@ import box from '../assets/grey_box.png';
 import checkedBox from '../assets/blue_boxCheck.png';
 import redlight from '../assets/splat.png';
 
+/**
+ * Escena de precarga del juego
+ * Carga todos los recursos (imágenes, spritesheets, sonidos) y muestra una barra de progreso
+ */
 export default class PreloaderScene extends Phaser.Scene {
   constructor() {
     super('Preloader');
   }
 
+  /**
+   * Inicializa variables de la escena
+   */
   init() {
     this.readyCount = 0;
   }
 
+  /**
+   * Precarga todos los recursos del juego
+   * Configura la barra de progreso y eventos de carga
+   */
   preload() {
     const width = this.scale.width * 0.5;
     const height = this.scale.height * 0.5;
@@ -41,6 +53,7 @@ export default class PreloaderScene extends Phaser.Scene {
     this.load.image('forest2', forest2);
     this.load.image('forest3', forest3);
     this.load.image('playerIcon', playerIcon);
+    this.load.image('platform', platform);
     this.load.image('ground', ground);
     this.load.image('redlight', redlight);
     this.load.image('box', box);
@@ -146,9 +159,14 @@ export default class PreloaderScene extends Phaser.Scene {
       this.ready();
     });
 
+    // Temporizador de seguridad para asegurar que la carga continúe
     this.timedEvent = this.time.delayedCall(2850, this.ready, [], this);
   }
 
+  /**
+   * Método llamado cuando los recursos están listos
+   * Espera a que se completen tanto la carga como el temporizador
+   */
   ready() {
     this.readyCount += 1;
     if (this.readyCount === 2) {

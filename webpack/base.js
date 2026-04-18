@@ -11,9 +11,7 @@ module.exports = {
     rules: [
       {
         test: /\.css$/,
-        use: {
-          loader: 'css-loader',
-        },
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.js$/,
@@ -24,23 +22,16 @@ module.exports = {
       },
       {
         test: [/\.vert$/, /\.frag$/],
-        use: 'raw-loader',
+        type: 'asset/source',
       },
       {
-        test: /\.(gif|png|jpe?g|svg|xml)$/i,
-        use: 'file-loader',
-      },
-      {
-        test: /\.mp3$/,
-
-        loader: 'file-loader',
+        test: /\.(gif|png|jpe?g|svg|xml|mp3)$/i,
+        type: 'asset/resource',
       },
     ],
   },
   plugins: [
-    new CleanWebpackPlugin({
-      root: path.resolve(__dirname, '../'),
-    }),
+    new CleanWebpackPlugin(),
     new webpack.DefinePlugin({
       CANVAS_RENDERER: JSON.stringify(true),
       WEBGL_RENDERER: JSON.stringify(true),
