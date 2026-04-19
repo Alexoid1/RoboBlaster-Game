@@ -19,6 +19,26 @@ import titleBg from '../assets/robotfon.png';
 import box from '../assets/grey_box.png';
 import checkedBox from '../assets/blue_boxCheck.png';
 import redlight from '../assets/splat.png';
+import terrain_stone_horizontal_middle from '../assets/terrain_stone_horizontal_middle.png';
+import terrain_stone_horizontal_left from '../assets/terrain_stone_horizontal_left.png';
+import terrain_stone_horizontal_right from '../assets/terrain_stone_horizontal_right.png';
+import terrain_stone_block_top from '../assets/terrain_stone_block_top.png';
+import terrain_stone_block_top_right from '../assets/terrain_stone_block_top_right.png';
+import terrain_stone_block_top_left from '../assets/terrain_stone_block_top_left.png';
+import terrain_stone_block_center from '../assets/terrain_stone_block_center.png';
+import terrain_stone_block_right from '../assets/terrain_stone_block_right.png';
+import terrain_stone_block_left from '../assets/terrain_stone_block_left.png';
+import terrain_stone_block_bottom from '../assets/terrain_stone_block_bottom.png';
+import terrain_stone_block_bottom_right from '../assets/terrain_stone_block_bottom_right.png';
+import terrain_stone_block_bottom_left from '../assets/terrain_stone_block_bottom_left.png';
+import terrain_stone_ramp_long_c from '../assets/terrain_stone_ramp_long_c.png';
+import terrain_stone_ramp_long_b from '../assets/terrain_stone_ramp_long_b.png';
+import terrain_stone_ramp_long_a from '../assets/terrain_stone_ramp_long_a.png';
+
+
+
+
+
 
 /**
  * Escena de precarga del juego
@@ -58,6 +78,7 @@ export default class PreloaderScene extends Phaser.Scene {
     this.load.image('redlight', redlight);
     this.load.image('box', box);
     this.load.image('checkedBox', checkedBox);
+    
 
     this.load.spritesheet('dude', dude, { frameWidth: 32, frameHeight: 48 });
     this.load.spritesheet('walk',
@@ -99,9 +120,28 @@ export default class PreloaderScene extends Phaser.Scene {
     this.load.spritesheet('groupS',
       groupS,
       {
-        frameWidth: 400,
-        frameHeight: 349,
+        frameWidth: 296,
+        frameHeight: 231,
+        margin: 74,
+        spacing: 18.2,
       });
+    
+    // Cargar tiles para plataformas
+    this.load.image('terrain_stone_horizontal_middle', terrain_stone_horizontal_middle);
+    this.load.image('terrain_stone_horizontal_left', terrain_stone_horizontal_left);
+    this.load.image('terrain_stone_horizontal_right', terrain_stone_horizontal_right);
+    this.load.image('terrain_stone_block_top', terrain_stone_block_top);
+    this.load.image('terrain_stone_block_top_right', terrain_stone_block_top_right);
+    this.load.image('terrain_stone_block_top_left', terrain_stone_block_top_left);
+    this.load.image('terrain_stone_block_center', terrain_stone_block_center);
+    this.load.image('terrain_stone_block_right', terrain_stone_block_right);
+    this.load.image('terrain_stone_block_left', terrain_stone_block_left);
+    this.load.image('terrain_stone_block_bottom', terrain_stone_block_bottom);
+    this.load.image('terrain_stone_block_bottom_left', terrain_stone_block_bottom_left);
+    this.load.image('terrain_stone_block_bottom_right', terrain_stone_block_bottom_right);
+    this.load.image('terrain_stone_ramp_long_c', terrain_stone_ramp_long_c);
+    this.load.image('terrain_stone_ramp_long_b', terrain_stone_ramp_long_b);
+    this.load.image('terrain_stone_ramp_long_a', terrain_stone_ramp_long_a);
 
     const progressBar = this.add.graphics();
     const progressBox = this.add.graphics();

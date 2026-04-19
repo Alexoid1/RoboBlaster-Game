@@ -59,20 +59,21 @@ export default class GameScene extends Phaser.Scene {
    * Configura el mundo del juego, jugador, enemigos, física y UI
    */
   create() {
-    // Configuración de sonido
+    // Configuración de sonido - Música apagada por el momento
     this.model = this.sys.game.globals.model;
-    if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {
-      this.bgMusic = this.sound.add('bgMusic', { volume: 0.3, loop: true });
-      this.bgMusic.play();
-      this.model.bgMusicPlaying = true;
-      this.sys.game.globals.bgMusic = this.bgMusic;
-    }
+    // if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {
+    //   this.bgMusic = this.sound.add('bgMusic', { volume: 0.3, loop: true });
+    //   this.bgMusic.play();
+    //   this.model.bgMusicPlaying = true;
+    //   this.sys.game.globals.bgMusic = this.bgMusic;
+    // }
+    // Comentado para apagar música temporalmente
     
     // Inicialización de variables
     this.platformNumber = 3;  // Número de plataformas en el nivel
     this.score = 0;            // Puntuación inicial
 
-    let groundX = 0;
+    let groundX = 20240;
     this.createParticles = () => {
       this.particles = this.add.particles('redlight');
       this.emitter = this.particles.createEmitter({
@@ -113,18 +114,7 @@ export default class GameScene extends Phaser.Scene {
       // Crear un grupo separado para plataformas flotantes
       this.floatingPlatforms = this.physics.add.staticGroup();
       
-      // Plataforma 1: Cerca del inicio, altura media (400px ancho × escala 1.2 = 480px)
-      const platform1 = this.floatingPlatforms.create(10500, groundY - 200, 'platform').setScale(1).refreshBody();
-      platform1.body.updateFromGameObject();
-      
-      // Plataforma 2: Un poco más adelante, más alta (escala 1.5 = 600px ancho)
-      const platform2 = this.floatingPlatforms.create(11000, groundY - 300, 'platform').setScale(1).refreshBody();
-      platform2.body.updateFromGameObject();
-      
-      // Plataforma 3: Después de la segunda, altura media-baja (escala 1.8 = 720px ancho)
-      const platform3 = this.floatingPlatforms.create(11700, groundY - 150, 'platform').setScale(1).refreshBody();
-      platform3.body.updateFromGameObject();
-
+     
       const platform4 = this.floatingPlatforms.create(12500, groundY - 250, 'platform').setScale(1).refreshBody();
       platform4.body.updateFromGameObject();
 
@@ -146,24 +136,185 @@ export default class GameScene extends Phaser.Scene {
 
     };
     
-    this.createFloatingPlatforms();
-    
-    this.scoreText = this.add.text(26, 16, 'Score: 0', { fontSize: '32px', fill: '#fff' }).setScrollFactor(0);
+      this.createFloatingPlatforms();
+      
+      // Crear rampa real en x=500 (múltiples cuerpos pequeños)
+      this.createRealRamp = () => {
+        // Grupo para la rampa
+        this.realRampGroup = this.physics.add.staticGroup();
+        
+        const rampX = 1984;
+        const rampY = 680; // 100px arriba del suelo
+        const stepWidth = 8;  // Ancho de cada paso
+        const stepHeight = 8;  // Alto de cada paso
+        const steps = 32;       // Número de pasos (64px total / 8px por paso)
+        
+        // Crear sprite visual de rampa (opcional, para apariencia)
+        this.add.sprite(rampX , rampY - 85, 'terrain_stone_ramp_long_b')
+          .setScale(1)
+          .setFlipX(true);
+        this.add.sprite(rampX+110 , rampY - 77, 'terrain_stone_ramp_long_a')
+          .setScale(1)
+          .setFlipX(true);
+        this.add.sprite(rampX+237 , rampY - 77, 'terrain_stone_ramp_long_c')
+          .setScale(1)
+          .setFlipX(true);  // Voltear para que suba de izq a der
+        
+        // Crear múltiples cuerpos pequeños en escalera
+        for (let i = 0; i < steps; i++) {
+          const stepX = rampX + (i * stepWidth);
+          const stepY = rampY - (i * (stepHeight / 2)); // Pendiente suave
+          
+          // Crear cuerpo de colisión (invisible)
+          const step = this.realRampGroup.create(stepX, stepY, null)
+            .setVisible(false) // Ocultar sprite
+            .setSize(stepWidth, stepHeight)
+            .refreshBody();
+          
+          step.body.updateFromGameObject();
+        }
+        
+        
+      
+        
+        // Añadir colisiones
+        this.physics.add.collider(this.realRampGroup, this.player);
+        
+        // También para enemigos (si existen)
+        if (this.monsters && this.monsters.length > 0) {
+          this.monsters.forEach(monster => {
+            this.physics.add.collider(monster, this.realRampGroup);
+          });
+        }
+        
+        console.log('Rampa real creada en x=500 con', steps, 'pasos');
+      };
+      
+      // La rampa se creará después del jugador
+     
+     
+      
+      // Crear plataforma en x=200 usando matriz
+      this.createMatrixPlatform = () => {
+        // Matriz para la plataforma (1 = tile, 0 = vacío)
+        // Esta matriz crea una plataforma de 7 tiles de ancho
+        const platformMatrix = [
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,14,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,14,2,2,15],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,14,2,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,14,2,2,2,2,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          // Fila superior con rampa (11 = ramp_long_a, 12 = ramp_long_b, 13 = ramp_long_c)
+          [3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,5,5,5,5,5,5,5,5,5,5,5,5,5,7,0,0,0,0,0,0,0,3,1,1,4,0,0,0,0,0,0,3,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+          // Fila media
+          [6,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,7,0,0,0,0,0,0,0,6,5,5,7,0,0,0,0,0,0,6,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5],
+          // Fila inferior
+          [9,0]
+        ];
+        
+        // Mapeo de números a texturas de tiles
+        const tileTextures = {
+          0: null, // Vacío8,8,8
+          1: 'terrain_stone_block_top', // Tile superior de piedra
+          2: 'terrain_stone_horizontal_middle', // Tile medio
+          3: 'terrain_stone_block_top_left', // Esquina izquierda
+          4: 'terrain_stone_block_top_right', // Esquina derecha
+          5: 'terrain_stone_block_center', // Esquina derecha
+          6: 'terrain_stone_block_left',
+          7: 'terrain_stone_block_right', // Esquina derecha 
+          8: 'terrain_stone_block_bottom',
+          9: 'terrain_stone_block_bottom_left',
+          10: 'terrain_stone_block_bottom_right',
+          11: 'terrain_stone_ramp_long_a',
+          12: 'terrain_stone_ramp_long_b',
+          13: 'terrain_stone_ramp_long_c',
+          14: 'terrain_stone_horizontal_left',
+          15: 'terrain_stone_horizontal_right',
+
+        };
+        
+        // Crear grupo para la plataforma
+        this.matrixPlatform = this.physics.add.staticGroup();
+        
+        const startX = 0; // Posición X inicial
+        const startY = groundY - 150; // 150px arriba del suelo
+        const tileSize = 64; // Tamaño aproximado de los tiles
+        
+        // Recorrer la matriz y crear tiles
+        for (let row = 0; row < platformMatrix.length; row++) {
+          for (let col = 0; col < platformMatrix[row].length; col++) {
+            const tileType = platformMatrix[row][col];
+            
+            if (tileType !== 0 && tileTextures[tileType]) {
+              // Calcular posición basada en matriz
+              const x = startX + (col * tileSize);
+              const y = startY + (row * tileSize);
+              
+               // Determinar qué textura usar basado en la posición
+               let texture = tileTextures[tileType];
+               
+               // Crear el tile
+               const tile = this.matrixPlatform.create(x, y, texture)
+                 .setScale(0.5);
+               
+                // Manejo especial para rampas
+             
+               
+              
+               
+               tile.refreshBody();
+               tile.body.updateFromGameObject();
+            }
+          }
+        }
+        
+        // Añadir una segunda plataforma más arriba (usando matriz diferente)
+        const floatingPlatformMatrix = [
+          [3,1,1,1,1,1,1,1,1,1,4],
+          [5,5,5,5,5,5,5,5,5,5,5],
+          [0,0,0,0,0],
+        ];
+        
+        const floatingStartX = 2284;
+        const floatingStartY = 572;
+        
+        for (let row = 0; row < floatingPlatformMatrix.length; row++) {
+          for (let col = 0; col < floatingPlatformMatrix[row].length; col++) {
+            const tileType = floatingPlatformMatrix[row][col];
+            
+            if (tileType !== 0 && tileTextures[tileType]) {
+              const x = floatingStartX + (col * tileSize);
+              const y = floatingStartY + (row * tileSize);
+              
+              let texture = tileTextures[tileType];
+              
+              const tile = this.matrixPlatform.create(x, y, texture)
+                .setScale(0.5)
+                .refreshBody();
+              
+              tile.body.updateFromGameObject();
+            }
+          }
+        }
+      };
+      
+      this.createMatrixPlatform();
+      
+      this.scoreText = this.add.text(26, 16, 'Score: 0', { fontSize: '32px', fill: '#fff' }).setScrollFactor(0);
     this.healthText = this.add.text(26, 56, 'Health: 1000', { fontSize: '32px', fill: '#fff' }).setScrollFactor(0);
     this.positionXText = this.add.text(26, 96, 'X: 0', { fontSize: '32px', fill: '#fff' }).setScrollFactor(0);
     this.positionYText = this.add.text(26, 136, 'Y: 0', { fontSize: '32px', fill: '#fff' }).setScrollFactor(0);
     this.monsters = [];
     this.createParticles();
     const monsterCreator = (num, hord) => {
-      let corx = 3900;
+      let corx = 7900; // Cambiado de 1000 a 600 para estar aún más cerca del jugador
       for (let j = 1; j < hord; j += 1) {
         for (let i = 0; i < num; i += 1) {
-          if (j % 7 === 0 || j % 5 === 0) {
+         
             if (i % 2 === 0) {
               this.monster = new ChaserDude({
                 scene: this,
-                x: corx + i * 15,
-                y: 16,
+                x: corx + i * 150, // Separación mayor para que no se amontonen
+                y: 400, // Ajustado para que estén SOBRE las plataformas (groundY - 150 = 439)
                 key: `chaser${i}${j}`,
               });
               this.physics.add.collider(this.monster, platforms);
@@ -172,37 +323,45 @@ export default class GameScene extends Phaser.Scene {
             } else {
               this.monster = new JumperDude({
                 scene: this,
-                x: corx + i * 15,
-                y: 16,
+                x: corx + i * 150,
+                y: 400,
                 key: `dude${i}${j}`,
               });
               this.physics.add.collider(this.monster, platforms);
               this.monsters.push(this.monster);
               this.monster.setBounce(2400, 0, 4900, height);
             }
-          } else {
-            this.monster = new JumperDude({
+        
+            this.monster = new ChaserDude({
               scene: this,
-              x: corx + i * 15,
-              y: 16,
-              key: `dude${i}${j}`,
+              x: corx + i * 150, // Separación mayor para que no se amontonen
+              y: 400, // Ajustado para que estén SOBRE las plataformas (groundY - 150 = 439)
+              key: `chaser${i}${j}`,
             });
             this.physics.add.collider(this.monster, platforms);
             this.monsters.push(this.monster);
             this.monster.setBounce(2400, 0, 4900, height);
-          }
+            
+          
         }
 
-        corx += 4240;
+        corx += 2500; // Reducido de 1000 a 800 para que estén más juntos
       }
     };
 
-    monsterCreator(3, this.platformNumber);
+    monsterCreator(3, 3);
     
     // Añadir colisión de enemigos con plataformas flotantes
     if (this.floatingPlatforms && this.monsters.length > 0) {
       this.monsters.forEach(monster => {
         this.physics.add.collider(monster, this.floatingPlatforms);
+      });
+    }
+    
+    // Añadir colisión de enemigos con plataformas de tiles (matrixPlatform)
+    if (this.matrixPlatform && this.monsters.length > 0) {
+      this.monsters.forEach(monster => {
+        this.physics.add.collider(monster, this.matrixPlatform);
       });
     }
 
@@ -212,6 +371,9 @@ export default class GameScene extends Phaser.Scene {
       y: 100,
       key: 'player',
     });
+
+    // Crear rampa real en x=500 (después de crear el jugador)
+    this.createRealRamp();
 
     // Configurar límites del mundo físico para evitar que el jugador se salga
     // Límite superior: -3000 (permite subir 3000px más arriba del borde de pantalla)
@@ -282,6 +444,16 @@ export default class GameScene extends Phaser.Scene {
     if (this.floatingPlatforms) {
       this.physics.add.collider(this.floatingPlatforms, this.player);
     }
+    
+    // Añadir colisión del jugador con la plataforma de tiles
+    if (this.tilePlatform) {
+      this.physics.add.collider(this.tilePlatform, this.player);
+    }
+    
+    // Añadir colisión del jugador con la plataforma de matriz
+    if (this.matrixPlatform) {
+      this.physics.add.collider(this.matrixPlatform, this.player);
+    }
 
     this.physics.add.overlap(this.monsters, this.player, null, (mon2, player) => {
       player.setTint(0xff0000);
@@ -318,8 +490,9 @@ export default class GameScene extends Phaser.Scene {
     this.enemies = this.add.group();
     
     // Configurar cámara para seguir al jugador en ambos ejes desde el inicio
+    // Offset X de -150px para que el jugador esté más a la izquierda
     // Offset Y de 100px para que la cámara esté más abajo que el centro exacto
-    this.cameras.main.startFollow(this.player, false, 0.1, 0.1, 0, 100);
+    this.cameras.main.startFollow(this.player, false, 0.1, 0.1, -150, 100);
     
     // Configurar zona muerta para mejor control de cámara vertical
     // La cámara solo se mueve cuando el jugador está a 100px del centro
@@ -329,6 +502,7 @@ export default class GameScene extends Phaser.Scene {
     this.keyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
     this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
     this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+    this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
     this.anims.create({
       key: 'groupS',
@@ -402,6 +576,7 @@ export default class GameScene extends Phaser.Scene {
     }
     
     const onGround = this.player.body.touching.down || this.player.body.blocked.down;
+    this.player.updateJumpState(onGround);
     this.player.update();
     this.monsters.forEach(monster => {
       monster.update();
@@ -484,8 +659,11 @@ export default class GameScene extends Phaser.Scene {
       this.player.anims.play('jump', true);
     }
 
-    if (cursors.up.isDown && onGround) {
-      this.player.setVelocityY(-470);
+    // Sistema de doble salto (tecla arriba o espacio)
+    if (Phaser.Input.Keyboard.JustDown(cursors.up) || Phaser.Input.Keyboard.JustDown(this.keySpace)) {
+      if (this.player.tryJump()) {
+        // Salto exitoso
+      }
     }
 
     if (this.keyQ.isDown && this.player.flipX === true) {

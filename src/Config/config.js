@@ -4,11 +4,11 @@ import 'phaser';
 const config = {
   type: Phaser.AUTO,
   width: 1000,
-  height: 630,
+  height: 730,
   physics: {
     default: 'arcade',
     arcade: {
-      debug: false,
+      debug: true,
       gravity: { y: 0 },
 
     },
