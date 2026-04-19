@@ -16,9 +16,11 @@ class Player extends Entity {
     this.setGravityY(520);
     this.setCollideWorldBounds(true);  // Colisionar con límites del mundo
     
-    // Estadísticas del jugador
-    this.hp = 1000;          // Puntos de vida
-    this.touch = false;      // Indica si el jugador está siendo tocado/dañado
+    // Estadísticas del jugador - Sistema de corazones
+    this.maxHearts = 3;      // Máximo de corazones
+    this.hearts = 3;         // Corazones actuales (3 corazones completos = 6 medios)
+    this.isInvulnerable = false; // Estado de invulnerabilidad
+    this.invulnerabilityTimer = null; // Temporizador de invulnerabilidad
     this.alive = true;       // Estado de vida
     this.damage = 10;        // Daño base del jugador
     
@@ -30,29 +32,67 @@ class Player extends Entity {
   }
 
   /**
-   * Aplica daño al jugador usando el daño base
+   * Aplica daño al jugador (medio corazón por defecto)
+   * @param {number} damageType - 0.5 para medio corazón, 1 para corazón completo
    */
-  damg() {
-    this.damageOrKill(this.damage);
+  damg(damageType = 0.5) {
+    return this.damageOrKill(damageType);
   }
 
   /**
-   * Aplica daño al jugador y verifica si muere
-   * @param {number} damage - Cantidad de daño a aplicar
+   * Aplica daño al jugador usando sistema de corazones
+   * @param {number} damageType - 0.5 para medio corazón, 1 para corazón completo
    * @returns {boolean} - True si el jugador murió, false si sobrevivió
    */
-  damageOrKill(damage) {
-    this.touch = true;
-    if (this.touch === true) {
-      this.hp -= damage;
-      if (this.hp <= 0) {
-        this.die();
-        return true;
-      }
-      this.touch = false;
+  damageOrKill(damageType = 0.5) {
+    // Si el jugador es invulnerable, no recibe daño
+    if (this.isInvulnerable) {
       return false;
     }
+    
+    // Aplicar daño (0.5 = medio corazón, 1 = corazón completo)
+    this.hearts -= damageType;
+    
+    // Si se queda sin corazones, muere
+    if (this.hearts <= 0) {
+      this.die();
+      return true;
+    }
+    
+    // Activar invulnerabilidad por 3 segundos
+    this.activateInvulnerability(3000);
+    
     return false;
+  }
+  
+  /**
+   * Activa la invulnerabilidad por un tiempo determinado
+   * @param {number} duration - Duración en milisegundos
+   */
+  activateInvulnerability(duration) {
+    this.isInvulnerable = true;
+    
+    // Parpadeo visual durante invulnerabilidad
+    this.scene.tweens.add({
+      targets: this,
+      alpha: 0.5,
+      duration: 100,
+      yoyo: true,
+      repeat: Math.floor(duration / 200) - 1,
+      onComplete: () => {
+        this.setAlpha(1);
+      }
+    });
+    
+    // Desactivar invulnerabilidad después del tiempo
+    if (this.invulnerabilityTimer) {
+      this.invulnerabilityTimer.remove();
+    }
+    
+    this.invulnerabilityTimer = this.scene.time.delayedCall(duration, () => {
+      this.isInvulnerable = false;
+      this.invulnerabilityTimer = null;
+    });
   }
 
   /**
@@ -89,6 +129,25 @@ class Player extends Entity {
       return true;
     }
     return false;
+  }
+  
+  /**
+   * Añade un corazón al jugador (máximo maxHearts)
+   * @returns {boolean} - True si se añadió un corazón, false si ya está al máximo
+   */
+  addHeart() {
+    if (this.hearts < this.maxHearts) {
+      this.hearts += 1;
+      return true;
+    }
+    return false;
+  }
+  
+  /**
+   * Método update llamado cada frame
+   */
+  update() {
+    // Método vacío por ahora, pero necesario para evitar errores
   }
 }
 

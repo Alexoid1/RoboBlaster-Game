@@ -300,9 +300,72 @@ export default class GameScene extends Phaser.Scene {
       this.createMatrixPlatform();
       
       this.scoreText = this.add.text(26, 16, 'Score: 0', { fontSize: '32px', fill: '#fff' }).setScrollFactor(0);
-    this.healthText = this.add.text(26, 56, 'Health: 1000', { fontSize: '32px', fill: '#fff' }).setScrollFactor(0);
-    this.positionXText = this.add.text(26, 96, 'X: 0', { fontSize: '32px', fill: '#fff' }).setScrollFactor(0);
-    this.positionYText = this.add.text(26, 136, 'Y: 0', { fontSize: '32px', fill: '#fff' }).setScrollFactor(0);
+      this.positionXText = this.add.text(26, 96, 'X: 0', { fontSize: '32px', fill: '#fff' }).setScrollFactor(0);
+      this.positionYText = this.add.text(26, 136, 'Y: 0', { fontSize: '32px', fill: '#fff' }).setScrollFactor(0);
+    
+    // Sistema de corazones
+    this.heartsContainer = this.add.container(26, 70); // Cambiado de 56 a 70 para bajar los corazones
+    this.heartsSprites = [];
+    
+    /**
+     * Crea la UI de corazones basada en la vida del jugador
+     */
+    this.createHeartsUI = () => {
+      // Limpiar corazones existentes
+      this.heartsSprites.forEach(heart => heart.destroy());
+      this.heartsSprites = [];
+      
+      const heartSize = 15; // Reducido de 32
+      const heartSpacing = 35; // Aumentado de 10
+      
+      // Crear corazones basados en la vida del jugador
+      for (let i = 0; i < this.player.maxHearts; i++) {
+        const heartX = i * (heartSize + heartSpacing);
+        
+        // Determinar el estado del corazón
+        let heartTexture = 'hud_heart_empty';
+        if (this.player.hearts >= i + 1) {
+          heartTexture = 'hud_heart'; // Corazón lleno
+        } else if (this.player.hearts > i) {
+          heartTexture = 'hud_heart_half'; // Medio corazón (ej: 2.5 corazones)
+        }
+        
+        const heart = this.add.sprite(heartX, 0, heartTexture)
+          .setScale(0.6) // Reducido de 0.8
+          .setScrollFactor(0);
+        
+        this.heartsSprites.push(heart);
+        this.heartsContainer.add(heart);
+      }
+    };
+    
+    /**
+     * Actualiza la UI de corazones después de recibir daño o añadir corazones
+     */
+    this.updateHeartsUI = () => {
+      // Si maxHearts cambió, recrear toda la UI
+      if (this.heartsSprites.length !== this.player.maxHearts) {
+        this.createHeartsUI();
+        return;
+      }
+      
+      // Actualizar texturas de corazones existentes
+      for (let i = 0; i < this.player.maxHearts; i++) {
+        const heart = this.heartsSprites[i];
+        
+        // Determinar el estado del corazón
+        let heartTexture = 'hud_heart_empty';
+        if (this.player.hearts >= i + 1) {
+          heartTexture = 'hud_heart'; // Corazón lleno
+        } else if (this.player.hearts > i) {
+          heartTexture = 'hud_heart_half'; // Medio corazón
+        }
+        
+        heart.setTexture(heartTexture);
+      }
+    };
+    
+    // La UI se creará después de que el jugador sea creado
     this.monsters = [];
     this.createParticles();
     const monsterCreator = (num, hord) => {
@@ -319,7 +382,7 @@ export default class GameScene extends Phaser.Scene {
               });
               this.physics.add.collider(this.monster, platforms);
               this.monsters.push(this.monster);
-              this.monster.setBounce(2400, 0, 4900, height);
+              this.monster.setBounce(2400, 0, 4900, this.scale.height);
             } else {
               this.monster = new JumperDude({
                 scene: this,
@@ -329,7 +392,7 @@ export default class GameScene extends Phaser.Scene {
               });
               this.physics.add.collider(this.monster, platforms);
               this.monsters.push(this.monster);
-              this.monster.setBounce(2400, 0, 4900, height);
+              this.monster.setBounce(2400, 0, 4900, this.scale.height);
             }
         
             this.monster = new ChaserDude({
@@ -372,6 +435,25 @@ export default class GameScene extends Phaser.Scene {
       key: 'player',
     });
 
+    // Crear UI de corazones después de crear el jugador
+    this.createHeartsUI();
+    
+    // Crear corazón coleccionable en x=300, y=300 (sobre plataforma)
+    this.collectibleHeart = this.physics.add.sprite(-70, 620, 'heart')
+      .setScale(0.8)
+      .setBounce(0.2)
+      .setCollideWorldBounds(true);
+    
+    // Añadir animación flotante al corazón
+    this.tweens.add({
+      targets: this.collectibleHeart,
+      y: this.collectibleHeart.y - 20,
+      duration: 1000,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.easeInOut'
+    });
+
     // Crear rampa real en x=500 (después de crear el jugador)
     this.createRealRamp();
 
@@ -380,7 +462,7 @@ export default class GameScene extends Phaser.Scene {
     // Límite inferior: 800 (suficiente para plataformas flotantes + margen)
     const worldBoundsTop = -3000;
     const worldBoundsHeight = 3800; // 3000 + 800
-    this.physics.world.setBounds(0, worldBoundsTop, 300000, worldBoundsHeight);
+    this.physics.world.setBounds(-300, worldBoundsTop, 300000, worldBoundsHeight);
     
     // Ajustar límites de cámara para permitir movimiento vertical
     // Altura máxima: desde -3000 hasta 800px (permite ver mucho más arriba)
@@ -456,15 +538,64 @@ export default class GameScene extends Phaser.Scene {
     }
 
     this.physics.add.overlap(this.monsters, this.player, null, (mon2, player) => {
+      // Si el jugador es invulnerable, aplicar daño de corazón completo
+      const damageType = player.isInvulnerable ? 1 : 0.5;
+      
+      // Aplicar daño
+      const died = player.damg(damageType);
+      
+      // Efecto visual de daño
       player.setTint(0xff0000);
-
-      this.healthText.setText(`Health: ${player.hp}`);
-      player.damg();
-      player.body.setVelocity(0, 0);
-      if (player.hp <= 0) {
+      this.time.delayedCall(200, () => {
+        player.setTint(0xffffff);
+      });
+      
+      // Empujar al jugador lejos del monstruo
+      const pushDirection = player.x < mon2.x ? -200 : 200;
+      player.body.setVelocity(pushDirection, -150);
+      
+      // Actualizar UI de corazones
+      this.updateHeartsUI();
+      
+      // Verificar si el jugador murió
+      if (died) {
         gameOver = true;
       }
     }, this);
+    
+    // Overlap para recoger corazón coleccionable
+    this.physics.add.overlap(this.player, this.collectibleHeart, (player, heart) => {
+      // Si los corazones están bajados (menos de maxHearts), añadir un corazón
+      if (player.hearts < player.maxHearts) {
+        const heartAdded = player.addHeart();
+        if (heartAdded) {
+          // Actualizar UI
+          this.updateHeartsUI();
+          // Efecto de partículas
+          this.particles.emitParticleAt(heart.x, heart.y, 20);
+          // Sonido (opcional)
+          // this.sound.play('collectSound', { volume: 0.5 });
+        }
+      } else {
+        // Si ya está al máximo, añadir un corazón vacío (aumentar maxHearts)
+        player.maxHearts += 1;
+        player.hearts += 1; // Añadir el corazón como vacío
+        // Recrear UI con nuevo corazón
+        this.createHeartsUI();
+        // Efecto de partículas diferente
+        this.particles.emitParticleAt(heart.x, heart.y, 10);
+      }
+      
+      // Destruir el corazón coleccionable
+      heart.destroy();
+      this.collectibleHeart = null;
+      
+      // Efecto visual
+      player.setTint(0x00ff00);
+      this.time.delayedCall(300, () => {
+        player.setTint(0xffffff);
+      });
+    }, null, this);
 
     this.physics.add.collider(platforms, blast);
     this.physics.add.overlap(this.laserGroup, this.monsters, null, (mon, laser) => {
@@ -472,10 +603,18 @@ export default class GameScene extends Phaser.Scene {
       mon.damg(50);
       this.score += 50;
       this.scoreText.setText(`Score: ${this.score}`);
-      this.particles.emitParticleAt(laser.x, laser.y, 50);
-      laser.setVisible(false);
-      laser.setActive(false);
-      laser.body.enable = false;
+      
+      // Efecto de impacto con partículas
+      this.particles.emitParticleAt(laser.x, laser.y, 30);
+      
+      // Desactivar el láser (detiene partículas y deshabilita física)
+      if (laser.disable) {
+        laser.disable();
+      } else {
+        // Fallback para compatibilidad
+        laser.setActive(false);
+        laser.body.enable = false;
+      }
     }, null, this);
     this.physics.add.overlap(this.slashGroup, this.monsters, null, (mon, slash) => {
       mon.setTint(0xff0000);

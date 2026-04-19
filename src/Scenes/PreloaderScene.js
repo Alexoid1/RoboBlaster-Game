@@ -34,6 +34,12 @@ import terrain_stone_block_bottom_left from '../assets/terrain_stone_block_botto
 import terrain_stone_ramp_long_c from '../assets/terrain_stone_ramp_long_c.png';
 import terrain_stone_ramp_long_b from '../assets/terrain_stone_ramp_long_b.png';
 import terrain_stone_ramp_long_a from '../assets/terrain_stone_ramp_long_a.png';
+import hud_heart_empty from '../assets/hud_heart_empty.png';
+import hud_heart from '../assets/hud_heart.png';
+import hud_heart_half from '../assets/hud_heart_half.png';
+import heart from '../assets/heart.png'
+import bomb from '../assets/bomb.png'
+import splat from '../assets/splat.png'
 
 
 
@@ -78,6 +84,29 @@ export default class PreloaderScene extends Phaser.Scene {
     this.load.image('redlight', redlight);
     this.load.image('box', box);
     this.load.image('checkedBox', checkedBox);
+    this.load.image('terrain_stone_horizontal_middle', terrain_stone_horizontal_middle);
+    this.load.image('terrain_stone_horizontal_left', terrain_stone_horizontal_left);
+    this.load.image('terrain_stone_horizontal_right', terrain_stone_horizontal_right);
+    this.load.image('terrain_stone_block_top', terrain_stone_block_top);
+    this.load.image('terrain_stone_block_top_right', terrain_stone_block_top_right);
+    this.load.image('terrain_stone_block_top_left', terrain_stone_block_top_left);
+    this.load.image('terrain_stone_block_center', terrain_stone_block_center);
+    this.load.image('terrain_stone_block_right', terrain_stone_block_right);
+    this.load.image('terrain_stone_block_left', terrain_stone_block_left);
+    this.load.image('terrain_stone_block_bottom', terrain_stone_block_bottom);
+    this.load.image('terrain_stone_block_bottom_left', terrain_stone_block_bottom_left);
+    this.load.image('terrain_stone_block_bottom_right', terrain_stone_block_bottom_right);
+    this.load.image('terrain_stone_ramp_long_c', terrain_stone_ramp_long_c);
+    this.load.image('terrain_stone_ramp_long_b', terrain_stone_ramp_long_b);
+    this.load.image('terrain_stone_ramp_long_a', terrain_stone_ramp_long_a);
+    this.load.image('hud_heart_half', hud_heart_half);
+    this.load.image('hud_heart', hud_heart);
+    this.load.image('hud_heart_empty', hud_heart_empty);
+    this.load.image('heart', heart);
+    this.load.image('bomb', bomb);
+    this.load.image('splat', splat);
+    
+
     
 
     this.load.spritesheet('dude', dude, { frameWidth: 32, frameHeight: 48 });
@@ -126,22 +155,8 @@ export default class PreloaderScene extends Phaser.Scene {
         spacing: 18.2,
       });
     
-    // Cargar tiles para plataformas
-    this.load.image('terrain_stone_horizontal_middle', terrain_stone_horizontal_middle);
-    this.load.image('terrain_stone_horizontal_left', terrain_stone_horizontal_left);
-    this.load.image('terrain_stone_horizontal_right', terrain_stone_horizontal_right);
-    this.load.image('terrain_stone_block_top', terrain_stone_block_top);
-    this.load.image('terrain_stone_block_top_right', terrain_stone_block_top_right);
-    this.load.image('terrain_stone_block_top_left', terrain_stone_block_top_left);
-    this.load.image('terrain_stone_block_center', terrain_stone_block_center);
-    this.load.image('terrain_stone_block_right', terrain_stone_block_right);
-    this.load.image('terrain_stone_block_left', terrain_stone_block_left);
-    this.load.image('terrain_stone_block_bottom', terrain_stone_block_bottom);
-    this.load.image('terrain_stone_block_bottom_left', terrain_stone_block_bottom_left);
-    this.load.image('terrain_stone_block_bottom_right', terrain_stone_block_bottom_right);
-    this.load.image('terrain_stone_ramp_long_c', terrain_stone_ramp_long_c);
-    this.load.image('terrain_stone_ramp_long_b', terrain_stone_ramp_long_b);
-    this.load.image('terrain_stone_ramp_long_a', terrain_stone_ramp_long_a);
+
+    
 
     const progressBar = this.add.graphics();
     const progressBox = this.add.graphics();
