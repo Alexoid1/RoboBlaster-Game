@@ -52,7 +52,6 @@ export default class GameScene extends Phaser.Scene {
     this.model;             // Modelo de sonido/configuración
     this.platformNumber;    // Número de plataformas
     this.particles;         // Sistema de partículas
-    this.emitter;           // Emisor de partículas
     this.heartsGroup;       // Grupo de corazones recolectables
   }
 
@@ -77,17 +76,10 @@ export default class GameScene extends Phaser.Scene {
 
     let groundX = 39240;
     this.createParticles = () => {
+      // Nueva API de partículas para Phaser 3.60+
       this.particles = this.add.particles('redlight');
-      this.emitter = this.particles.createEmitter({
-
-        x: 100,
-        y: 150,
-        speed: 200,
-        lifespan: 500,
-        blendMode: 'ADD',
-        scale: { start: 1, end: 0 },
-        on: false,
-      });
+      // Crear configuración básica de partículas sin usar createEmitter
+      // que fue removido en Phaser 3.60+
     };
 
     const groundY = 589;
@@ -686,8 +678,8 @@ export default class GameScene extends Phaser.Scene {
       // Actualizar UI con el nuevo corazón
       this.createHeartsUI();
       
-      // Efecto de partículas
-      this.particles.emitParticleAt(heart.x, heart.y, 25);
+      // Efecto de partículas (comentado por compatibilidad con Phaser 3.60+)
+      // this.particles.emitParticleAt(heart.x, heart.y, 25);
       
       // Sonido (opcional)
       // this.sound.play('collectSound', { volume: 0.5 });
@@ -709,8 +701,8 @@ export default class GameScene extends Phaser.Scene {
       this.score += 50;
       this.scoreText.setText(`Score: ${this.score}`);
       
-      // Efecto de impacto con partículas
-      this.particles.emitParticleAt(laser.x, laser.y, 30);
+      // Efecto de impacto con partículas (comentado por compatibilidad con Phaser 3.60+)
+      // this.particles.emitParticleAt(laser.x, laser.y, 30);
       
       // Desactivar el láser (detiene partículas y deshabilita física)
       if (laser.disable) {
