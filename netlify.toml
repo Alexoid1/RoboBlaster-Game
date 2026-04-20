@@ -1,5 +1,5 @@
 [build]
-  command = "npm install && CI=false NODE_ENV=production npm run build"
+  command = "npm install --include=dev && CI=false NODE_ENV=production npm run build"
   publish = "dist"
 
 [build.environment]
