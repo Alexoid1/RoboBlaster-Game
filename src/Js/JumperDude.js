@@ -1,4 +1,5 @@
 import Entity from './Entity';
+import HeartPickup from './HeartPickup';
 
 class JumperDude extends Entity {
   constructor(config) {
@@ -13,7 +14,7 @@ class JumperDude extends Entity {
     this.body.setSize(28, 47);
     this.setGravityY(800);
     this.setScale(3);
-    this.hp = 500;
+    this.hp = 1000;
     this.touch = false;
     this.alive = true;
     this.damage = 50;
@@ -72,6 +73,12 @@ class JumperDude extends Entity {
     this.setVelocityY(0);
     this.setGravityY(0);
     this.body.enable = false;
+
+    // Spawnear un corazón en la posición del enemigo
+    if (this.scene && this.scene.physics && this.scene.heartsGroup) {
+      const heart = new HeartPickup(this.scene, this.x, this.y);
+      this.scene.heartsGroup.add(heart);
+    }
 
     setTimeout(() => {
       this.setVisible(false);

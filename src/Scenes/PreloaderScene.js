@@ -6,6 +6,7 @@ import forest2 from '../assets/forest2.png';
 import forest3 from '../assets/forest3.png';
 import dude from '../assets/dude.png';
 import ground from '../assets/ground.png';
+import platform from '../assets/platform.png';
 import shooterSlash from '../assets/Robokid_Slash_Blue.png';
 import textureR from '../assets/texture.png';
 import texture2 from '../assets/texturerun.png';
@@ -18,16 +19,54 @@ import titleBg from '../assets/robotfon.png';
 import box from '../assets/grey_box.png';
 import checkedBox from '../assets/blue_boxCheck.png';
 import redlight from '../assets/splat.png';
+import terrain_stone_horizontal_middle from '../assets/terrain_stone_horizontal_middle.png';
+import terrain_stone_horizontal_left from '../assets/terrain_stone_horizontal_left.png';
+import terrain_stone_horizontal_right from '../assets/terrain_stone_horizontal_right.png';
+import terrain_stone_block_top from '../assets/terrain_stone_block_top.png';
+import terrain_stone_block_top_right from '../assets/terrain_stone_block_top_right.png';
+import terrain_stone_block_top_left from '../assets/terrain_stone_block_top_left.png';
+import terrain_stone_block_center from '../assets/terrain_stone_block_center.png';
+import terrain_stone_block_right from '../assets/terrain_stone_block_right.png';
+import terrain_stone_block_left from '../assets/terrain_stone_block_left.png';
+import terrain_stone_block_bottom from '../assets/terrain_stone_block_bottom.png';
+import terrain_stone_block_bottom_right from '../assets/terrain_stone_block_bottom_right.png';
+import terrain_stone_block_bottom_left from '../assets/terrain_stone_block_bottom_left.png';
+import terrain_stone_ramp_long_c from '../assets/terrain_stone_ramp_long_c.png';
+import terrain_stone_ramp_long_b from '../assets/terrain_stone_ramp_long_b.png';
+import terrain_stone_ramp_long_a from '../assets/terrain_stone_ramp_long_a.png';
+import terrain_stone_block from '../assets/terrain_stone_block.png'
+import hud_heart_empty from '../assets/hud_heart_empty.png';
+import hud_heart from '../assets/hud_heart.png';
+import hud_heart_half from '../assets/hud_heart_half.png';
+import heart from '../assets/heart.png'
+import bomb from '../assets/bomb.png'
+import splat from '../assets/splat.png'
 
+
+
+
+
+
+/**
+ * Escena de precarga del juego
+ * Carga todos los recursos (imágenes, spritesheets, sonidos) y muestra una barra de progreso
+ */
 export default class PreloaderScene extends Phaser.Scene {
   constructor() {
     super('Preloader');
   }
 
+  /**
+   * Inicializa variables de la escena
+   */
   init() {
     this.readyCount = 0;
   }
 
+  /**
+   * Precarga todos los recursos del juego
+   * Configura la barra de progreso y eventos de carga
+   */
   preload() {
     const width = this.scale.width * 0.5;
     const height = this.scale.height * 0.5;
@@ -41,10 +80,36 @@ export default class PreloaderScene extends Phaser.Scene {
     this.load.image('forest2', forest2);
     this.load.image('forest3', forest3);
     this.load.image('playerIcon', playerIcon);
+    this.load.image('platform', platform);
     this.load.image('ground', ground);
     this.load.image('redlight', redlight);
     this.load.image('box', box);
     this.load.image('checkedBox', checkedBox);
+    this.load.image('terrain_stone_horizontal_middle', terrain_stone_horizontal_middle);
+    this.load.image('terrain_stone_horizontal_left', terrain_stone_horizontal_left);
+    this.load.image('terrain_stone_horizontal_right', terrain_stone_horizontal_right);
+    this.load.image('terrain_stone_block_top', terrain_stone_block_top);
+    this.load.image('terrain_stone_block_top_right', terrain_stone_block_top_right);
+    this.load.image('terrain_stone_block_top_left', terrain_stone_block_top_left);
+    this.load.image('terrain_stone_block_center', terrain_stone_block_center);
+    this.load.image('terrain_stone_block_right', terrain_stone_block_right);
+    this.load.image('terrain_stone_block_left', terrain_stone_block_left);
+    this.load.image('terrain_stone_block_bottom', terrain_stone_block_bottom);
+    this.load.image('terrain_stone_block_bottom_left', terrain_stone_block_bottom_left);
+    this.load.image('terrain_stone_block_bottom_right', terrain_stone_block_bottom_right);
+    this.load.image('terrain_stone_ramp_long_c', terrain_stone_ramp_long_c);
+    this.load.image('terrain_stone_ramp_long_b', terrain_stone_ramp_long_b);
+    this.load.image('terrain_stone_ramp_long_a', terrain_stone_ramp_long_a);
+    this.load.image('terrain_stone_block', terrain_stone_block);
+    this.load.image('hud_heart_half', hud_heart_half);
+    this.load.image('hud_heart', hud_heart);
+    this.load.image('hud_heart_empty', hud_heart_empty);
+    this.load.image('heart', heart);
+    this.load.image('bomb', bomb);
+    this.load.image('splat', splat);
+    
+
+    
 
     this.load.spritesheet('dude', dude, { frameWidth: 32, frameHeight: 48 });
     this.load.spritesheet('walk',
@@ -86,9 +151,14 @@ export default class PreloaderScene extends Phaser.Scene {
     this.load.spritesheet('groupS',
       groupS,
       {
-        frameWidth: 400,
-        frameHeight: 349,
+        frameWidth: 296,
+        frameHeight: 231,
+        margin: 74,
+        spacing: 18.2,
       });
+    
+
+    
 
     const progressBar = this.add.graphics();
     const progressBox = this.add.graphics();
@@ -146,9 +216,14 @@ export default class PreloaderScene extends Phaser.Scene {
       this.ready();
     });
 
+    // Temporizador de seguridad para asegurar que la carga continúe
     this.timedEvent = this.time.delayedCall(2850, this.ready, [], this);
   }
 
+  /**
+   * Método llamado cuando los recursos están listos
+   * Espera a que se completen tanto la carga como el temporizador
+   */
   ready() {
     this.readyCount += 1;
     if (this.readyCount === 2) {

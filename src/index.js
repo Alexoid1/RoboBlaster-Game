@@ -10,11 +10,18 @@ import GameScene from './Scenes/GameScene';
 import GameOverScene from './Scenes/GameOverScene';
 import Sound from './Js/Sound';
 
+/**
+ * Clase principal del juego que extiende Phaser.Game
+ * Configura todas las escenas y gestiona el estado global del juego
+ */
 class Game extends Phaser.Game {
   constructor() {
     super(config);
+    // Inicializa el modelo de sonido y variables globales
     const model = new Sound();
     this.globals = { model, bgMusic: null };
+    
+    // Registra todas las escenas del juego
     this.scene.add('Boot', BootScene);
     this.scene.add('Preloader', PreloaderScene);
     this.scene.add('Menu', MenuScene);
@@ -23,7 +30,11 @@ class Game extends Phaser.Game {
     this.scene.add('Options', OptionsScene);
     this.scene.add('Game', GameScene);
     this.scene.add('GameOver', GameOverScene);
+    
+    // Inicia la escena de arranque
     this.scene.start('Boot');
   }
 }
+
+// Crea una instancia global del juego
 window.game = new Game();

@@ -11,7 +11,7 @@ export default class LaserGroup extends Phaser.Physics.Arcade.Group {
       active: false,
       visible: false,
       loop: true,
-      key: 'blast',
+      key: 'splat',
     });
   }
 
@@ -21,7 +21,7 @@ export default class LaserGroup extends Phaser.Physics.Arcade.Group {
       laser.fire(x, y);
       laser.setScale(0.6);
 
-      laser.anims.play('blast');
+      laser.anims.play('splat');
     }
   }
 }

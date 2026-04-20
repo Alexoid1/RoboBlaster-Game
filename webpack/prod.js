@@ -1,5 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const TerserPlugin = require('terser-webpack-plugin');
 const base = require('./base');
 
@@ -7,6 +7,7 @@ module.exports = merge(base, {
   mode: 'production',
   output: {
     filename: 'bundle.min.js',
+    clean: true,
   },
   devtool: false,
   performance: {
@@ -17,10 +18,14 @@ module.exports = merge(base, {
     minimizer: [
       new TerserPlugin({
         terserOptions: {
+          compress: {
+            drop_console: true,
+          },
           output: {
             comments: false,
           },
         },
+        extractComments: false,
       }),
     ],
   },
