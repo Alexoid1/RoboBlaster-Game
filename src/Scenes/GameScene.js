@@ -63,12 +63,12 @@ export default class GameScene extends Phaser.Scene {
   create() {
     // Configuración de sonido - Música apagada por el momento
     this.model = this.sys.game.globals.model;
-    // if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {
-    //   this.bgMusic = this.sound.add('bgMusic', { volume: 0.3, loop: true });
-    //   this.bgMusic.play();
-    //   this.model.bgMusicPlaying = true;
-    //   this.sys.game.globals.bgMusic = this.bgMusic;
-    // }
+     if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {
+      this.bgMusic = this.sound.add('bgMusic', { volume: 0.3, loop: true });
+       this.bgMusic.play();
+       this.model.bgMusicPlaying = true;
+       this.sys.game.globals.bgMusic = this.bgMusic;
+     }
     // Comentado para apagar música temporalmente
     
     // Inicialización de variables
@@ -533,7 +533,7 @@ export default class GameScene extends Phaser.Scene {
 
     this.player = new Player({
       scene: this,
-      x: 16000,
+      x: 400,
       y: 100,
       key: 'player',
     });
