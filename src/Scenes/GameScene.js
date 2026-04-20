@@ -77,6 +77,7 @@ export default class GameScene extends Phaser.Scene {
 
     let groundX = 39240;
     this.createParticles = () => {
+      // Para Phaser 3.24.1 (Node 18)
       this.particles = this.add.particles('redlight');
       this.emitter = this.particles.createEmitter({
 
