@@ -34,6 +34,7 @@ import terrain_stone_block_bottom_left from '../assets/terrain_stone_block_botto
 import terrain_stone_ramp_long_c from '../assets/terrain_stone_ramp_long_c.png';
 import terrain_stone_ramp_long_b from '../assets/terrain_stone_ramp_long_b.png';
 import terrain_stone_ramp_long_a from '../assets/terrain_stone_ramp_long_a.png';
+import terrain_stone_block from '../assets/terrain_stone_block.png'
 import hud_heart_empty from '../assets/hud_heart_empty.png';
 import hud_heart from '../assets/hud_heart.png';
 import hud_heart_half from '../assets/hud_heart_half.png';
@@ -99,6 +100,7 @@ export default class PreloaderScene extends Phaser.Scene {
     this.load.image('terrain_stone_ramp_long_c', terrain_stone_ramp_long_c);
     this.load.image('terrain_stone_ramp_long_b', terrain_stone_ramp_long_b);
     this.load.image('terrain_stone_ramp_long_a', terrain_stone_ramp_long_a);
+    this.load.image('terrain_stone_block', terrain_stone_block);
     this.load.image('hud_heart_half', hud_heart_half);
     this.load.image('hud_heart', hud_heart);
     this.load.image('hud_heart_empty', hud_heart_empty);

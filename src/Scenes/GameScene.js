@@ -5,6 +5,7 @@ import ChaserDude from '../Js/ChaserDude';
 import Player from '../Js/Player';
 import LaserGroup from '../Js/LaserGroup';
 import SlashGroup from '../Js/SlashGroup';
+import HeartPickup from '../Js/HeartPickup';
 import LocalStorage from '../Tools/localStorage';
 
 // Variables globales para controles y estado del juego
@@ -52,6 +53,7 @@ export default class GameScene extends Phaser.Scene {
     this.platformNumber;    // Número de plataformas
     this.particles;         // Sistema de partículas
     this.emitter;           // Emisor de partículas
+    this.heartsGroup;       // Grupo de corazones recolectables
   }
 
   /**
@@ -73,7 +75,7 @@ export default class GameScene extends Phaser.Scene {
     this.platformNumber = 3;  // Número de plataformas en el nivel
     this.score = 0;            // Puntuación inicial
 
-    let groundX = 20240;
+    let groundX = 39240;
     this.createParticles = () => {
       this.particles = this.add.particles('redlight');
       this.emitter = this.particles.createEmitter({
@@ -115,22 +117,22 @@ export default class GameScene extends Phaser.Scene {
       this.floatingPlatforms = this.physics.add.staticGroup();
       
      
-      const platform4 = this.floatingPlatforms.create(12500, groundY - 250, 'platform').setScale(1).refreshBody();
+      const platform4 = this.floatingPlatforms.create(16680, groundY - 400, 'terrain_stone_block').setScale(0.5).refreshBody();
       platform4.body.updateFromGameObject();
 
-      const platform5 = this.floatingPlatforms.create(13000, groundY - 450, 'platform').setScale(1).refreshBody();
+      const platform5 = this.floatingPlatforms.create(16950, -100, 'terrain_stone_block').setScale(0.5).refreshBody();
       platform5.body.updateFromGameObject();
 
-      const platform6 = this.floatingPlatforms.create(13800, -10, 'platform').setScale(1).refreshBody();
+      const platform6 = this.floatingPlatforms.create(17350, -289, 'terrain_stone_block').setScale(0.5).refreshBody();
       platform6.body.updateFromGameObject();
 
-      const platform7 = this.floatingPlatforms.create(13500, -180, 'platform').setScale(0.7).refreshBody();
+      const platform7 = this.floatingPlatforms.create(17580, -450, 'terrain_stone_block').setScale(0.5).refreshBody();
       platform7.body.updateFromGameObject();
 
-      const platform8 = this.floatingPlatforms.create(13800, -320, 'platform').setScale(0.7).refreshBody();
+      const platform8 = this.floatingPlatforms.create(17350, -650, 'terrain_stone_block').setScale(0.5).refreshBody();
       platform8.body.updateFromGameObject();
 
-      const platform9 = this.floatingPlatforms.create(14300, -320, 'platform').setScale(1).refreshBody();
+      const platform9 = this.floatingPlatforms.create(18000, -790, 'terrain_stone_block').setScale(0.5).refreshBody();
       platform9.body.updateFromGameObject();
 
 
@@ -199,17 +201,63 @@ export default class GameScene extends Phaser.Scene {
         // Matriz para la plataforma (1 = tile, 0 = vacío)
         // Esta matriz crea una plataforma de 7 tiles de ancho
         const platformMatrix = [
-          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,14,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,14,2,2,15],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,14,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,14,2,2,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,14,2,2,2,2,15],
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,14,2,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,14,2,2,2,2,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
           // Fila superior con rampa (11 = ramp_long_a, 12 = ramp_long_b, 13 = ramp_long_c)
-          [3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,5,5,5,5,5,5,5,5,5,5,5,5,5,7,0,0,0,0,0,0,0,3,1,1,4,0,0,0,0,0,0,3,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+          [3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,5,5,5,5,5,5,5,5,5,5,5,5,5,7,0,0,0,0,0,0,0,3,1,1,4,0,0,0,0,0,0,3,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3],
           // Fila media
-          [6,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,7,0,0,0,0,0,0,0,6,5,5,7,0,0,0,0,0,0,6,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5],
+          [6,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,7,0,0,0,0,0,0,0,6,5,5,7,0,0,0,0,0,0,6,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,7],
           // Fila inferior
           [9,0]
         ];
+
+        const platformZone = [
+          [0,0,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          [0,0,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          [0,0,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          [0,0,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          [0,0,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          [0,0,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          [0,0,14,2,2,2,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,14,15,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,16,0,0,0,0,0,14,2,2,2,15],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,16,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,16,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,16,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,16,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,16,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,16,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,16,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,16,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,16,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,16,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,14,2,2,2,15],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,14,2,2,2,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+
+        ]
         
         // Mapeo de números a texturas de tiles
         const tileTextures = {
@@ -229,6 +277,7 @@ export default class GameScene extends Phaser.Scene {
           13: 'terrain_stone_ramp_long_c',
           14: 'terrain_stone_horizontal_left',
           15: 'terrain_stone_horizontal_right',
+          16: 'terrain_stone_block'
 
         };
         
@@ -257,6 +306,12 @@ export default class GameScene extends Phaser.Scene {
                  .setScale(0.5);
                
                 // Manejo especial para rampas
+                if (tileType === 2 || tileType === 14 || tileType===15) { // Usa un número que no estés usando
+                  tile.body.checkCollision.up = true;
+                  tile.body.checkCollision.down = false;
+                  tile.body.checkCollision.left = false;
+                  tile.body.checkCollision.right = false;
+                }
              
                
               
@@ -266,6 +321,46 @@ export default class GameScene extends Phaser.Scene {
             }
           }
         }
+
+        
+
+        const zoneX = 18900; // Posición X inicial
+        const zoneY = -1860; // 150px arriba del suelo
+
+        for (let row = 0; row < platformZone.length; row++) {
+          for (let col = 0; col < platformZone[row].length; col++) {
+            const tileType = platformZone[row][col];
+            
+            if (tileType !== 0 && tileTextures[tileType]) {
+              // Calcular posición basada en matriz
+              const a = zoneX + (col * tileSize);
+              const b = zoneY + (row * tileSize);
+              
+               // Determinar qué textura usar basado en la posición
+               let texture = tileTextures[tileType];
+               
+               // Crear el tile
+               const tile = this.matrixPlatform.create(a, b, texture)
+                 .setScale(0.5);
+               
+                // Manejo especial para rampas
+                if (tileType === 16) { // Usa un número que no estés usando
+                  tile.body.checkCollision.up = true;
+                  tile.body.checkCollision.down = false;
+                  tile.body.checkCollision.left = false;
+                  tile.body.checkCollision.right = false;
+                }
+             
+               
+              
+               
+               tile.refreshBody();
+               tile.body.updateFromGameObject();
+            }
+          }
+        }
+        
+       
         
         // Añadir una segunda plataforma más arriba (usando matriz diferente)
         const floatingPlatformMatrix = [
@@ -381,6 +476,10 @@ export default class GameScene extends Phaser.Scene {
                 key: `chaser${i}${j}`,
               });
               this.physics.add.collider(this.monster, platforms);
+              // Añadir colisión con la plataforma de matriz si existe
+              if (this.matrixPlatform) {
+                this.physics.add.collider(this.monster, this.matrixPlatform);
+              }
               this.monsters.push(this.monster);
               this.monster.setBounce(2400, 0, 4900, this.scale.height);
             } else {
@@ -391,6 +490,10 @@ export default class GameScene extends Phaser.Scene {
                 key: `dude${i}${j}`,
               });
               this.physics.add.collider(this.monster, platforms);
+              // Añadir colisión con la plataforma de matriz si existe
+              if (this.matrixPlatform) {
+                this.physics.add.collider(this.monster, this.matrixPlatform);
+              }
               this.monsters.push(this.monster);
               this.monster.setBounce(2400, 0, 4900, this.scale.height);
             }
@@ -408,7 +511,7 @@ export default class GameScene extends Phaser.Scene {
           
         }
 
-        corx += 2500; // Reducido de 1000 a 800 para que estén más juntos
+        corx += 3500; // Reducido de 1000 a 800 para que estén más juntos
       }
     };
 
@@ -430,7 +533,7 @@ export default class GameScene extends Phaser.Scene {
 
     this.player = new Player({
       scene: this,
-      x: 400,
+      x: 16000,
       y: 100,
       key: 'player',
     });
@@ -438,21 +541,28 @@ export default class GameScene extends Phaser.Scene {
     // Crear UI de corazones después de crear el jugador
     this.createHeartsUI();
     
-    // Crear corazón coleccionable en x=300, y=300 (sobre plataforma)
-    this.collectibleHeart = this.physics.add.sprite(-70, 620, 'heart')
-      .setScale(0.8)
-      .setBounce(0.2)
-      .setCollideWorldBounds(true);
-    
-    // Añadir animación flotante al corazón
-    this.tweens.add({
-      targets: this.collectibleHeart,
-      y: this.collectibleHeart.y - 20,
-      duration: 1000,
-      yoyo: true,
-      repeat: -1,
-      ease: 'Sine.easeInOut'
+    // Crear grupo de corazones recolectables
+    this.heartsGroup = this.physics.add.group({
+      classType: HeartPickup,
+      maxSize: 10,
+      runChildUpdate: true
     });
+    
+    // Crear corazón coleccionable inicial en x=-70, y=620 (sobre plataforma)
+    const initialHeart = new HeartPickup(this, -70, 620);
+    this.heartsGroup.add(initialHeart);
+    console.log('Corazón PERMANENTE creado en (-70, 620)');
+    
+    // Corazon coleccionable en plataformas flotantes
+    const platformHeart = new HeartPickup(this, 18580, -980);
+    this.heartsGroup.add(platformHeart);
+    console.log('Corazón PERMANENTE creado en (18650, -900)');
+
+    const platformZoneHeart = new HeartPickup(this, 19027, -1980);
+    this.heartsGroup.add(platformZoneHeart);
+    console.log('Corazón PERMANENTE creado en (19027, -1950)');
+    
+   
 
     // Crear rampa real en x=500 (después de crear el jugador)
     this.createRealRamp();
@@ -563,32 +673,27 @@ export default class GameScene extends Phaser.Scene {
       }
     }, this);
     
-    // Overlap para recoger corazón coleccionable
-    this.physics.add.overlap(this.player, this.collectibleHeart, (player, heart) => {
-      // Si los corazones están bajados (menos de maxHearts), añadir un corazón
+    // Overlap para recoger corazones coleccionables
+    this.physics.add.overlap(this.player, this.heartsGroup, (player, heart) => {
+      // SIEMPRE: Aumentar el máximo de corazones en 1
+      player.maxHearts += 1;
+      
+      // SIEMPRE: Recuperar 1 corazón de vida (a menos que ya esté al nuevo máximo)
       if (player.hearts < player.maxHearts) {
-        const heartAdded = player.addHeart();
-        if (heartAdded) {
-          // Actualizar UI
-          this.updateHeartsUI();
-          // Efecto de partículas
-          this.particles.emitParticleAt(heart.x, heart.y, 20);
-          // Sonido (opcional)
-          // this.sound.play('collectSound', { volume: 0.5 });
-        }
-      } else {
-        // Si ya está al máximo, añadir un corazón vacío (aumentar maxHearts)
-        player.maxHearts += 1;
-        player.hearts += 1; // Añadir el corazón como vacío
-        // Recrear UI con nuevo corazón
-        this.createHeartsUI();
-        // Efecto de partículas diferente
-        this.particles.emitParticleAt(heart.x, heart.y, 10);
+        player.hearts += 1;
       }
+      
+      // Actualizar UI con el nuevo corazón
+      this.createHeartsUI();
+      
+      // Efecto de partículas
+      this.particles.emitParticleAt(heart.x, heart.y, 25);
+      
+      // Sonido (opcional)
+      // this.sound.play('collectSound', { volume: 0.5 });
       
       // Destruir el corazón coleccionable
       heart.destroy();
-      this.collectibleHeart = null;
       
       // Efecto visual
       player.setTint(0x00ff00);
@@ -600,7 +705,7 @@ export default class GameScene extends Phaser.Scene {
     this.physics.add.collider(platforms, blast);
     this.physics.add.overlap(this.laserGroup, this.monsters, null, (mon, laser) => {
       mon.setTint(0xff0000);
-      mon.damg(50);
+      mon.damg(250);
       this.score += 50;
       this.scoreText.setText(`Score: ${this.score}`);
       

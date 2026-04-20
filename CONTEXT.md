@@ -41,10 +41,12 @@ Componentes:
 4. Side scenes: LeaderBoardScene, CreditsScene, OptionsScene
 
 ### ARCHIVOS CRÍTICOS PARA MODIFICAR
-- `src/Js/Player.js` → Lógica del jugador, HP, daño
-- `src/Scenes/GameScene.js` → Gameplay principal
+- `src/Js/Player.js` → Lógica del jugador, sistema de corazones, doble salto
+- `src/Scenes/GameScene.js` → Gameplay principal, tile world, rampas, UI corazones
 - `src/Js/Entity.js` → Clase base para todas las entidades
 - `src/Config/config.js` → Configuración Phaser
+- `src/Scenes/PreloaderScene.js` → Carga de assets de tiles, corazones, splat.png
+- `src/Js/Laser.js` → Proyectiles con splat.png
 
 ## PATRONES DE CÓDIGO DETECTADOS
 
@@ -65,6 +67,14 @@ constructor(config) {
   // Player-specific
   this.hp = 1000;
   this.damage = 10;
+  // Sistema de corazones
+  this.maxHearts = 3;
+  this.hearts = 3;
+  this.isInvulnerable = false;
+  // Sistema de doble salto
+  this.jumpsAvailable = 2;
+  this.jumpForce = -470;
+  this.doubleJumpForce = -350;
 }
 ```
 
@@ -72,6 +82,10 @@ constructor(config) {
 - `damageOrKill(damage)` → Aplica daño, retorna true si muere
 - `die()` → Maneja muerte
 - `update()` → Lógica por frame (override de Phaser)
+- `activateInvulnerability(duration)` → Activa invulnerabilidad con parpadeo
+- `updateJumpState(onGround)` → Actualiza estado de saltos
+- `tryJump()` → Intenta realizar salto (doble salto)
+- `addHeart()` → Añade corazón al jugador
 
 ### CONVENCIONES DE NOMBRES
 - Clases: PascalCase (Player, GameScene, ChaserDude)
@@ -145,11 +159,19 @@ this.globals = {
   bgMusic: null          // Current background music
 };
 
-// En Player.js
-this.hp = 1000;          // Health points
-this.touch = false;      // Damage cooldown flag
-this.alive = true;       // Life state
+// En Player.js (SISTEMA DE CORAZONES)
+this.maxHearts = 3;      // Máximo de corazones (3 corazones completos = 6 medios)
+this.hearts = 3;         // Corazones actuales
+this.isInvulnerable = false; // Estado de invulnerabilidad
+this.invulnerabilityTimer = null; // Temporizador de invulnerabilidad
+this.alive = true;       // Estado de vida
 this.damage = 10;        // Base damage
+
+// Sistema de doble salto
+this.jumpsAvailable = 2; // Saltos disponibles (doble salto)
+this.jumpForce = -470;   // Fuerza del primer salto
+this.doubleJumpForce = -350; // Fuerza del segundo salto (75% del primero)
+this.wasOnGround = true; // Para detectar cuando toca el suelo
 ```
 
 ## PHYSICS CONFIGURATION
@@ -167,6 +189,10 @@ this.damage = 10;        // Base damage
 - Directorio `images/` para sprites y UI
 - Sonidos manejados por clase `Sound`
 - PreloaderScene carga todos los assets
+- **Tile assets**: `/home/pablo/Documentos/spreets/kenney_new-platformer-pack-1.1/Sprites/Tiles/Double/`
+- **Ramp tiles**: `terrain_stone_ramp_long_a`, `terrain_stone_ramp_long_b`, `terrain_stone_ramp_long_c`
+- **Heart system**: `hud_heart`, `hud_heart_half`, `hud_heart_empty`, `heart` (collectible)
+- **Projectile**: `splat.png` usado como `redlight` y `splat`
 
 ## COMMON TASKS & LOCATIONS
 
@@ -198,6 +224,10 @@ this.damage = 10;        // Base damage
 4. **Scene management** → Phaser maneja transiciones automáticas
 5. **Audio via Sound class** → No usar Phaser audio directamente
 6. **Testing requiere mocks** → Canvas y assets mockeados
+7. **Arcade physics solo rectángulos/círculos** → Rampas implementadas con múltiples cuerpos pequeños
+8. **Sistema de corazones** → 3 corazones = 6 medios, invulnerabilidad 3 segundos tras daño
+9. **Doble salto** → 2 saltos disponibles, segundo salto 75% fuerza del primero
+10. **Shooting while running** → Separado de lógica de movimiento en GameScene.js
 
 ## QUICK COMMANDS
 ```bash
@@ -222,3 +252,8 @@ find src -name "*.js" | grep -v node_modules
 - **UI**: `Button.js`, Scene create methods
 - **Game flow**: Scene transition methods
 - **Physics**: `config.js`, Entity constructors
+- **Tile system**: `GameScene.js` createTileWorld(), PreloaderScene.js
+- **Ramp physics**: `GameScene.js` createRealRamp()
+- **Heart system**: `Player.js` damageOrKill(), `GameScene.js` createHeartsUI()
+- **Double jump**: `Player.js` tryJump(), `GameScene.js` update() jump logic
+- **Shooting**: `Laser.js`, `LaserGroup.js`, `GameScene.js` shooting logic
