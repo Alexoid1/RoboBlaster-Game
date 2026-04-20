@@ -75,12 +75,7 @@ export default class GameScene extends Phaser.Scene {
     this.score = 0;            // Puntuación inicial
 
     let groundX = 39240;
-    this.createParticles = () => {
-      // Nueva API de partículas para Phaser 3.60+
-      this.particles = this.add.particles('redlight');
-      // Crear configuración básica de partículas sin usar createEmitter
-      // que fue removido en Phaser 3.60+
-    };
+   
 
     const groundY = 589;
     const platforms = this.physics.add.staticGroup();
@@ -454,7 +449,7 @@ export default class GameScene extends Phaser.Scene {
     
     // La UI se creará después de que el jugador sea creado
     this.monsters = [];
-    this.createParticles();
+   
     const monsterCreator = (num, hord) => {
       let corx = 7900; // Cambiado de 1000 a 600 para estar aún más cerca del jugador
       for (let j = 1; j < hord; j += 1) {
@@ -678,8 +673,8 @@ export default class GameScene extends Phaser.Scene {
       // Actualizar UI con el nuevo corazón
       this.createHeartsUI();
       
-      // Efecto de partículas (comentado por compatibilidad con Phaser 3.60+)
-      // this.particles.emitParticleAt(heart.x, heart.y, 25);
+      // Efecto de partículas deshabilitado por compatibilidad con Phaser 3.60+
+      // if (this.particles) this.particles.emitParticleAt(heart.x, heart.y, 25);
       
       // Sonido (opcional)
       // this.sound.play('collectSound', { volume: 0.5 });
@@ -701,8 +696,8 @@ export default class GameScene extends Phaser.Scene {
       this.score += 50;
       this.scoreText.setText(`Score: ${this.score}`);
       
-      // Efecto de impacto con partículas (comentado por compatibilidad con Phaser 3.60+)
-      // this.particles.emitParticleAt(laser.x, laser.y, 30);
+      // Efecto de impacto con partículas deshabilitado por compatibilidad con Phaser 3.60+
+      // if (this.particles) this.particles.emitParticleAt(laser.x, laser.y, 30);
       
       // Desactivar el láser (detiene partículas y deshabilita física)
       if (laser.disable) {
