@@ -1,13 +1,15 @@
 [build]
-  command = "npm run build"
+  command = "npm ci && CI=false NODE_ENV=production npm run build"
   publish = "dist"
 
 [build.environment]
   NODE_VERSION = "18"
   NODE_ENV = "production"
+  CI = "false"
 
 [context.production.environment]
   NODE_ENV = "production"
+  CI = "false"
 
 # Configuración para headers de caché (opcional)
 [[headers]]
