@@ -52,7 +52,24 @@ export default class GameScene extends Phaser.Scene {
     this.model;             // Modelo de sonido/configuración
     this.platformNumber;    // Número de plataformas
     this.particles;         // Sistema de partículas
+    this.emitter;           // Emisor de partículas
     this.heartsGroup;       // Grupo de corazones recolectables
+  }
+
+  /**
+   * Crea el sistema de partículas para efectos visuales
+   */
+  createParticles() {
+    this.particles = this.add.particles('redlight');
+    this.emitter = this.particles.createEmitter({
+      x: 100,
+      y: 150,
+      speed: 200,
+      lifespan: 500,
+      blendMode: 'ADD',
+      scale: { start: 1, end: 0 },
+      on: false,
+    });
   }
 
   /**
@@ -449,7 +466,10 @@ export default class GameScene extends Phaser.Scene {
     
     // La UI se creará después de que el jugador sea creado
     this.monsters = [];
-   
+    
+    // Crear sistema de partículas
+    this.createParticles();
+    
     const monsterCreator = (num, hord) => {
       let corx = 7900; // Cambiado de 1000 a 600 para estar aún más cerca del jugador
       for (let j = 1; j < hord; j += 1) {
@@ -673,8 +693,8 @@ export default class GameScene extends Phaser.Scene {
       // Actualizar UI con el nuevo corazón
       this.createHeartsUI();
       
-      // Efecto de partículas deshabilitado por compatibilidad con Phaser 3.60+
-      // if (this.particles) this.particles.emitParticleAt(heart.x, heart.y, 25);
+      // Efecto de partículas al recolectar corazón
+      this.particles.emitParticleAt(heart.x, heart.y, 25);
       
       // Sonido (opcional)
       // this.sound.play('collectSound', { volume: 0.5 });
@@ -696,8 +716,8 @@ export default class GameScene extends Phaser.Scene {
       this.score += 50;
       this.scoreText.setText(`Score: ${this.score}`);
       
-      // Efecto de impacto con partículas deshabilitado por compatibilidad con Phaser 3.60+
-      // if (this.particles) this.particles.emitParticleAt(laser.x, laser.y, 30);
+      // Efecto de impacto con partículas al golpear enemigo
+      this.particles.emitParticleAt(laser.x, laser.y, 30);
       
       // Desactivar el láser (detiene partículas y deshabilita física)
       if (laser.disable) {
