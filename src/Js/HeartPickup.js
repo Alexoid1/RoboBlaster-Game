@@ -46,5 +46,7 @@ export default class HeartPickup extends Phaser.Physics.Arcade.Sprite {
         this.destroy();
       }
     });
+    this.scene.score+= 2000;
+    this.scene.scoreText.setText(`Score: ${this.scene.score}`);
   }
 }

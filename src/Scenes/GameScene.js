@@ -3,8 +3,8 @@ import * as Phaser from 'phaser';
 import JumperDude from '../Js/JumperDude';
 import ChaserDude from '../Js/ChaserDude';
 import Player from '../Js/Player';
-import LaserGroup from '../Js/LaserGroup';
 import SlashGroup from '../Js/SlashGroup';
+import Bullet from '../Js/Bullet';
 import HeartPickup from '../Js/HeartPickup';
 import LocalStorage from '../Tools/localStorage';
 
@@ -39,10 +39,10 @@ const backgroundCreatorForest1 = (scene, count, texture, scrollFactor) => {
  * Maneja al jugador, enemigos, física, puntuación y colisiones
  */
 export default class GameScene extends Phaser.Scene {
+  teclaE;
   constructor() {
     super('Game');
-    // Variables de instancia
-    this.laserGroup;        // Grupo de láseres/proyectiles
+    // Variables de instancia      // Grupo de láseres/proyectiles
     this.monsters;
     this.monsters2;
     this.allMonsters;          // Array de enemigos
@@ -55,7 +55,8 @@ export default class GameScene extends Phaser.Scene {
     this.platformNumber;    // Número de plataformas
     this.particles;         // Sistema de partículas
     this.emitter;           // Emisor de partículas
-    this.heartsGroup;       // Grupo de corazones recolectables
+    this.heartsGroup; 
+    this.bullets;      // Grupo de corazones recolectables
   }
 
   /**
@@ -444,6 +445,7 @@ export default class GameScene extends Phaser.Scene {
      */
     this.updateHeartsUI = () => {
       // Si maxHearts cambió, recrear toda la UI
+
       if (this.heartsSprites.length !== this.player.maxHearts) {
         this.createHeartsUI();
         return;
@@ -464,6 +466,8 @@ export default class GameScene extends Phaser.Scene {
         heart.setTexture(heartTexture);
       }
     };
+    
+    
     
     // La UI se creará después de que el jugador sea creado
     this.monsters = [];
@@ -597,32 +601,17 @@ export default class GameScene extends Phaser.Scene {
     const cameraMaxHeight = 3800; // 3000 + 800
     this.cameras.main.setBounds(0, cameraBoundsTop, 300000, cameraMaxHeight);
 
-    this.laserGroup = new LaserGroup(this);
+
     this.slashGroup = new SlashGroup(this);
+    
+    // Crear grupo de balas
+    this.bullets = this.physics.add.group({
+        classType: Bullet,
+        maxSize: 5,
+        runChildUpdate: true
+    });
 
-    this.attackInterval = () => {
-      timer = false;
-      this.time.addEvent({
-        delay: 20,
-        repeat: 0,
-        callbackScope: this,
-        callback() {
-          Phaser.Actions.Call(this.laserGroup.getChildren(), child => {
-            child.active = false;
-
-            this.time.addEvent({
-              delay: 700,
-              repeat: 0,
-              callbackScope: this,
-              callback() {
-                timer = true;
-                child.disableBody(true, true);
-              },
-            });
-          });
-        },
-      });
-    };
+    
     this.slashInterval = () => {
       timerSlash = false;
       this.time.addEvent({
@@ -718,27 +707,18 @@ export default class GameScene extends Phaser.Scene {
         player.setTint(0xffffff);
       });
     }, null, this);
-
-    this.physics.add.collider(platforms, blast);
-    this.physics.add.overlap(this.laserGroup, this.allMonsters, null, (mon, laser) => {
-      mon.setTint(0xff0000);
-      const died = mon.damg(250);
-      this.score += 250;
-      
+    this.physics.add.overlap(this.bullets, this.allMonsters,null, (monster, bullet) => {
+      monster.setTint(0xff0000);
+      // If bullet hits planet, destroy the bullet and play the effect
+      monster.damg(50);
+      bullet.destroyBullet(true);
+      this.score += 100;
       this.scoreText.setText(`Score: ${this.score}`);
       
-      // Efecto de impacto con partículas al golpear enemigo
-      this.particles.emitParticleAt(laser.x, laser.y, 30);
-      
-      // Desactivar el láser (detiene partículas y deshabilita física)
-      if (laser.disable) {
-        laser.disable();
-      } else {
-        // Fallback para compatibilidad
-        laser.setActive(false);
-        laser.body.enable = false;
-      }
-    }, null, this);
+      return true;
+    });
+
+    
     this.physics.add.overlap(this.slashGroup, this.allMonsters, null, (mon, slash) => {
       mon.setTint(0xff0000);
       const died = mon.damg(250);
@@ -750,6 +730,7 @@ export default class GameScene extends Phaser.Scene {
 
       slash.setActive(false);
       slash.body.enable = false;
+      return true;
     }, null, this);
 
     this.enemies = this.add.group();
@@ -828,6 +809,13 @@ export default class GameScene extends Phaser.Scene {
       frameRate: 10,
       repeat: -1,
     });
+    this.anims.create({
+      key: 'skullFly',
+      frames: 'fireSkull',
+      frameRate: 3,
+      repeat: -1
+  });
+    this.teclaE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
   }
 
   update() {
@@ -900,22 +888,29 @@ export default class GameScene extends Phaser.Scene {
 
         this.slashInterval();
       }
-    } else if (this.keyE.isDown && this.player.flipX === true) {
-      if (timer) {
-        this.laserGroup.fireLaser(this.player.x, this.player.y);
-        this.laserGroup.setVelocityX(-900);
-        this.player.anims.play('attackD');
+    } else if (Phaser.Input.Keyboard.JustDown(this.teclaE) ) {
+      
+        const bullet = this.bullets.get();
+        if(this.player.flipX === true){
 
-        this.attackInterval();
-      }
-    } else if (this.keyE.isDown && this.player.flipX !== true) {
-      if (timer) {
-        this.player.anims.play('attackD');
-        this.laserGroup.fireLaser(this.player.x, this.player.y);
-
-        this.attackInterval();
-      }
-    } else if (onGround) {
+        if (bullet) {
+            bullet.fire(this.player.x, this.player.y);
+            // Si el jugador está mirando hacia la izquierda, invertir dirección
+            
+                bullet.setVelocityX(-900);
+            
+        }}
+        else{
+          if (bullet) {
+            bullet.fire(this.player.x, this.player.y);
+            // Si el jugador está mirando hacia la izquierda, invertir dirección
+            
+                bullet.setVelocityX(900);
+            
+        }}
+        }
+      
+     else if (onGround) {
       this.player.setVelocityX(0);
 
       this.player.anims.play('turn', true);

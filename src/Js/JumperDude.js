@@ -6,7 +6,7 @@ class JumperDude extends Entity {
   constructor(config) {
     super({
       ...config,
-      texture: 'dude',
+      texture: 'fireSkull',
 
     });
 
@@ -23,7 +23,7 @@ class JumperDude extends Entity {
     this.body.setSize(collisionWidth, 47);
     this.body.setOffset(offsetX, 0);
     
-    this.hp = 1000;
+    this.hp = 600;
     this.touch = false;
     this.alive = true;
     this.damage = 50;
@@ -107,10 +107,7 @@ class JumperDude extends Entity {
     }
 
     // Añadir puntuación por matar JumperDude (2000 puntos)
-    if (this.scene && this.scene.score !== undefined && this.scene.scoreText) {
-      this.scene.score += 2000;
-      this.scene.scoreText.setText(`Score: ${this.scene.score}`);
-    }
+  
 
     setTimeout(() => {
       this.setVisible(false);

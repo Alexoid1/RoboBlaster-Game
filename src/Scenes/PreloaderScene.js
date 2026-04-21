@@ -12,16 +12,12 @@ import textureR from '../assets/texture.png';
 import texture2 from '../assets/texturerun.png';
 import shooterBlast from '../assets/Final_Blast.png';
 import groupS from '../assets/groupSlash.png';
-import runAtlas from '../assets/Robokid_Run_Blue.png';
-import runAtlasJson from '../assets/Robokid_Run_Blue.json';
-import textureRoboAtlasJson from '../assets/texture_robo.json';
 import playerIcon from '../assets/playerIcon.png';
 import button from '../assets/button.png';
 import button2 from '../assets/button2.png';
 import titleBg from '../assets/robotfon.png';
 import box from '../assets/grey_box.png';
 import checkedBox from '../assets/blue_boxCheck.png';
-import redlight from '../assets/splat.png';
 import terrain_stone_horizontal_middle from '../assets/terrain_stone_horizontal_middle.png';
 import terrain_stone_horizontal_left from '../assets/terrain_stone_horizontal_left.png';
 import terrain_stone_horizontal_right from '../assets/terrain_stone_horizontal_right.png';
@@ -41,13 +37,12 @@ import terrain_stone_block from '../assets/terrain_stone_block.png'
 import hud_heart_empty from '../assets/hud_heart_empty.png';
 import hud_heart from '../assets/hud_heart.png';
 import hud_heart_half from '../assets/hud_heart_half.png';
-import heart from '../assets/heart.png'
-import bomb from '../assets/bomb.png'
-import splat from '../assets/splat.png'
-
-
-
-
+import heart from '../assets/heart.png';
+import flares from '../assets/flares.png';
+import flaresJson from '../assets/flares.json';
+import bullet from '../assets/bullet6.png';
+import fireSkull from '../assets/fire-skull.png';
+import fireSkullJson from '../assets/fire-skull.json'
 
 
 /**
@@ -85,7 +80,6 @@ export default class PreloaderScene extends Phaser.Scene {
     this.load.image('playerIcon', playerIcon);
     this.load.image('platform', platform);
     this.load.image('ground', ground);
-    this.load.image('redlight', redlight);
     this.load.image('box', box);
     this.load.image('checkedBox', checkedBox);
     this.load.image('terrain_stone_horizontal_middle', terrain_stone_horizontal_middle);
@@ -108,8 +102,9 @@ export default class PreloaderScene extends Phaser.Scene {
     this.load.image('hud_heart', hud_heart);
     this.load.image('hud_heart_empty', hud_heart_empty);
     this.load.image('heart', heart);
-    this.load.image('bomb', bomb);
-    this.load.image('splat', splat);
+    this.load.image("bullet", bullet);
+    this.load.atlas('flares', flares, flaresJson);
+    this.load.atlas('fireSkull',fireSkull,fireSkullJson);
     
 
     

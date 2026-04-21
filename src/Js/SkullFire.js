@@ -5,25 +5,25 @@ import * as Phaser from 'phaser';
  * Clase que representa un enemigo perseguidor
  * Sigue al jugador cuando está dentro de su rango de detección
  */
-class ChaserDude extends Entity {
+class SkullFire extends Entity {
   constructor(config) {
     super({
       ...config,
-      texture: 'dude',
+      texture: 'fireSkull',
     });
 
     this.jumpHeight = 600;  // Altura máxima de salto
 
     // Configuración física del enemigo
-    this.body.setSize(28, 47);
-    this.setGravityY(800);
+    this.body.setSize(28, 28);
+    
     this.setScale(3);
     
     // Colisión más estrecha para evitar amontonamiento (15% del ancho)
     // Ancho original: 28 * 3 = 84px, 15% = ~12px, offset para centrar
     const collisionWidth = 12; // 15% del ancho original
-    const offsetX = (20 - collisionWidth) / 2; // Centrar colisión
-    this.body.setSize(collisionWidth, 47);
+    const offsetX = (10 - collisionWidth) / 2; // Centrar colisión
+    this.body.setSize(28, 28);
     this.body.setOffset(offsetX, 0);
     
     // Estadísticas del enemigo
@@ -41,7 +41,7 @@ class ChaserDude extends Entity {
   huntPlayer() {
     if (this.x < this.scene.player.x) {
       // Mueve hacia la derecha (jugador está a la derecha)
-      this.body.setVelocityX(160);
+      this.body.setVelocityY(160);
       this.setFlipX(true);  // Voltea el sprite
     } else {
       // Mueve hacia la izquierda (jugador está a la izquierda)
