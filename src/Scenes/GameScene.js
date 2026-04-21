@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-expressions */
-import Phaser from 'phaser';
+import * as Phaser from 'phaser';
 import JumperDude from '../Js/JumperDude';
 import ChaserDude from '../Js/ChaserDude';
 import Player from '../Js/Player';
@@ -43,7 +43,9 @@ export default class GameScene extends Phaser.Scene {
     super('Game');
     // Variables de instancia
     this.laserGroup;        // Grupo de láseres/proyectiles
-    this.monsters;          // Array de enemigos
+    this.monsters;
+    this.monsters2;
+    this.allMonsters;          // Array de enemigos
     this.monster;           // Referencia temporal a enemigo
     this.chaser;            // Referencia a enemigo perseguidor
     this.heathText;         // Texto de salud en UI
@@ -60,16 +62,16 @@ export default class GameScene extends Phaser.Scene {
    * Crea el sistema de partículas para efectos visuales
    */
   createParticles() {
-    this.particles = this.add.particles('redlight');
-    this.emitter = this.particles.createEmitter({
+    this.particles = this.add.particles('redlight', {
       x: 100,
       y: 150,
       speed: 200,
       lifespan: 500,
       blendMode: 'ADD',
       scale: { start: 1, end: 0 },
-      on: false,
+      active: false,
     });
+    this.emitter = this.particles;
   }
 
   /**
@@ -79,12 +81,12 @@ export default class GameScene extends Phaser.Scene {
   create() {
     // Configuración de sonido - Música apagada por el momento
     this.model = this.sys.game.globals.model;
-     if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {
-      this.bgMusic = this.sound.add('bgMusic', { volume: 0.3, loop: true });
-       this.bgMusic.play();
-       this.model.bgMusicPlaying = true;
-       this.sys.game.globals.bgMusic = this.bgMusic;
-     }
+     //if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {
+      //this.bgMusic = this.sound.add('bgMusic', { volume: 0.3, loop: true });
+      // this.bgMusic.play();
+      // this.model.bgMusicPlaying = true;
+      // this.sys.game.globals.bgMusic = this.bgMusic;
+     //}
     // Comentado para apagar música temporalmente
     
     // Inicialización de variables
@@ -192,8 +194,7 @@ export default class GameScene extends Phaser.Scene {
             this.physics.add.collider(monster, this.realRampGroup);
           });
         }
-        
-        console.log('Rampa real creada en x=500 con', steps, 'pasos');
+      
       };
       
       // La rampa se creará después del jugador
@@ -466,21 +467,20 @@ export default class GameScene extends Phaser.Scene {
     
     // La UI se creará después de que el jugador sea creado
     this.monsters = [];
+    this.monsters2 = []
     
     // Crear sistema de partículas
     this.createParticles();
     
-    const monsterCreator = (num, hord) => {
-      let corx = 7900; // Cambiado de 1000 a 600 para estar aún más cerca del jugador
-      for (let j = 1; j < hord; j += 1) {
-        for (let i = 0; i < num; i += 1) {
-         
-            if (i % 2 === 0) {
+    const monsterCreatorChaser = (cord) => {
+       // Cambiado de 1000 a 600 para estar aún más cerca del jugador
+      for (let j = 0; j < cord.length; j += 1) {   
+            
               this.monster = new ChaserDude({
                 scene: this,
-                x: corx + i * 150, // Separación mayor para que no se amontonen
-                y: 400, // Ajustado para que estén SOBRE las plataformas (groundY - 150 = 439)
-                key: `chaser${i}${j}`,
+                x: cord[j][0], // Separación mayor para que no se amontonen
+                y: cord[j][1], // Ajustado para que estén SOBRE las plataformas (groundY - 150 = 439)
+                key: `chaser${cord.length}${j}`,
               });
               this.physics.add.collider(this.monster, platforms);
               // Añadir colisión con la plataforma de matriz si existe
@@ -489,53 +489,63 @@ export default class GameScene extends Phaser.Scene {
               }
               this.monsters.push(this.monster);
               this.monster.setBounce(2400, 0, 4900, this.scale.height);
-            } else {
-              this.monster = new JumperDude({
-                scene: this,
-                x: corx + i * 150,
-                y: 400,
-                key: `dude${i}${j}`,
-              });
-              this.physics.add.collider(this.monster, platforms);
-              // Añadir colisión con la plataforma de matriz si existe
-              if (this.matrixPlatform) {
-                this.physics.add.collider(this.monster, this.matrixPlatform);
-              }
-              this.monsters.push(this.monster);
-              this.monster.setBounce(2400, 0, 4900, this.scale.height);
-            }
-        
-            this.monster = new ChaserDude({
-              scene: this,
-              x: corx + i * 150, // Separación mayor para que no se amontonen
-              y: 400, // Ajustado para que estén SOBRE las plataformas (groundY - 150 = 439)
-              key: `chaser${i}${j}`,
-            });
-            this.physics.add.collider(this.monster, platforms);
-            this.monsters.push(this.monster);
-            this.monster.setBounce(2400, 0, 4900, height);
-            
+                       
+        }   
           
+     }
+
+      
+    monsterCreatorChaser([[7900, 400],[8000,400],[8200,400],[13800,400],[13900,400],[14100,400]]);
+
+    const monsterCreatorJumper = (cord) => {
+      // Cambiado de 1000 a 600 para estar aún más cerca del jugador
+     for (let j = 0; j < cord.length; j += 1) {      
+           
+        this.monster = new JumperDude({
+               scene: this,
+               x: cord[j][0], // Separación mayor para que no se amontonen
+               y: cord[j][1], // Ajustado para que estén SOBRE las plataformas (groundY - 150 = 439)
+               key: `Jumper${cord.length}${j}`,
+        });
+        this.physics.add.collider(this.monster, platforms);
+             // Añadir colisión con la plataforma de matriz si existe
+        if (this.matrixPlatform) {
+            this.physics.add.collider(this.monster, this.matrixPlatform);
         }
-
-        corx += 3500; // Reducido de 1000 a 800 para que estén más juntos
+        this.monsters2.push(this.monster);
+        this.monster.setBounce(2400, 0, 4900, this.scale.height);
+         
       }
-    };
+         
+    }
 
-    monsterCreator(3, 3);
+    monsterCreatorJumper([[8100,400],[14000,400]])
+    // Opción 2: concat
+    this.allMonsters = this.monsters.concat(this.monsters2)
+    
+    // Añadir colisión entre enemigos para evitar que se sobrepongan
+    if (this.monsters.length > 1) {
+      for (let i = 0; i < this.monsters.length; i++) {
+        for (let j = i + 1; j < this.monsters.length; j++) {
+          this.physics.add.collider(this.monsters[i], this.monsters[j]);
+        }
+      }
+    }
     
     // Añadir colisión de enemigos con plataformas flotantes
-    if (this.floatingPlatforms && this.monsters.length > 0) {
-      this.monsters.forEach(monster => {
+    if (this.floatingPlatforms && this.allMonsters.length > 0) {
+      this.allMonsters.forEach(monster => {
         this.physics.add.collider(monster, this.floatingPlatforms);
       });
+     
     }
     
     // Añadir colisión de enemigos con plataformas de tiles (matrixPlatform)
-    if (this.matrixPlatform && this.monsters.length > 0) {
-      this.monsters.forEach(monster => {
+    if (this.matrixPlatform && this.allMonsters.length > 0) {
+      this.allMonsters.forEach(monster => {
         this.physics.add.collider(monster, this.matrixPlatform);
       });
+      
     }
 
     this.player = new Player({
@@ -654,7 +664,7 @@ export default class GameScene extends Phaser.Scene {
       this.physics.add.collider(this.matrixPlatform, this.player);
     }
 
-    this.physics.add.overlap(this.monsters, this.player, null, (mon2, player) => {
+    this.physics.add.overlap(this.allMonsters, this.player, null, (mon2, player) => {
       // Si el jugador es invulnerable, aplicar daño de corazón completo
       const damageType = player.isInvulnerable ? 1 : 0.5;
       
@@ -710,10 +720,11 @@ export default class GameScene extends Phaser.Scene {
     }, null, this);
 
     this.physics.add.collider(platforms, blast);
-    this.physics.add.overlap(this.laserGroup, this.monsters, null, (mon, laser) => {
+    this.physics.add.overlap(this.laserGroup, this.allMonsters, null, (mon, laser) => {
       mon.setTint(0xff0000);
-      mon.damg(250);
-      this.score += 50;
+      const died = mon.damg(250);
+      this.score += 250;
+      
       this.scoreText.setText(`Score: ${this.score}`);
       
       // Efecto de impacto con partículas al golpear enemigo
@@ -728,10 +739,13 @@ export default class GameScene extends Phaser.Scene {
         laser.body.enable = false;
       }
     }, null, this);
-    this.physics.add.overlap(this.slashGroup, this.monsters, null, (mon, slash) => {
+    this.physics.add.overlap(this.slashGroup, this.allMonsters, null, (mon, slash) => {
       mon.setTint(0xff0000);
-      mon.damg(250);
+      const died = mon.damg(250);
       this.score += 250;
+      if (died) {
+        this.score += 2000;
+      }
       this.scoreText.setText(`Score: ${this.score}`);
 
       slash.setActive(false);
@@ -792,10 +806,9 @@ export default class GameScene extends Phaser.Scene {
     });
 
     this.anims.create({
-      key: 'right',
-      frames: this.anims.generateFrameNames('walk', { frames: [6, 7, 8, 9, 6, 5, 4, 3] }),
+      key: 'walk',
+      frames: this.anims.generateFrameNumbers('walk', { frames: [6, 7, 8, 9, 6, 5, 4, 3] }),
       frameRate: 10,
-      yoyo: true,
       repeat: -1,
     });
 
@@ -826,12 +839,14 @@ export default class GameScene extends Phaser.Scene {
       this.positionYText.setText(`Y: ${playerY}`);
     }
     
+    
     const onGround = this.player.body.touching.down || this.player.body.blocked.down;
     this.player.updateJumpState(onGround);
     this.player.update();
-    this.monsters.forEach(monster => {
+    this.allMonsters.forEach(monster => {
       monster.update();
     });
+    
 
     if (gameOver) {
       this.physics.pause();
@@ -848,12 +863,12 @@ export default class GameScene extends Phaser.Scene {
       this.player.flipX = true;
       this.player.setTint(0xFFFFFF);
 
-      this.player.anims.play('right', true);
+      this.player.anims.play('walk', true);
     } else if (cursors.right.isDown && onGround) {
       this.player.setVelocityX(460);
       this.player.setTint(0xFFFFFF);
       this.player.flipX = false;
-      this.player.anims.play('right', true);
+      this.player.anims.play('walk', true);
     } else if (cursors.right.isDown) {
       this.player.setVelocityX(speedX);
 

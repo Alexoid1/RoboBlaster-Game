@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import 'phaser';
+import * as Phaser from 'phaser';
 
 const config = {
   type: Phaser.AUTO,
@@ -8,7 +8,7 @@ const config = {
   physics: {
     default: 'arcade',
     arcade: {
-      debug: false,
+      debug: true,
       gravity: { y: 0 },
 
     },

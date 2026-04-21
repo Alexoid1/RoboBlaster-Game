@@ -1,4 +1,4 @@
-import 'phaser';
+import * as Phaser from 'phaser';
 import Button from '../Js/Button';
 
 // eslint-disable-next-line no-undef

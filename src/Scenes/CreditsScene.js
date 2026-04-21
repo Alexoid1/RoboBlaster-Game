@@ -1,5 +1,5 @@
 /* eslint-disable no-undef, no-unused-expressions */
-import Phaser from 'phaser';
+import * as Phaser from 'phaser';
 import Button from '../Js/Button';
 
 export default class CreditsScene extends Phaser.Scene {

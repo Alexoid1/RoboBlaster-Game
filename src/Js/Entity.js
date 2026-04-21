@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import Phaser from 'phaser';
+import * as Phaser from 'phaser';
 
 /**
  * Clase base para todas las entidades del juego

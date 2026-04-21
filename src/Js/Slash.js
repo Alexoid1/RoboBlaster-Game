@@ -1,4 +1,4 @@
-import Phaser from 'phaser';
+import * as Phaser from 'phaser';
 
 export default class Slash extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, key) {

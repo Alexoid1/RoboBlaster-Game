@@ -1,4 +1,5 @@
 import Entity from './Entity';
+import * as Phaser from 'phaser';
 
 /**
  * Clase que representa un enemigo perseguidor
@@ -18,11 +19,19 @@ class ChaserDude extends Entity {
     this.setGravityY(800);
     this.setScale(3);
     
+    // Colisión más estrecha para evitar amontonamiento (15% del ancho)
+    // Ancho original: 28 * 3 = 84px, 15% = ~12px, offset para centrar
+    const collisionWidth = 12; // 15% del ancho original
+    const offsetX = (20 - collisionWidth) / 2; // Centrar colisión
+    this.body.setSize(collisionWidth, 47);
+    this.body.setOffset(offsetX, 0);
+    
     // Estadísticas del enemigo
     this.hp = 1000;          // Puntos de vida
     this.touch = false;      // Indica si está siendo dañado
     this.alive = true;       // Estado de vida
-    this.damage = 50;        // Daño que inflige al jugador
+    this.damage = 50;
+    this.fell = false;          // Daño que inflige al jugador
   }
 
   /**
@@ -40,6 +49,14 @@ class ChaserDude extends Entity {
       this.setFlipX(false); // Restaura orientación
     }
   }
+  // Nueva propiedad
+// Añadir método para marcar como caído
+  fall() {
+    if (!this.fell) {
+    this.fell = true;
+    this.die();  // Llama al método die existente
+    }
+  }
 
   /**
    * Método update de Phaser - Se ejecuta en cada frame
@@ -53,12 +70,17 @@ class ChaserDude extends Entity {
     );
     
     // Si el jugador está dentro del rango de detección (580px), lo persigue
-    if (distanceToPlayer < 580) {
+    if (distanceToPlayer < 780) {
       this.huntPlayer();
+      
     } else {
       // Reproduce animación de reposo
       this.play('dudeleft');
     }
+
+    if (this.y> 750 ){
+      this.fall();
+     }
   }
 
   /**
@@ -66,7 +88,7 @@ class ChaserDude extends Entity {
    * @param {number} damage - Cantidad de daño a aplicar
    */
   damg(damage) {
-    this.damageOrKill(damage);
+    return this.damageOrKill(damage);
   }
 
   /**
@@ -94,8 +116,11 @@ class ChaserDude extends Entity {
   die() {
     // Efecto visual de muerte (tinte negro)
     this.setTint('#000');
-    this.setActive(false);
+    this.scene.score+= 2000;
     
+    this.scene.scoreText.setText(`Score: ${this.scene.score}`);
+    this.setActive(false);
+   
     // Detiene movimiento y física
     this.setVelocityX(0);
     this.setVelocityY(0);

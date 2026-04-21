@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import Phaser from 'phaser';
+import * as Phaser from 'phaser';
 
 /**
  * Clase que representa un láser/proyectil disparado por el jugador
