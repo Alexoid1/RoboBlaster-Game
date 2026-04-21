@@ -1,4 +1,4 @@
-import Phaser from 'phaser';
+import * as Phaser from 'phaser';
 import Slash from './Slash';
 
 export default class SlashGroup extends Phaser.Physics.Arcade.Group {

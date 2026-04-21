@@ -1,4 +1,4 @@
-import Phaser from 'phaser';
+import * as Phaser from 'phaser';
 import Button from '../Js/Button';
 import BgTrack from '../Sounds/trackFondo.mp3';
 

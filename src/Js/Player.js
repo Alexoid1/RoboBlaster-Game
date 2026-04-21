@@ -11,7 +11,7 @@ class Player extends Entity {
       texture: 'stand',
     });
     // Configuración física del jugador
-    this.body.setSize(160, 200);
+    this.body.setSize(177, 210);
     this.setScale(0.5);
     this.setGravityY(520);
     this.setCollideWorldBounds(true);  // Colisionar con límites del mundo

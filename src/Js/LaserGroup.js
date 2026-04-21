@@ -1,4 +1,4 @@
-import Phaser from 'phaser';
+import * as Phaser from 'phaser';
 import Laser from './Laser';
 
 export default class LaserGroup extends Phaser.Physics.Arcade.Group {

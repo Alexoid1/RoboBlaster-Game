@@ -1,4 +1,4 @@
-import Phaser from 'phaser';
+import * as Phaser from 'phaser';
 import Button from '../Js/Button';
 import Dom from '../Tools/dom';
 import LocalStorage from '../Tools/localStorage';

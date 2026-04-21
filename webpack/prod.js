@@ -1,4 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
+const path = require('path');
 const { merge } = require('webpack-merge');
 const TerserPlugin = require('terser-webpack-plugin');
 const base = require('./base');
@@ -6,7 +7,9 @@ const base = require('./base');
 module.exports = merge(base, {
   mode: 'production',
   output: {
+    path: path.resolve(__dirname, '../dist'),
     filename: 'bundle.min.js',
+    publicPath: '/',
     clean: true,
   },
   devtool: false,

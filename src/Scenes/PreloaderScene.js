@@ -1,4 +1,4 @@
-import Phaser from 'phaser';
+import * as Phaser from 'phaser';
 import moon from '../assets/moon.png';
 import clouds from '../assets/clouds.png';
 import forest1 from '../assets/forest1.png';
@@ -12,6 +12,9 @@ import textureR from '../assets/texture.png';
 import texture2 from '../assets/texturerun.png';
 import shooterBlast from '../assets/Final_Blast.png';
 import groupS from '../assets/groupSlash.png';
+import runAtlas from '../assets/Robokid_Run_Blue.png';
+import runAtlasJson from '../assets/Robokid_Run_Blue.json';
+import textureRoboAtlasJson from '../assets/texture_robo.json';
 import playerIcon from '../assets/playerIcon.png';
 import button from '../assets/button.png';
 import button2 from '../assets/button2.png';
@@ -112,9 +115,12 @@ export default class PreloaderScene extends Phaser.Scene {
     
 
     this.load.spritesheet('dude', dude, { frameWidth: 32, frameHeight: 48 });
+   
+    
     this.load.spritesheet('walk',
       texture2,
       { frameWidth: 184, frameHeight: 231 });
+
     this.load.spritesheet('blast',
       shooterBlast,
       {
@@ -128,7 +134,7 @@ export default class PreloaderScene extends Phaser.Scene {
       { frameWidth: 149, frameHeight: 231 });
     this.load.spritesheet('stand',
       textureR,
-      { frameWidth: 154, frameHeight: 231, margin: -5 });
+      { frameWidth: 154, frameHeight: 231 });
     this.load.spritesheet('dash',
       textureR,
       { frameWidth: 430, frameHeight: 231 });

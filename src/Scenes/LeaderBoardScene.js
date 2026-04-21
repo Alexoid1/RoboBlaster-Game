@@ -1,4 +1,4 @@
-import 'phaser';
+import * as Phaser from 'phaser';
 import API from '../Tools/api';
 import Button from '../Js/Button';
 

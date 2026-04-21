@@ -1,0 +1,82 @@
+{
+    "frames": {
+        "sprite1623": {
+            "frame": { "x": 0, "y": 4, "w": 108, "h": 206 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 108, "h": 206 },
+            "sourceSize": { "w": 108, "h": 206 }
+        },
+        "sprite1624": {
+            "frame": { "x": 152, "y": 0, "w": 121, "h": 210 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 121, "h": 210 },
+            "sourceSize": { "w": 121, "h": 210 }
+        },
+        "sprite1625": {
+            "frame": { "x": 318, "y": 1, "w": 169, "h": 195 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 169, "h": 195 },
+            "sourceSize": { "w": 169, "h": 210 }
+        },
+        "sprite1626": {
+            "frame": { "x": 530, "y": 4, "w": 181, "h": 203 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 181, "h": 203 },
+            "sourceSize": { "w": 181, "h": 203 }
+        },
+        "sprite1627": {
+            "frame": { "x": 761, "y": 4, "w": 147, "h": 204 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 147, "h": 204 },
+            "sourceSize": { "w": 147, "h": 204 }
+        },
+        "sprite1628": {
+            "frame": { "x": 956, "y": 4, "w": 131, "h": 206 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 131, "h": 206 },
+            "sourceSize": { "w": 131, "h": 206 }
+        },
+        "sprite1629": {
+            "frame": { "x": 1139, "y": 0, "w": 112, "h": 209 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 112, "h": 209 },
+            "sourceSize": { "w": 112, "h": 209 }
+        },
+        "sprite1630": {
+            "frame": { "x": 1302, "y": 1, "w": 143, "h": 195 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 143, "h": 195 },
+            "sourceSize": { "w": 143, "h": 210 }
+        },
+        "sprite1631": {
+            "frame": { "x": 1490, "y": 4, "w": 174, "h": 203 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 174, "h": 203 },
+            "sourceSize": { "w": 174, "h": 210 }
+        },
+        "sprite1632": {
+            "frame": { "x": 1707, "y": 4, "w": 136, "h": 204 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 136, "h": 204 },
+            "sourceSize": { "w": 136, "h": 204 }
+        }
+    },
+    "meta": {
+        "app": "Conversión manual desde datos CSV",
+        "version": "1.0",
+        "image": "Robokid_Run_Blue.png",
+        "format": "RGBA8888",
+        "size": { "w": 1843, "h": 210 },
+        "scale": "1"
+    }
+}
