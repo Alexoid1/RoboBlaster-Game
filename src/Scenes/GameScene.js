@@ -933,12 +933,12 @@ export default class GameScene extends Phaser.Scene {
     }
 
     if (this.keyQ.isDown && this.player.flipX === true) {
-      this.player.anims.stop('right');
+      this.player.anims.stop('walk');
       this.player.anims.play('dash', true);
       this.player.setVelocityX(-670 * 3);
     }
     if (this.keyQ.isDown && this.player.flipX === false) {
-      this.player.anims.stop('right');
+      this.player.anims.stop('walk');
       this.player.anims.play('dash', true);
       this.player.setVelocityX(670 * 3);
     }
