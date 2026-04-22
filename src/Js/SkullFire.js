@@ -10,9 +10,10 @@ class SkullFire extends Entity {
     super({
       ...config,
       texture: 'fireSkull',
+     
     });
 
-    this.jumpHeight = 600;  // Altura máxima de salto
+    
 
     // Configuración física del enemigo
     this.body.setSize(28, 28);
@@ -22,66 +23,125 @@ class SkullFire extends Entity {
     // Colisión más estrecha para evitar amontonamiento (15% del ancho)
     // Ancho original: 28 * 3 = 84px, 15% = ~12px, offset para centrar
     const collisionWidth = 12; // 15% del ancho original
-    const offsetX = (10 - collisionWidth) / 2; // Centrar colisión
-    this.body.setSize(28, 28);
-    this.body.setOffset(offsetX, 0);
+    
+    this.body.setSize(40, 40);
+   
     
     // Estadísticas del enemigo
     this.hp = 1300;          // Puntos de vida
     this.touch = false;      // Indica si está siendo dañado
-    this.alive = true;       // Estado de vida
+    this.alive = true;
+     
+    this.setGravityY(0);      // Estado de vida
     this.damage = 50;
-    this.fell = false;          // Daño que inflige al jugador
+    this.fell = false;
+    this.floatSpeed = 60; // px/seg
+    this.floatHeight = 100; // px
+    this.startY = config.y;
+    this.floatDirection = 1;
+    this.setScale(2);         // Daño que inflige al jugador
   }
 
   /**
    * Método que hace que el enemigo persiga al jugador
    * Se mueve hacia la posición del jugador
    */
-  huntPlayer() {
-    if (this.x < this.scene.player.x) {
+  moveC() {
+    if (this.x - this.scene.player.x < 700 ) {
       // Mueve hacia la derecha (jugador está a la derecha)
-      this.body.setVelocityY(160);
-      this.setFlipX(true);  // Voltea el sprite
+      // Voltea el sprite
+      if(this.y>this.startY-190){
+        this.body.setAccelerationY(-this.floatSpeed)
+      }else if(this.y<this.startY+130){
+        this.body.setAccelerationY(this.floatSpeed)
+
+      }
+
     } else {
       // Mueve hacia la izquierda (jugador está a la izquierda)
-      this.body.setVelocityX(-160);
-      this.setFlipX(false); // Restaura orientación
+      
+      this.body.setVelocityY(0);
+      
     }
+    
+  }
+
+  flipSkull(){
+    if (this.x < this.scene.player.x) {
+        // Mueve hacia la derecha (jugador está a la derecha)
+       
+        this.setFlipX(true);  // Voltea el sprite
+      } else {
+        // Mueve hacia la izquierda (jugador está a la izquierda)
+    
+        this.setFlipX(false); // Restaura orientación
+      }
   }
   // Nueva propiedad
 // Añadir método para marcar como caído
-  fall() {
-    if (!this.fell) {
-    this.fell = true;
-    this.die();  // Llama al método die existente
-    }
-  }
+ 
 
   /**
    * Método update de Phaser - Se ejecuta en cada frame
    * Decide si perseguir al jugador o mantenerse en reposo
    */
-  update() {
+  update(time) {
     // Calcula distancia al jugador
     const distanceToPlayer = Phaser.Math.Distance.Between(
-      this.x, this.y, 
-      this.scene.player.x, this.scene.player.y
-    );
-    
-    // Si el jugador está dentro del rango de detección (580px), lo persigue
-    if (distanceToPlayer < 780) {
-      this.huntPlayer();
+        this.x, this.y, 
+        this.scene.player.x, this.scene.player.y
+      );
       
-    } else {
-      // Reproduce animación de reposo
-      this.play('dudeleft');
-    }
+      // Si el jugador está dentro del rango de detección (580px), lo persigue
+      if (distanceToPlayer < 780) {
+        this.moveC()
+        this.flipSkull()
+      } else {
+        // Reproduce animación de reposo
+        this.play('skullFly');
+      }
+      
+      // AÑADIR ESTO: Movimiento cíclico en Y (flotación)
+      // Necesitas this.startY definido en constructor
+      // y this.floatTime acumulando
+     
 
-    if (this.y> 750 ){
-      this.fall();
-     }
+    
   }
+  paralyzePlayer(player) {
+    if (!this.isActive || !this.alive) return false;
+    
+    // Verificar si el jugador ya está paralizado
+    if (player.isParalyzed) {
+        return player.damg(0.5); // Solo daño adicional
+    }
+    
+    // Efecto de paralización
+    player.isParalyzed = true;
+    player.setTint(0x0000ff); // Color azul para indicar paralizado
+    
+    // Congelar controles del jugador
+    player.body.setVelocityY(0)
+    player.body.setVelocity(0, player.body.velocity.y);
+    
+    // Restaurar después de 3 segundos
+    this.scene.time.delayedCall(3000, () => {
+        if (player && player.active) {
+            player.isParalyzed = false;
+            player.setTint(0xffffff);
+            
+            // Restaurar velocidad horizontal si el jugador presiona teclas
+            if (player.scene.cursors.left.isDown) {
+                player.body.setVelocityX(-player.scene.speedX);
+            } else if (player.scene.cursors.right.isDown) {
+                player.body.setVelocityX(player.scene.speedX);
+            }
+        }
+    });
+    
+    // Quitar medio corazón
+    return player.damg(0.5);
+    }   
 
   /**
    * Aplica daño al enemigo
@@ -101,6 +161,7 @@ class SkullFire extends Entity {
     this.touch = true;
     if (this.touch === true) {
       this.hp -= damage;
+      this.paralyzePlayer()
       if (this.hp <= 0) {
         this.die();
         return true;
@@ -135,4 +196,4 @@ class SkullFire extends Entity {
   }
 }
 
-export default ChaserDude;
+export default SkullFire;

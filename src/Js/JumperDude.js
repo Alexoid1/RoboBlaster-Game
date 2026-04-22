@@ -6,7 +6,7 @@ class JumperDude extends Entity {
   constructor(config) {
     super({
       ...config,
-      texture: 'fireSkull',
+      texture: 'dude',
 
     });
 

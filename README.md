@@ -1,51 +1,50 @@
 # RoboBlaster Game
-<hr>
-This is a game that a build inspired by megaman series you only need a keyboard and a browser to play it, build in phaser 3, the objective of this game is get the highest score beating enemies and care that your Health points dont reach to zero.
+
+This is a MegaMan-inspired shooter-platformer game built with Phaser 4. Control a robot, defeat enemies, collect hearts, and get the highest score. You only need a keyboard and browser to play.
 
 ## Built With
 
- - Phaser 3
- - JavaScript
- - Webpack
- - Jest
- - Css
+- Phaser 4
+- JavaScript (ES6 Modules)
+- Webpack
+- Jest
+- CSS3
 
 ## Requirements
 
- - [Node.js](https://nodejs.org) is required to install dependencies and run scripts via `npm`.
- - Browser 
- - Internet
-
+- [Node.js](https://nodejs.org) to install dependencies and run scripts via `npm`.
+- A modern web browser.
+- Internet connection (for leaderboard API).
 
 ## Live Version
-[Click here to play](https://robo-blaster-game.netlify.app/)
 
+[Click here to play](https://robo-blaster-game.netlify.app/)
 
 ## How to Play
 
-- ⬅️  Press the left arrow key to move left.
-- ➡️  Press the right arrow key to move right
-- ⬆️  Press the up arrow key or the space bar to jump.
-- ⬇️  Land fast.
-- Q   Press the 'Q' key for dash ability.
-- W   Press the 'W' key for Blade ability.
-- E   Press the 'E' key for Shoot energy blast.
+- ⬅️ Press the left arrow key to move left.
+- ➡️ Press the right arrow key to move right.
+- ⬆️ Press the up arrow key or the space bar to jump (double jump available).
+- ⬇️ Press down to fast fall.
+- Q Press the 'Q' key for dash ability.
+- W Press the 'W' key for Blade (melee) attack.
+- E Press the 'E' key for Shoot energy blast.
 
 ![gif](./images/robogif.gif)
-<hr>
 
 ![screenshot](./images/img1.png)
-<hr>
 
 ![screenshot](./images/img2.png)
 
-## Instruction
- - Stay away of the enemies
- - Use Dash Ability to avoid them
- - Use Blade ability to attack (high damage)
- - Use Blast ability to attack
- - Try to make the highest score
- - Stay tune for next to come
+## Instructions
+
+- Stay away from enemies.
+- Use Dash (Q) to avoid them.
+- Use Blade (W) for high-damage melee attacks.
+- Use Blast (E) for ranged attacks.
+- Collect hearts to increase your max HP.
+- Defeat enemies to earn points.
+- **New enemy: SkullFire** — floats vertically and **paralyzes** you on contact (3 seconds).
 
 ## Authors
 
@@ -54,19 +53,15 @@ This is a game that a build inspired by megaman series you only need a keyboard 
 - Twitter: [@Alexis Zambrano_acz](https://twitter.com/pablo_acz)
 - Linkedin: [linkedin](https://www.linkedin.com/in/alexzambranocoral/)
 
-
 ## Available Commands
 
 | Command | Description |
 |---------|-------------|
 | `npm install` | Install project dependencies |
 | `npm start` | Build project and open web server running project |
-| `npm run build` | Builds code bundle with production settings (minification, uglification, etc.|
-| `npm run test` | Run test |
-
+| `npm run build` | Builds code bundle with production settings (minification, uglification, etc.) |
+| `npm run test` | Run tests |
 
 ## Show your support
 
 Give a ⭐️ if you like this project!
-
-

@@ -81,6 +81,7 @@ class ChaserDude extends Entity {
     if (this.y> 750 ){
       this.fall();
      }
+     
   }
 
   /**

@@ -23,6 +23,7 @@ class Player extends Entity {
     this.invulnerabilityTimer = null; // Temporizador de invulnerabilidad
     this.alive = true;       // Estado de vida
     this.damage = 10;        // Daño base del jugador
+    this.isParalyzed = false; // Estado de paralización
     
     // Sistema de doble salto
     this.jumpsAvailable = 2; // Saltos disponibles (doble salto)

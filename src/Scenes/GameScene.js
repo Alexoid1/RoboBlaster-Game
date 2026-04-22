@@ -5,6 +5,7 @@ import ChaserDude from '../Js/ChaserDude';
 import Player from '../Js/Player';
 import SlashGroup from '../Js/SlashGroup';
 import Bullet from '../Js/Bullet';
+import SkullFire from '../Js/SkullFire';
 import HeartPickup from '../Js/HeartPickup';
 import LocalStorage from '../Tools/localStorage';
 
@@ -40,6 +41,7 @@ const backgroundCreatorForest1 = (scene, count, texture, scrollFactor) => {
  */
 export default class GameScene extends Phaser.Scene {
   teclaE;
+  sprite
   constructor() {
     super('Game');
     // Variables de instancia      // Grupo de láseres/proyectiles
@@ -47,7 +49,8 @@ export default class GameScene extends Phaser.Scene {
     this.monsters2;
     this.allMonsters;          // Array de enemigos
     this.monster;           // Referencia temporal a enemigo
-    this.chaser;            // Referencia a enemigo perseguidor
+    this.chaser;
+    this.skullFire;           // Referencia a enemigo perseguidor
     this.heathText;         // Texto de salud en UI
     this.scoreText;         // Texto de puntuación en UI
     this.score;             // Puntuación actual
@@ -240,7 +243,7 @@ export default class GameScene extends Phaser.Scene {
           [0,0,0,0,0,0,0,0,0,0,0,14,15,0,0,0,0,0,0,0,0,0],
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,16,0,0,0,0,0,14,2,2,2,15],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,16,0,0,0,0,0,14,2,2,2,15,0,0,0,0,0,0,14,2,2,2,15],
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,16,0,0,0,0,0],
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,16,0,0,0,0,0,0],
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,16,0,0,0,0,0,0,0],
@@ -471,7 +474,10 @@ export default class GameScene extends Phaser.Scene {
     
     // La UI se creará después de que el jugador sea creado
     this.monsters = [];
-    this.monsters2 = []
+    this.monsters2 = [];
+    this.skullFire = [];
+    this.allMonsters =[];
+  
     
     // Crear sistema de partículas
     this.createParticles();
@@ -492,7 +498,8 @@ export default class GameScene extends Phaser.Scene {
                 this.physics.add.collider(this.monster, this.matrixPlatform);
               }
               this.monsters.push(this.monster);
-              this.monster.setBounce(2400, 0, 4900, this.scale.height);
+              this.monster.setBounce(1,0);
+              
                        
         }   
           
@@ -507,8 +514,8 @@ export default class GameScene extends Phaser.Scene {
            
         this.monster = new JumperDude({
                scene: this,
-               x: cord[j][0], // Separación mayor para que no se amontonen
-               y: cord[j][1], // Ajustado para que estén SOBRE las plataformas (groundY - 150 = 439)
+               x: cord[j].x, // Separación mayor para que no se amontonen
+               y: cord[j].y, // Ajustado para que estén SOBRE las plataformas (groundY - 150 = 439)
                key: `Jumper${cord.length}${j}`,
         });
         this.physics.add.collider(this.monster, platforms);
@@ -517,15 +524,39 @@ export default class GameScene extends Phaser.Scene {
             this.physics.add.collider(this.monster, this.matrixPlatform);
         }
         this.monsters2.push(this.monster);
-        this.monster.setBounce(2400, 0, 4900, this.scale.height);
+        this.monster.setBounce(1,0);
          
       }
          
     }
 
-    monsterCreatorJumper([[8100,400],[14000,400]])
+    monsterCreatorJumper([{x:8100,y:400},{x:14000,y:400}]);
+
+    const skullFireCreator = (cord) => {
+      for (let j = 0; j < cord.length; j += 1) {      
+           
+        this.monster = new SkullFire({
+               scene: this,
+               x: cord[j].x, // Separación mayor para que no se amontonen
+               y: cord[j].y, // Ajustado para que estén SOBRE las plataformas (groundY - 150 = 439)
+               key: `skullFly${cord.length}${j}`,
+        });
+        
+             // Añadir colisión con la plataforma de matriz si existe
+        
+        this.skullFire.push(this.monster);
+        this.monster.setBounce(1, 0);
+        
+         
+      }
+
+    }
+
+    skullFireCreator([{x:20950,y:-640}])
     // Opción 2: concat
-    this.allMonsters = this.monsters.concat(this.monsters2)
+    this.allMonsters = this.monsters.concat(this.monsters2);
+    this.allMonsters = this.allMonsters.concat(this.skullFire);
+
     
     // Añadir colisión entre enemigos para evitar que se sobrepongan
     if (this.monsters.length > 1) {
@@ -544,17 +575,11 @@ export default class GameScene extends Phaser.Scene {
      
     }
     
-    // Añadir colisión de enemigos con plataformas de tiles (matrixPlatform)
-    if (this.matrixPlatform && this.allMonsters.length > 0) {
-      this.allMonsters.forEach(monster => {
-        this.physics.add.collider(monster, this.matrixPlatform);
-      });
-      
-    }
+    
 
     this.player = new Player({
       scene: this,
-      x: 400,
+      x: 19000,
       y: 100,
       key: 'player',
     });
@@ -678,6 +703,8 @@ export default class GameScene extends Phaser.Scene {
         gameOver = true;
       }
     }, this);
+
+    
     
     // Overlap para recoger corazones coleccionables
     this.physics.add.overlap(this.player, this.heartsGroup, (player, heart) => {
@@ -811,12 +838,23 @@ export default class GameScene extends Phaser.Scene {
     });
     this.anims.create({
       key: 'skullFly',
-      frames: 'fireSkull',
-      frameRate: 3,
+      frames: this.anims.generateFrameNames('fireSkull', {
+        prefix: 'sprite',
+        start: 0,
+        end: 8,
+        
+      }),
+      frameRate: 4,
+      timeScale: 0.5,
       repeat: -1
-  });
+    });
+    
+    // Sprite de prueba para fireSkull - DEBUG
+ 
+    
     this.teclaE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
   }
+  
 
   update() {
     // Actualizar coordenadas X e Y del jugador en la UI
@@ -832,6 +870,9 @@ export default class GameScene extends Phaser.Scene {
     this.player.updateJumpState(onGround);
     this.player.update();
     this.allMonsters.forEach(monster => {
+      monster.update();
+    });
+    this.skullFire.forEach(monster => {
       monster.update();
     });
     
