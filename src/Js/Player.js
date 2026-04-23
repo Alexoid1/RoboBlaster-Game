@@ -33,26 +33,26 @@ class Player extends Entity {
   }
 
   /**
-   * Aplica daño al jugador (medio corazón por defecto)
-   * @param {number} damageType - 0.5 para medio corazón, 1 para corazón completo
+   * Aplica daño al jugador
+   * @param {number} damageAmount - Cantidad de daño en corazones (ej: 0.5, 1, 1.5)
    */
-  damg(damageType = 0.5) {
-    return this.damageOrKill(damageType);
+  damg(damageAmount) {
+    return this.damageOrKill(damageAmount);
   }
 
   /**
    * Aplica daño al jugador usando sistema de corazones
-   * @param {number} damageType - 0.5 para medio corazón, 1 para corazón completo
+   * @param {number} damageAmount - Cantidad de daño en corazones (ej: 0.5, 1, 1.5)
    * @returns {boolean} - True si el jugador murió, false si sobrevivió
    */
-  damageOrKill(damageType = 0.5) {
+  damageOrKill(damageAmount) {
     // Si el jugador es invulnerable, no recibe daño
     if (this.isInvulnerable) {
       return false;
     }
     
-    // Aplicar daño (0.5 = medio corazón, 1 = corazón completo)
-    this.hearts -= damageType;
+    // Aplicar daño (puede ser cualquier valor decimal: 0.5, 1, 1.5, etc.)
+    this.hearts -= damageAmount;
     
     // Si se queda sin corazones, muere
     if (this.hearts <= 0) {

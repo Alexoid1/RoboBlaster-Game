@@ -15,6 +15,7 @@ class JumperDude extends Entity {
     this.body.setSize(28, 47);
     this.setGravityY(800);
     this.setScale(3);
+    this.damageTo=0.5
     
     // Colisión más estrecha para evitar amontonamiento (15% del ancho)
     // Ancho original: 28 * 3 = 84px, 15% = ~12px, offset para centrar

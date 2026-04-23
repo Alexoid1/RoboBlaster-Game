@@ -111,10 +111,11 @@ export default class GameScene extends Phaser.Scene {
         groundX += 4240;
       }
     };
+    this.cameras.main.setBackgroundColor('#110d12'); 
     const { width } = this.scale;
     const { height } = this.scale;
 
-    this.add.image(width * 0.5, height * 0.5, 'moon').setScale(0.6, 0.6).setScrollFactor(0);
+    this.add.image(width * 0.5, height * 0.5, 'moon').setScale(0.9, 0.9).setScrollFactor(0);
     this.add.image(0, height, 'clouds').setScale(0.5, 0.5).setOrigin(0, 1.2).setScrollFactor(0);
     backgroundCreatorForest1(this, 20, 'forest1', 0.25);
     backgroundCreatorForest1(this, 15, 'forest2', 0.35);
@@ -122,33 +123,36 @@ export default class GameScene extends Phaser.Scene {
     backgroundCreatorGround(this.platformNumber, 'ground');
     
     // Crear plataformas flotantes adicionales para saltos usando textura 'platform'
-    this.createFloatingPlatforms = () => {
-      // Crear un grupo separado para plataformas flotantes
+    const createFloatingPlatforms = (platformsArray) => {
       this.floatingPlatforms = this.physics.add.staticGroup();
       
-     
-      const platform4 = this.floatingPlatforms.create(16680, groundY - 400, 'terrain_stone_block').setScale(0.5).refreshBody();
-      platform4.body.updateFromGameObject();
-
-      const platform5 = this.floatingPlatforms.create(16950, -100, 'terrain_stone_block').setScale(0.5).refreshBody();
-      platform5.body.updateFromGameObject();
-
-      const platform6 = this.floatingPlatforms.create(17350, -289, 'terrain_stone_block').setScale(0.5).refreshBody();
-      platform6.body.updateFromGameObject();
-
-      const platform7 = this.floatingPlatforms.create(17580, -450, 'terrain_stone_block').setScale(0.5).refreshBody();
-      platform7.body.updateFromGameObject();
-
-      const platform8 = this.floatingPlatforms.create(17350, -650, 'terrain_stone_block').setScale(0.5).refreshBody();
-      platform8.body.updateFromGameObject();
-
-      const platform9 = this.floatingPlatforms.create(18000, -790, 'terrain_stone_block').setScale(0.5).refreshBody();
-      platform9.body.updateFromGameObject();
-
-
+      for (let i = 0; i < platformsArray.length; i++) {
+        const platform = this.floatingPlatforms.create(platformsArray[i].x, platformsArray[i].y, platformsArray[i].texture).setScale(0.5).refreshBody();
+        platform.body.updateFromGameObject();
+      }
+      // Crear un grupo separado para plataformas flotantes
     };
-    
-      this.createFloatingPlatforms();
+
+    createFloatingPlatforms([
+      {x:16680,y:189,texture:'terrain_stone_block'},
+      {x:17350,y:-289,texture:'terrain_stone_block'},
+      {x:17580,y:-450,texture:'terrain_stone_block'},
+      {x:17350,y:-650,texture:'terrain_stone_block'},
+      {x:18000,y:-790,texture:'terrain_stone_block'}
+      ])
+
+    // Crear plataforma móvil
+    const platform50 = this.physics.add.image(24321, -1650, 'platform').setScale(1).setDirectControl().setImmovable();
+    this.tweens.add({
+      targets: platform50,
+      x: 24321+400,
+      duration: 2000,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.easeInOut'
+  });
+    // Mover horizontalmente con tween
+   
       
       // Crear rampa real en x=500 (múltiples cuerpos pequeños)
       this.createRealRamp = () => {
@@ -229,17 +233,17 @@ export default class GameScene extends Phaser.Scene {
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
           [0,0,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,14,2,2,2,15],
+          [0,0,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,14,2,2,2,2,2,2,2,2,15,],
+          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
           [0,0,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          [0,0,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,14,15],
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-          [0,0,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-          [0,0,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-          [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-          [0,0,14,2,2,2,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          [0,0,14,2,2,2,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,14,2,2,2,15],
           [0,0,0,0,0,0,0,0,0,0,0,14,15,0,0,0,0,0,0,0,0,0],
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -456,6 +460,7 @@ export default class GameScene extends Phaser.Scene {
       
       // Actualizar texturas de corazones existentes
       for (let i = 0; i < this.player.maxHearts; i++) {
+   
         const heart = this.heartsSprites[i];
         
         // Determinar el estado del corazón
@@ -488,9 +493,10 @@ export default class GameScene extends Phaser.Scene {
             
               this.monster = new ChaserDude({
                 scene: this,
-                x: cord[j][0], // Separación mayor para que no se amontonen
-                y: cord[j][1], // Ajustado para que estén SOBRE las plataformas (groundY - 150 = 439)
+                x: cord[j].x, // Separación mayor para que no se amontonen
+                y: cord[j].y, // Ajustado para que estén SOBRE las plataformas (groundY - 150 = 439)
                 key: `chaser${cord.length}${j}`,
+                startHunt: cord[j].s
               });
               this.physics.add.collider(this.monster, platforms);
               // Añadir colisión con la plataforma de matriz si existe
@@ -506,7 +512,13 @@ export default class GameScene extends Phaser.Scene {
      }
 
       
-    monsterCreatorChaser([[7900, 400],[8000,400],[8200,400],[13800,400],[13900,400],[14100,400]]);
+    monsterCreatorChaser([{x:7900, y:400, s:780},
+      {x:8000,y:400,s:780},
+      {x:8200,y:400,s:780},
+      {x:13800,y:400,s:780},
+      {x:13900,y:400,s:780},
+      {x:14100,y:400,s:780},
+      {x:23380,y:-1535,s:400}]);
 
     const monsterCreatorJumper = (cord) => {
       // Cambiado de 1000 a 600 para estar aún más cerca del jugador
@@ -556,7 +568,6 @@ export default class GameScene extends Phaser.Scene {
     // Opción 2: concat
     this.allMonsters = this.monsters.concat(this.monsters2);
     this.allMonsters = this.allMonsters.concat(this.skullFire);
-
     
     // Añadir colisión entre enemigos para evitar que se sobrepongan
     if (this.monsters.length > 1) {
@@ -579,8 +590,8 @@ export default class GameScene extends Phaser.Scene {
 
     this.player = new Player({
       scene: this,
-      x: 19000,
-      y: 100,
+      x: 24200,
+      y: -1700,
       key: 'player',
     });
 
@@ -595,20 +606,21 @@ export default class GameScene extends Phaser.Scene {
     });
     
     // Crear corazón coleccionable inicial en x=-70, y=620 (sobre plataforma)
-    const initialHeart = new HeartPickup(this, -70, 620);
-    this.heartsGroup.add(initialHeart);
-    console.log('Corazón PERMANENTE creado en (-70, 620)');
-    
-    // Corazon coleccionable en plataformas flotantes
-    const platformHeart = new HeartPickup(this, 18580, -980);
-    this.heartsGroup.add(platformHeart);
-    console.log('Corazón PERMANENTE creado en (18650, -900)');
 
-    const platformZoneHeart = new HeartPickup(this, 19027, -1980);
-    this.heartsGroup.add(platformZoneHeart);
-    console.log('Corazón PERMANENTE creado en (19027, -1950)');
-    
-   
+    const heartCreator = (cord) => {
+      for (let j = 0; j < cord.length; j += 1) {      
+           
+        this.heart = new HeartPickup(
+               this,
+               cord[j].x, 
+               cord[j].y, 
+              
+        );           
+        this.heartsGroup.add(this.heart);
+      }
+    }
+
+    heartCreator([{x:-70,y:620},{x:18650, y:-900},{x:19027,y:-1980}])
 
     // Crear rampa real en x=500 (después de crear el jugador)
     this.createRealRamp();
@@ -662,6 +674,7 @@ export default class GameScene extends Phaser.Scene {
     };
 
     this.physics.add.collider(platforms, this.player);
+    this.physics.add.collider(this.player, platform50);
     
     // Añadir colisión del jugador con plataformas flotantes
     if (this.floatingPlatforms) {
@@ -680,10 +693,11 @@ export default class GameScene extends Phaser.Scene {
 
     this.physics.add.overlap(this.allMonsters, this.player, null, (mon2, player) => {
       // Si el jugador es invulnerable, aplicar daño de corazón completo
-      const damageType = player.isInvulnerable ? 1 : 0.5;
+     
       
       // Aplicar daño
-      const died = player.damg(damageType);
+   
+      const died = player.damg(mon2.damageTo);
       
       // Efecto visual de daño
       player.setTint(0xff0000);
@@ -986,5 +1000,12 @@ export default class GameScene extends Phaser.Scene {
       this.scene.stop('Game');
       this.scene.start('GameOver');
     }
+
+    // En el update() de GameScene.js
+    //if (this.player.x >= 21661 && this.player.y <= -920 && !this.zoomStarted) {
+    //  this.zoomStarted = true;
+    //  this.cameras.main.zoomTo(0.5, 2000, 'Power2'); // Alejar al 50% en 2 segundos con easing
+    //}
+    
   }
 }

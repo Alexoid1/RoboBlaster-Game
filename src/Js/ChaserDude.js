@@ -18,6 +18,8 @@ class ChaserDude extends Entity {
     this.body.setSize(28, 47);
     this.setGravityY(800);
     this.setScale(3);
+    this.damageTo=0.5;
+    this.startHunt= config.startHunt;
     
     // Colisión más estrecha para evitar amontonamiento (15% del ancho)
     // Ancho original: 28 * 3 = 84px, 15% = ~12px, offset para centrar
@@ -70,11 +72,12 @@ class ChaserDude extends Entity {
     );
     
     // Si el jugador está dentro del rango de detección (580px), lo persigue
-    if (distanceToPlayer < 780) {
+    if (distanceToPlayer < this.startHunt) {
       this.huntPlayer();
       
     } else {
       // Reproduce animación de reposo
+      this.body.setVelocityX(0)
       this.play('dudeleft');
     }
 

@@ -25,6 +25,7 @@ class SkullFire extends Entity {
     const collisionWidth = 12; // 15% del ancho original
     
     this.body.setSize(40, 40);
+    this.damageTo=1
    
     
     // Estadísticas del enemigo
